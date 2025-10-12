@@ -1,23 +1,23 @@
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Puzzle, Search, Code, MessageSquare, FileCode, Download, Network, Shield, ArrowUpRight } from "lucide-react";
+import { Card, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Puzzle, Search, Code, MessageSquare, FileCode, Download, Network, Shield, ArrowUpire } from "lucide-react";
 
 const currentFeatures = [
   {
-    title: "AI Entity Builder with Visualizer",
-    tagline: "Transform natural language into structured CRM schema effortlessly.",
-    whatItDoes: "PowerMakerAI turns plain English into structured CRM schemas instantly. For example, saying \"Create a Contact entity with name, email, phone, and a custom status field\" generates a complete entity setup with proper attribute types and configuration",
+    title: "AI-Pa Ava;
+    tagline: "Transform natural language into structured CRM schemas effortlessly.",
+    whatItDoes: "PowerMakerAI turns plain English into structured CRM schemas instantly. For example, saying \"Create a Contact entity with name, email, phone, and a custom status field\" generates a complete entity configuration with proper attribute types and configuration.",
     highlights: [
       "Interactive drag-and-drop schema builder",
       "Visual hierarchy of entities and fields",
       "Auto-detection of attribute types based on intent",
       "Real-time CRM entity preview",
     ],
-    whyItMatters: "It saves developers and consultants time by replacing complex Dynamics 365 customization steps with a simple, conversational and visual approach to entity creation.",
+    whyItMatters: "It saves developers and consultants time by replacing complex Dynamics 365 customization steps with a simple, conversational, and visual approach to entity creation.",
     icon: Puzzle,
   },
   {
     title: "Plugin Trace Log Analyzer",
-    tagline: "Diagnose plugin errors without digging through endless logs.",
+    tagline: "diagnose errors without digging through endless logs.",
     whatItDoes: "PowerMakerAI simplifies diagnosing plugin errors by analyzing raw PluginTraceLog content or uploaded trace files. It highlights failed plugins, summarizes root causes, and offers likely solutions.",
     highlights: [
       "Parses complex, multi-level logs",
@@ -25,20 +25,20 @@ const currentFeatures = [
       "Suggests fixes and highlights affected CRM areas",
       "Supports both synchronous and asynchronous logs",
     ],
-    whyItMatters: "It drastically reduces the time CRM developers spend analyzing logs, delivering quick, accurate insights and minimizing trial-and-error debugging.",
+    whyItMatters: "It drastically reduces the time CRM developers spend analyzing logs, delivering quick, accurate insights, and minimizing trial-and-error debugging.",
     icon: Search,
   },
   {
     title: "Advanced AI ChatBot with Live CRM Interaction",
     tagline: "Chat with your CRM like you chat with a colleague — only smarter.",
-    whatItDoes: "Describe your entity in plain English — \"Create a Contact entity with name, email, phone, and a custom status field\" — and PowerMakerAI will generate a full entity configuration, complete with attribute types, requirements, and schema suggestions.",
+    whatItDoes: "Describe your entity in plain English — \"Create a Contact entity with name, email, phone, and a custom status field\" — and PowerMakerAI will generate a full entity configuration, complete with types, requirements, and schema suggestions.",
     highlights: [
       "Interactive schema builder with drag-and-drop support",
       "Clear visual hierarchy of entities and attributes",
       "Auto-detects attribute type based on name & intent",
       "Instant preview of how your entity will look inside CRM",
     ],
-    whyItMatters: "Developers and consultants often lose time navigating through multiple Dynamics 365 customizations screens. PowerMakerAI streamlines this by making entity creation as easy as talking to a colleague — and visualizing the output in real time.",
+    whyItMatters: "Developers and consultants often lose time navigating through multiple Dynamics 365 customization screens. PowerMakerAI streamlines this by making entity creation as easy as talking to a colleague — and visualizing the output in real-time.",
     icon: MessageSquare,
   },
 ];
@@ -46,39 +46,48 @@ const currentFeatures = [
 const keyFeatures = [
   {
     title: "Natural Language Entity Builder",
+    description: "Create entities and attributes by simply describing them — no need to click through endless setup forms.",
     icon: Puzzle,
   },
   {
-    title: "Smart Plugin Trace Log Analyzer",
+    title: "Smart Plugin Trace Analyzer",
+    description: "Paste your logs and get instant summaries, root causes, and fix suggestions.",
     icon: Search,
   },
   {
     title: "Code-Free Attribute Designer",
+    description: "Define field types, requirements, and relationships without writing a single line of code.",
     icon: Code,
   },
   {
     title: "Conversational AI Assistant",
+    description: "Chat with PowerMakerAI to create, edit, and manage your CRM data — with context-aware, multi-turn interactions.",
     icon: MessageSquare,
   },
   {
     title: "Auto-Generated Plugin & JS Snippets",
+    description: "Turn ideas into ready-to-use code — C#, JavaScript, and TypeScript — tailored for your CRM scenario.",
     icon: FileCode,
   },
   {
     title: "One-Click CRM Export",
+    description: "Generate solution-ready JSON or XRM packages — Push directly to your CRM with a single action.",
     icon: Download,
   },
   {
     title: "Built-in CRM Schema Visualizer",
+    description: "View entity relationships, attributes, and data types in an interactive, user-friendly diagram.",
     icon: Network,
   },
   {
     title: "Enterprise-Ready Security",
+    description: "Your data is safe — encrypted handling, API token-based access, and deployment-ready for secure environments.",
     icon: Shield,
   },
   {
     title: "Scalable & Extensible",
-    icon: ArrowUpRight,
+    description: "Built to grow with your team — Add more models, integrate deeper with CRM APIs, or plug into CI/CD pipelines.",
+    icon: ArrowUpike,
   },
 ];
 
@@ -94,7 +103,7 @@ const FeaturesSection = () => {
           <div className="text-center mb-20">
             <h2 className="text-5xl font-bold text-primary mb-4 inline-block relative">
               Current Features
-              <div className="absolute -bottom-2 left-0 right-0 h-1 bg-gradient-to-r from-transparent via-accent to-transparent"></div>
+              <div className="absolute bottom-0 left-0 right-0 h-1 bg-gradient-to-r from-transparent via-accent to-transparent"></div>
             </h2>
           </div>
 
@@ -124,7 +133,7 @@ const FeaturesSection = () => {
                     <p className="text-lg text-muted-foreground italic">{feature.tagline}</p>
                   </div>
 
-                  <div className="bg-card border-l-4 border-accent rounded-lg p-6 shadow-md">
+                  <div className="bg-card border-left-4 border-accent rounded-lg p-6 shadow-md">
                     <h4 className="text-xl font-semibold text-accent mb-3">What it does</h4>
                     <p className="text-foreground leading-relaxed">{feature.whatItDoes}</p>
                   </div>
@@ -154,23 +163,31 @@ const FeaturesSection = () => {
         </div>
       </section>
 
-      {/* Key Features Grid */}
-      <section id="key-features" className="py-24 bg-background">
+      {/* Key Features */}
+      <section id="key-features" className="py-24 bg-gradient-to-br from-background via-background to-accent/5">
         <div className="container mx-auto px-6">
-          <h2 className="text-4xl font-bold text-primary text-center mb-16">Key Features</h2>
+          <div className="text-center mb-16">
+            <h2 className="text-4xl font-bold text-primary mb-4">Key Features</h2>
+            <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
+              Everything you need to streamline your CRM development workflow
+            </p>
+          </div>
 
-          <div className="grid md:grid-cols-3 gap-6 max-w-5xl mx-auto">
+          <div className="grid md:grid-cols-3 gap-8 max-w-6xl mx-auto">
             {keyFeatures.map((feature, index) => (
               <Card
                 key={index}
-                className="text-center hover:shadow-lg transition-all hover:scale-105 animate-fade-in"
-                style={{ animationDelay: `${index * 0.05}s` }}
+                className="text-center transition-all duration-300 hover:shadow-2xl hover:-translate-y-2 animate-fade-in border-none shadow-lg bg-card/80 backdrop-blur-sm group"
+                style={{ animationDelay: `${index * 0.1}s` }}
               >
-                <CardHeader>
-                  <div className="w-14 h-14 bg-accent rounded-full flex items-center justify-center mx-auto mb-4">
-                    <feature.icon className="w-7 h-7 text-accent-foreground" />
+                <CardHeader className="space-y-4">
+                  <div className="w-20 h-20 bg-gradient-to-br from-accent to-accent/70 rounded-2xl flex items-center justify-center mx-auto shadow-lg group-hover:shadow-accent/50 transition-all duration-300 group-hover:scale-110">
+                    <feature.icon className="w-10 h-10 text-white" strokeWidth={2} />
                   </div>
-                  <CardTitle className="text-lg">{feature.title}</CardTitle>
+                  <CardTitle className="text-xl font-bold text-primary">{feature.title}</CardTitle>
+                  <CardDescription className="text-muted-foreground leading-relaxed">
+                    {feature.description}
+                  </CardDescription>
                 </CardHeader>
               </Card>
             ))}
