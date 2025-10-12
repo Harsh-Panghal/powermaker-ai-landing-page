@@ -1,56 +1,121 @@
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Check } from "lucide-react";
 
 const PricingSection = () => {
+  const features = [
+    "AI Entity Builder",
+    "Plugin Trace Analyzer",
+    "Live CRM Integration",
+    "Unlimited Conversations",
+    "Priority Support",
+    "Early Access to New Features",
+  ];
+
   return (
-    <section id="pricing" className="py-24 bg-background">
+    <section id="pricing" className="py-24 bg-background relative overflow-hidden">
       <div className="container mx-auto px-6">
         <h2 className="text-4xl font-bold text-primary text-center mb-4">
-          Purchase a Subscription
+          Purchase a subscription
         </h2>
-        <p className="text-center text-muted-foreground mb-12">
-          Choose the plan that best fits your needs
+        <p className="text-center text-muted-foreground mb-16">
+          Choose the plan that works for you.
         </p>
 
-        <div className="max-w-md mx-auto">
-          <Card className="border-2 border-accent shadow-xl">
-            <CardHeader className="text-center">
-              <div className="inline-block px-4 py-1 bg-accent text-accent-foreground rounded-full text-sm font-semibold mb-4">
-                BETA ACCESS
-              </div>
-              <CardTitle className="text-3xl">For All Users During Beta</CardTitle>
-              <CardDescription className="text-lg mt-2">
-                Full access to all features while we're in beta
-              </CardDescription>
-            </CardHeader>
-            <CardContent className="space-y-6">
-              <div className="text-center">
-                <p className="text-5xl font-bold text-primary">Free</p>
-                <p className="text-muted-foreground mt-2">No credit card required</p>
+        {/* Layered Cards Container */}
+        <div className="relative max-w-5xl mx-auto h-[600px] flex items-center justify-center">
+          {/* Background Layer Cards */}
+          <div className="absolute inset-0 flex items-center justify-center">
+            {/* Back card - most faded */}
+            <div 
+              className="absolute w-[420px] h-[480px] rounded-3xl opacity-20 blur-sm"
+              style={{
+                background: 'linear-gradient(135deg, hsl(207, 76%, 75%) 0%, hsl(207, 76%, 59%) 100%)',
+                transform: 'rotate(-8deg) scale(0.85) translateY(40px)',
+              }}
+            />
+            
+            {/* Middle card */}
+            <div 
+              className="absolute w-[440px] h-[500px] rounded-3xl opacity-40 blur-[2px]"
+              style={{
+                background: 'linear-gradient(135deg, hsl(207, 76%, 70%) 0%, hsl(207, 76%, 54%) 100%)',
+                transform: 'rotate(-4deg) scale(0.92) translateY(20px)',
+              }}
+            />
+          </div>
+
+          {/* Main Featured Card */}
+          <div 
+            className="relative w-[480px] rounded-3xl shadow-2xl transform transition-all duration-500 hover:scale-105 hover:rotate-0"
+            style={{
+              background: 'linear-gradient(135deg, hsl(207, 76%, 65%) 0%, hsl(207, 76%, 50%) 100%)',
+              transform: 'rotate(-2deg)',
+            }}
+          >
+            {/* Card Content */}
+            <div className="relative z-10 p-10">
+              {/* Header Section */}
+              <div className="text-center mb-8">
+                <h3 className="text-4xl font-bold text-white mb-2">
+                  🎉 For All Users 🎉
+                </h3>
+                <p className="text-xl text-white/90 font-medium">
+                  During Beta
+                </p>
               </div>
 
-              <div className="space-y-3">
-                {[
-                  "AI Entity Builder",
-                  "Plugin Trace Analyzer",
-                  "Live CRM Integration",
-                  "Unlimited Conversations",
-                  "Priority Support",
-                  "Early Access to New Features",
-                ].map((feature, index) => (
+              {/* Price Section */}
+              <div className="text-center mb-8 py-6 border-y border-white/20">
+                <p className="text-6xl font-bold text-white mb-2">Free</p>
+                <p className="text-white/90 text-lg">No credit card required*</p>
+              </div>
+
+              {/* Features List */}
+              <div className="space-y-4 mb-8">
+                {features.map((feature, index) => (
                   <div key={index} className="flex items-center gap-3">
-                    <Check className="w-5 h-5 text-accent flex-shrink-0" />
-                    <span className="text-foreground">{feature}</span>
+                    <div className="flex-shrink-0 w-6 h-6 rounded-full bg-white/20 flex items-center justify-center">
+                      <Check className="w-4 h-4 text-white" strokeWidth={3} />
+                    </div>
+                    <span className="text-white font-medium">{feature}</span>
                   </div>
                 ))}
               </div>
 
-              <Button variant="hero" className="w-full" size="lg">
+              {/* CTA Button */}
+              <Button 
+                className="w-full bg-white text-accent hover:bg-white/90 font-bold text-lg h-14 rounded-xl shadow-lg"
+                size="lg"
+              >
                 Get Started Free
               </Button>
-            </CardContent>
-          </Card>
+            </div>
+
+            {/* Decorative gradient overlay */}
+            <div 
+              className="absolute inset-0 rounded-3xl opacity-30 pointer-events-none"
+              style={{
+                background: 'radial-gradient(circle at 30% 20%, rgba(255,255,255,0.3) 0%, transparent 60%)',
+              }}
+            />
+          </div>
+
+          {/* Side decorative cards */}
+          <div 
+            className="hidden lg:block absolute left-0 w-[280px] h-[360px] rounded-2xl opacity-15"
+            style={{
+              background: 'linear-gradient(135deg, hsl(207, 76%, 75%) 0%, hsl(207, 76%, 59%) 100%)',
+              transform: 'rotate(-12deg) translateX(-120px)',
+            }}
+          />
+          
+          <div 
+            className="hidden lg:block absolute right-0 w-[280px] h-[360px] rounded-2xl opacity-15"
+            style={{
+              background: 'linear-gradient(135deg, hsl(207, 76%, 75%) 0%, hsl(207, 76%, 59%) 100%)',
+              transform: 'rotate(12deg) translateX(120px)',
+            }}
+          />
         </div>
       </div>
     </section>
