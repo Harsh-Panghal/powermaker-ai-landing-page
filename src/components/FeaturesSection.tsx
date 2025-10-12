@@ -1,23 +1,23 @@
 import { Card, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Puzzle, Search, Code, MessageSquare, FileCode, Download, Network, Shield, ArrowUpire } from "lucide-react";
+import { Puzzle, Search, Code, MessageSquare, FileCode, Download, Network, Shield, ArrowUpRight } from "lucide-react";
 
 const currentFeatures = [
   {
-    title: "AI-Pa Ava;
-    tagline: "Transform natural language into structured CRM schemas effortlessly.",
-    whatItDoes: "PowerMakerAI turns plain English into structured CRM schemas instantly. For example, saying \"Create a Contact entity with name, email, phone, and a custom status field\" generates a complete entity configuration with proper attribute types and configuration.",
+    title: "AI-Powered Entity Builder with Visualizer",
+    tagline: "Transform Ideas into structured CRM entities instantly.",
+    whatItDoes: "PowerMakerAI turns plain English descriptions into complete CRM schemas instantly. For example, saying \"Create a Contact entity with name, email, phone, and a custom status field\" generates a full entity configuration with appropriate attribute types and properties.",
     highlights: [
       "Interactive drag-and-drop schema builder",
-      "Visual hierarchy of entities and fields",
+      "Visual hierarchy of entities and relationships",
       "Auto-detection of attribute types based on intent",
-      "Real-time CRM entity preview",
+      "Real-time preview of CRM entity structure",
     ],
     whyItMatters: "It saves developers and consultants time by replacing complex Dynamics 365 customization steps with a simple, conversational, and visual approach to entity creation.",
     icon: Puzzle,
   },
   {
     title: "Plugin Trace Log Analyzer",
-    tagline: "diagnose errors without digging through endless logs.",
+    tagline: "Diagnose errors without digging through endless logs.",
     whatItDoes: "PowerMakerAI simplifies diagnosing plugin errors by analyzing raw PluginTraceLog content or uploaded trace files. It highlights failed plugins, summarizes root causes, and offers likely solutions.",
     highlights: [
       "Parses complex, multi-level logs",
@@ -25,17 +25,17 @@ const currentFeatures = [
       "Suggests fixes and highlights affected CRM areas",
       "Supports both synchronous and asynchronous logs",
     ],
-    whyItMatters: "It drastically reduces the time CRM developers spend analyzing logs, delivering quick, accurate insights, and minimizing trial-and-error debugging.",
+    whyItMatters: "It drastically reduces the time CRM developers spend analyzing logs, delivering quick, accurate insights and minimizing trial-and-error debugging.",
     icon: Search,
   },
   {
     title: "Advanced AI ChatBot with Live CRM Interaction",
     tagline: "Chat with your CRM like you chat with a colleague — only smarter.",
-    whatItDoes: "Describe your entity in plain English — \"Create a Contact entity with name, email, phone, and a custom status field\" — and PowerMakerAI will generate a full entity configuration, complete with types, requirements, and schema suggestions.",
+    whatItDoes: "Describe your entity in plain English — \"Create a Contact entity with name, email, phone, and a custom status field\" — and PowerMakerAI will generate a full entity configuration, complete with attribute types, requirements, and schema suggestions.",
     highlights: [
       "Interactive schema builder with drag-and-drop support",
       "Clear visual hierarchy of entities and attributes",
-      "Auto-detects attribute type based on name & intent",
+      "Auto-detects attribute types based on name & intent",
       "Instant preview of how your entity will look inside CRM",
     ],
     whyItMatters: "Developers and consultants often lose time navigating through multiple Dynamics 365 customization screens. PowerMakerAI streamlines this by making entity creation as easy as talking to a colleague — and visualizing the output in real-time.",
@@ -51,7 +51,7 @@ const keyFeatures = [
   },
   {
     title: "Smart Plugin Trace Analyzer",
-    description: "Paste your logs and get instant summaries, root causes, and fix suggestions.",
+    description: "Paste your logs and get instant summaries, root-causes, and fix suggestions.",
     icon: Search,
   },
   {
@@ -87,7 +87,7 @@ const keyFeatures = [
   {
     title: "Scalable & Extensible",
     description: "Built to grow with your team — Add more models, integrate deeper with CRM APIs, or plug into CI/CD pipelines.",
-    icon: ArrowUpike,
+    icon: ArrowUpRight,
   },
 ];
 
@@ -103,7 +103,7 @@ const FeaturesSection = () => {
           <div className="text-center mb-20">
             <h2 className="text-5xl font-bold text-primary mb-4 inline-block relative">
               Current Features
-              <div className="absolute bottom-0 left-0 right-0 h-1 bg-gradient-to-r from-transparent via-accent to-transparent"></div>
+              <div className="absolute -bottom-2 left-0 right-0 h-1 bg-gradient-to-r from-transparent via-accent to-transparent"></div>
             </h2>
           </div>
 
@@ -116,7 +116,7 @@ const FeaturesSection = () => {
                 }`}
                 style={{ animationDelay: `${index * 0.2}s` }}
               >
-                {/* Icon/Visual Side */}
+                {/* Icon/Visual side */}
                 <div className="lg:w-2/5 flex justify-center">
                   <div className="relative">
                     <div className="absolute inset-0 bg-accent/20 rounded-3xl blur-2xl"></div>
@@ -126,14 +126,14 @@ const FeaturesSection = () => {
                   </div>
                 </div>
 
-                {/* Content Side */}
+                {/* Content side */}
                 <div className="lg:w-3/5 space-y-6">
                   <div>
                     <h3 className="text-3xl font-bold text-primary mb-3">{feature.title}</h3>
                     <p className="text-lg text-muted-foreground italic">{feature.tagline}</p>
                   </div>
 
-                  <div className="bg-card border-left-4 border-accent rounded-lg p-6 shadow-md">
+                  <div className="bg-card border-l-4 border-accent rounded-lg p-6 shadow-md">
                     <h4 className="text-xl font-semibold text-accent mb-3">What it does</h4>
                     <p className="text-foreground leading-relaxed">{feature.whatItDoes}</p>
                   </div>
@@ -153,7 +153,7 @@ const FeaturesSection = () => {
                   </div>
 
                   <div className="bg-gradient-to-r from-accent/10 to-primary/10 rounded-lg p-6 border border-accent/20">
-                    <h4 className="text-xl font-semibold text-primary mb-3">Why it matters</h4>
+                    <h4 className="text-xl font-bold text-primary mb-3">Why it matters</h4>
                     <p className="text-foreground leading-relaxed">{feature.whyItMatters}</p>
                   </div>
                 </div>
