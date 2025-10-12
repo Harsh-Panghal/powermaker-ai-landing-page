@@ -3,7 +3,55 @@ import { Play } from "lucide-react";
 
 const HeroSection = () => {
   return (
-    <section id="hero" className="relative min-h-[120vh] bg-background pt-24 pb-16">
+    <section id="hero" className="relative min-h-[120vh] bg-background pt-24 pb-16 overflow-hidden">
+      {/* Animated Background Lights */}
+      <div className="absolute inset-0 overflow-hidden pointer-events-none">
+        {/* Large gradient orb - top left */}
+        <div 
+          className="absolute w-[600px] h-[600px] rounded-full opacity-20 blur-3xl animate-pulse"
+          style={{
+            background: 'radial-gradient(circle, hsl(207, 76%, 59%) 0%, transparent 70%)',
+            top: '-20%',
+            left: '-10%',
+            animationDuration: '8s',
+          }}
+        />
+        
+        {/* Medium gradient orb - top right */}
+        <div 
+          className="absolute w-[500px] h-[500px] rounded-full opacity-15 blur-3xl"
+          style={{
+            background: 'radial-gradient(circle, hsl(211, 55%, 35%) 0%, transparent 70%)',
+            top: '-10%',
+            right: '-5%',
+            animation: 'float 10s ease-in-out infinite',
+          }}
+        />
+        
+        {/* Small accent orb - middle */}
+        <div 
+          className="absolute w-[400px] h-[400px] rounded-full opacity-25 blur-2xl"
+          style={{
+            background: 'radial-gradient(circle, hsl(207, 76%, 65%) 0%, transparent 70%)',
+            top: '40%',
+            left: '50%',
+            transform: 'translateX(-50%)',
+            animation: 'float-slow 12s ease-in-out infinite',
+          }}
+        />
+        
+        {/* Bottom light effect */}
+        <div 
+          className="absolute w-[700px] h-[300px] rounded-full opacity-10 blur-3xl"
+          style={{
+            background: 'radial-gradient(ellipse, hsl(207, 76%, 59%) 0%, transparent 60%)',
+            bottom: '10%',
+            left: '20%',
+            animation: 'pulse 6s ease-in-out infinite',
+          }}
+        />
+      </div>
+
       {/* Background Grid Pattern */}
       <div className="absolute inset-0 opacity-[0.03]">
         <svg width="100%" height="100%" xmlns="http://www.w3.org/2000/svg">
@@ -15,6 +63,19 @@ const HeroSection = () => {
           <rect width="100%" height="100%" fill="url(#grid)" />
         </svg>
       </div>
+      
+      {/* Custom animations */}
+      <style>{`
+        @keyframes float {
+          0%, 100% { transform: translateY(0px) rotate(0deg); }
+          50% { transform: translateY(-30px) rotate(5deg); }
+        }
+        
+        @keyframes float-slow {
+          0%, 100% { transform: translate(-50%, 0px); }
+          50% { transform: translate(-50%, -20px); }
+        }
+      `}</style>
 
       <div className="container mx-auto px-6 relative">
         {/* Hero Text */}
