@@ -52,7 +52,7 @@ const TestimonialsSection = () => {
           {duplicatedTestimonials.map((testimonial, index) => (
             <Card
               key={index}
-              className="min-w-[380px] hover:shadow-xl transition-all hover:scale-105 flex-shrink-0"
+              className="min-w-[450px] max-w-[450px] hover:shadow-xl transition-all hover:scale-105 flex-shrink-0"
             >
               <CardContent className="pt-6 h-full">
                 <Quote className="w-8 h-8 text-accent mb-4" />
