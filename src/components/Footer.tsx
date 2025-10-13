@@ -85,7 +85,7 @@ const Footer = () => {
                 </a>
               </li>
               <li>
-                <a href="#features" className="text-primary-foreground/80 hover:text-primary-foreground hover:translate-x-1 transition-all inline-block">
+                <a href="#current-features" className="text-primary-foreground/80 hover:text-primary-foreground hover:translate-x-1 transition-all inline-block">
                   Features
                 </a>
               </li>
