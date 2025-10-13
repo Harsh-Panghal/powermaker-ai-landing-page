@@ -60,7 +60,7 @@ const UpcomingSection = () => {
           {upcomingFeatures.map((feature, index) => (
             <Card
               key={index}
-              className="group relative overflow-hidden border-2 border-muted hover:border-accent/50 transition-all duration-500 hover:shadow-2xl hover:-translate-y-2 bg-card/50 backdrop-blur-sm animate-fade-in"
+              className="group relative overflow-hidden border-2 border-muted hover:border-accent/50 transition-all duration-500 hover:shadow-2xl hover:-translate-y-2 bg-card/50 backdrop-blur-sm animate-fade-in cursor-pointer"
               style={{ animationDelay: `${index * 0.1}s` }}
             >
               {/* Gradient background */}
@@ -93,7 +93,7 @@ const UpcomingSection = () => {
           ))}
         </div>
 
-        {/* Bottom CTA */}
+        {/* Bottom CTA
         <div className="text-center mt-12 sm:mt-16 animate-fade-in" style={{ animationDelay: "0.4s" }}>
           <p className="text-sm sm:text-base text-muted-foreground mb-4">
             Want to stay updated on new features?
@@ -102,7 +102,7 @@ const UpcomingSection = () => {
             <span className="text-sm sm:text-base">Join our newsletter</span>
             <ArrowUpRight className="w-4 h-4 sm:w-5 sm:h-5" />
           </div>
-        </div>
+        </div> */}
       </div>
     </section>
   );

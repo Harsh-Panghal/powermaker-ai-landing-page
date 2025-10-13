@@ -157,7 +157,7 @@ const FeaturesSection = () => {
             {keyFeatures.map((feature, index) => (
               <Card
                 key={index}
-                className="text-center transition-all duration-300 hover:shadow-2xl hover:-translate-y-2 animate-fade-in border-none shadow-lg bg-card/80 backdrop-blur-sm group"
+                className="text-center transition-all duration-300 hover:shadow-2xl hover:-translate-y-2 animate-fade-in border-none shadow-lg bg-card/80 backdrop-blur-sm group cursor-pointer"
                 style={{ animationDelay: `${index * 0.1}s` }}
               >
                 <CardHeader className="space-y-3 sm:space-y-4 p-4 sm:p-6">
