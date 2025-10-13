@@ -3,6 +3,13 @@ import { Button } from "./ui/button";
 import { Input } from "./ui/input";
 
 const Footer = () => {
+  const scrollToSection = (id: string) => {
+    const element = document.getElementById(id);
+    if (element) {
+      element.scrollIntoView({ behavior: "smooth" });
+    }
+  };
+
   return (
     <footer className="relative bg-gradient-to-br from-primary via-primary to-primary/80 text-primary-foreground overflow-hidden">
       {/* Decorative background elements */}
@@ -80,24 +87,36 @@ const Footer = () => {
             </h3>
             <ul className="space-y-3">
               <li>
-                <a href="#hero" className="text-primary-foreground/80 hover:text-primary-foreground hover:translate-x-1 transition-all inline-block">
+                <button 
+                  onClick={() => scrollToSection("hero")}
+                  className="text-primary-foreground/80 hover:text-primary-foreground hover:translate-x-1 transition-all inline-block"
+                >
                   Home
-                </a>
+                </button>
               </li>
               <li>
-                <a href="#current-features" className="text-primary-foreground/80 hover:text-primary-foreground hover:translate-x-1 transition-all inline-block">
+                <button 
+                  onClick={() => scrollToSection("current-features")}
+                  className="text-primary-foreground/80 hover:text-primary-foreground hover:translate-x-1 transition-all inline-block"
+                >
                   Features
-                </a>
+                </button>
               </li>
               <li>
-                <a href="#pricing" className="text-primary-foreground/80 hover:text-primary-foreground hover:translate-x-1 transition-all inline-block">
+                <button 
+                  onClick={() => scrollToSection("pricing")}
+                  className="text-primary-foreground/80 hover:text-primary-foreground hover:translate-x-1 transition-all inline-block"
+                >
                   Pricing
-                </a>
+                </button>
               </li>
               <li>
-                <a href="#contact" className="text-primary-foreground/80 hover:text-primary-foreground hover:translate-x-1 transition-all inline-block">
+                <button 
+                  onClick={() => scrollToSection("contact")}
+                  className="text-primary-foreground/80 hover:text-primary-foreground hover:translate-x-1 transition-all inline-block"
+                >
                   Contact
-                </a>
+                </button>
               </li>
             </ul>
           </div>
