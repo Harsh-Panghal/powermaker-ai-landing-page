@@ -27,32 +27,32 @@ const ContactSection = () => {
   };
 
   return (
-    <section id="contact" className="py-32 bg-gradient-to-b from-background via-accent/5 to-background relative overflow-hidden">
+    <section id="contact" className="py-20 sm:py-28 md:py-32 bg-gradient-to-b from-background via-accent/5 to-background relative overflow-hidden">
       {/* Decorative background elements */}
-      <div className="absolute top-10 left-10 w-40 h-40 bg-accent/10 rounded-full blur-3xl"></div>
-      <div className="absolute top-20 right-20 w-32 h-32 border-2 border-primary/20 rounded-3xl rotate-12"></div>
-      <div className="absolute bottom-20 left-20 w-28 h-28 border-2 border-accent/20 rounded-2xl -rotate-6"></div>
-      <div className="absolute bottom-10 right-10 w-48 h-48 bg-primary/10 rounded-full blur-3xl"></div>
+      <div className="absolute top-10 left-10 w-40 h-40 bg-accent/10 rounded-full blur-3xl hidden sm:block"></div>
+      <div className="absolute top-20 right-20 w-32 h-32 border-2 border-primary/20 rounded-3xl rotate-12 hidden md:block"></div>
+      <div className="absolute bottom-20 left-20 w-28 h-28 border-2 border-accent/20 rounded-2xl -rotate-6 hidden sm:block"></div>
+      <div className="absolute bottom-10 right-10 w-48 h-48 bg-primary/10 rounded-full blur-3xl hidden md:block"></div>
       
-      <div className="container mx-auto px-6 relative z-10">
+      <div className="container mx-auto px-4 sm:px-6 relative z-10">
         <div className="max-w-6xl mx-auto">
           {/* Header */}
-          <div className="text-center mb-16 animate-fade-in">
-            <h2 className="text-5xl md:text-6xl font-bold mb-6">
+          <div className="text-center mb-12 sm:mb-16 animate-fade-in">
+            <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold mb-4 sm:mb-6 px-4">
               <span className="text-foreground">Let's </span>
               <span className="text-accent">Connect</span>
             </h2>
-            <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
+            <p className="text-base sm:text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto px-4">
               Get in touch with our team. We'd love to hear from you and discuss how PowerMaker AI can transform your workflow.
             </p>
           </div>
 
-          <div className="grid lg:grid-cols-2 gap-12 items-start">
+          <div className="grid lg:grid-cols-2 gap-8 sm:gap-12 items-start">
             {/* Contact Info */}
-            <div className="space-y-8 animate-fade-in" style={{ animationDelay: '0.2s' }}>
-              <div className="bg-card/50 backdrop-blur-sm border border-border rounded-2xl p-8 shadow-lg">
-                <h3 className="text-2xl font-semibold text-foreground mb-6">Why Reach Out?</h3>
-                <div className="space-y-4">
+            <div className="space-y-6 sm:space-y-8 animate-fade-in" style={{ animationDelay: '0.2s' }}>
+              <div className="bg-card/50 backdrop-blur-sm border border-border rounded-2xl p-6 sm:p-8 shadow-lg">
+                <h3 className="text-xl sm:text-2xl font-semibold text-foreground mb-4 sm:mb-6">Why Reach Out?</h3>
+                <div className="space-y-3 sm:space-y-4">
                   <div className="flex items-start gap-4">
                     <div className="w-12 h-12 bg-accent/10 rounded-xl flex items-center justify-center flex-shrink-0">
                       <svg className="w-6 h-6 text-accent" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -91,9 +91,9 @@ const ContactSection = () => {
                 </div>
               </div>
 
-              <div className="bg-gradient-to-br from-primary/10 to-accent/10 rounded-2xl p-8 border border-primary/20">
-                <h3 className="text-xl font-semibold text-foreground mb-3">Quick Response</h3>
-                <p className="text-muted-foreground">
+              <div className="bg-gradient-to-br from-primary/10 to-accent/10 rounded-2xl p-6 sm:p-8 border border-primary/20">
+                <h3 className="text-lg sm:text-xl font-semibold text-foreground mb-2 sm:mb-3">Quick Response</h3>
+                <p className="text-sm sm:text-base text-muted-foreground">
                   We typically respond within 24 hours. For urgent inquiries, please mention it in your message.
                 </p>
               </div>
@@ -101,9 +101,9 @@ const ContactSection = () => {
 
             {/* Contact Form */}
             <div className="animate-fade-in" style={{ animationDelay: '0.4s' }}>
-              <div className="bg-card/80 backdrop-blur-sm border border-border rounded-2xl p-8 shadow-xl">
-                <form onSubmit={handleSubmit} className="space-y-6">
-                  <div className="grid md:grid-cols-2 gap-6">
+              <div className="bg-card/80 backdrop-blur-sm border border-border rounded-2xl p-6 sm:p-8 shadow-xl">
+                <form onSubmit={handleSubmit} className="space-y-5 sm:space-y-6">
+                  <div className="grid sm:grid-cols-2 gap-5 sm:gap-6">
                     <div>
                       <label htmlFor="name" className="block text-sm font-semibold text-foreground mb-2">
                         Name *

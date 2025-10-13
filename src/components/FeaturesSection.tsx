@@ -95,23 +95,23 @@ const FeaturesSection = () => {
   return (
     <>
       {/* Current Features */}
-      <section id="current-features" className="py-24 bg-gradient-to-b from-accent/5 to-background relative overflow-hidden">
+      <section id="current-features" className="py-16 sm:py-20 md:py-24 bg-gradient-to-b from-accent/5 to-background relative overflow-hidden">
         {/* Background decoration */}
         <div className="absolute top-0 left-0 right-0 h-32 bg-accent/10 blur-3xl"></div>
         
-        <div className="container mx-auto px-6 relative">
-          <div className="text-center mb-20">
-            <h2 className="text-5xl font-bold text-primary mb-4 inline-block relative">
+        <div className="container mx-auto px-4 sm:px-6 relative">
+          <div className="text-center mb-12 sm:mb-16 md:mb-20">
+            <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-primary mb-4 inline-block relative px-4">
               Current Features
               <div className="absolute -bottom-2 left-0 right-0 h-1 bg-gradient-to-r from-transparent via-accent to-transparent"></div>
             </h2>
           </div>
 
-          <div className="space-y-24">
+          <div className="space-y-16 sm:space-y-20 md:space-y-24">
             {currentFeatures.map((feature, index) => (
               <div
                 key={index}
-                className={`flex flex-col lg:flex-row gap-12 items-center animate-fade-in ${
+                className={`flex flex-col lg:flex-row gap-8 sm:gap-12 items-center animate-fade-in ${
                   index % 2 === 1 ? "lg:flex-row-reverse" : ""
                 }`}
                 style={{ animationDelay: `${index * 0.2}s` }}
@@ -120,41 +120,41 @@ const FeaturesSection = () => {
                 <div className="lg:w-2/5 flex justify-center">
                   <div className="relative">
                     <div className="absolute inset-0 bg-accent/20 rounded-3xl blur-2xl"></div>
-                    <div className="relative w-64 h-64 bg-gradient-to-br from-accent/80 to-accent rounded-3xl flex items-center justify-center transform hover:scale-105 transition-transform duration-500">
-                      <feature.icon className="w-32 h-32 text-white" strokeWidth={1.5} />
+                    <div className="relative w-48 h-48 sm:w-56 sm:h-56 md:w-64 md:h-64 bg-gradient-to-br from-accent/80 to-accent rounded-3xl flex items-center justify-center transform hover:scale-105 transition-transform duration-500">
+                      <feature.icon className="w-24 h-24 sm:w-28 sm:h-28 md:w-32 md:h-32 text-white" strokeWidth={1.5} />
                     </div>
                   </div>
                 </div>
 
                 {/* Content side */}
-                <div className="lg:w-3/5 space-y-6">
+                <div className="lg:w-3/5 space-y-4 sm:space-y-6">
                   <div>
-                    <h3 className="text-3xl font-bold text-primary mb-3">{feature.title}</h3>
-                    <p className="text-lg text-muted-foreground italic">{feature.tagline}</p>
+                    <h3 className="text-2xl sm:text-3xl font-bold text-primary mb-2 sm:mb-3">{feature.title}</h3>
+                    <p className="text-base sm:text-lg text-muted-foreground italic">{feature.tagline}</p>
                   </div>
 
-                  <div className="bg-card border-l-4 border-accent rounded-lg p-6 shadow-md">
-                    <h4 className="text-xl font-semibold text-accent mb-3">What it does</h4>
-                    <p className="text-foreground leading-relaxed">{feature.whatItDoes}</p>
+                  <div className="bg-card border-l-4 border-accent rounded-lg p-4 sm:p-6 shadow-md">
+                    <h4 className="text-lg sm:text-xl font-semibold text-accent mb-2 sm:mb-3">What it does</h4>
+                    <p className="text-sm sm:text-base text-foreground leading-relaxed">{feature.whatItDoes}</p>
                   </div>
 
-                  <div className="bg-card rounded-lg p-6 shadow-md">
-                    <h4 className="text-xl font-semibold text-accent mb-4">Visualizer Highlights</h4>
-                    <ul className="space-y-3">
+                  <div className="bg-card rounded-lg p-4 sm:p-6 shadow-md">
+                    <h4 className="text-lg sm:text-xl font-semibold text-accent mb-3 sm:mb-4">Visualizer Highlights</h4>
+                    <ul className="space-y-2 sm:space-y-3">
                       {feature.highlights.map((highlight, i) => (
-                        <li key={i} className="flex items-start gap-3">
-                          <div className="w-6 h-6 rounded-full bg-accent/20 flex items-center justify-center flex-shrink-0 mt-0.5">
-                            <div className="w-2 h-2 rounded-full bg-accent"></div>
+                        <li key={i} className="flex items-start gap-2 sm:gap-3">
+                          <div className="w-5 h-5 sm:w-6 sm:h-6 rounded-full bg-accent/20 flex items-center justify-center flex-shrink-0 mt-0.5">
+                            <div className="w-1.5 h-1.5 sm:w-2 sm:h-2 rounded-full bg-accent"></div>
                           </div>
-                          <span className="text-foreground">{highlight}</span>
+                          <span className="text-sm sm:text-base text-foreground">{highlight}</span>
                         </li>
                       ))}
                     </ul>
                   </div>
 
-                  <div className="bg-gradient-to-r from-accent/10 to-primary/10 rounded-lg p-6 border border-accent/20">
-                    <h4 className="text-xl font-bold text-primary mb-3">Why it matters</h4>
-                    <p className="text-foreground leading-relaxed">{feature.whyItMatters}</p>
+                  <div className="bg-gradient-to-r from-accent/10 to-primary/10 rounded-lg p-4 sm:p-6 border border-accent/20">
+                    <h4 className="text-lg sm:text-xl font-bold text-primary mb-2 sm:mb-3">Why it matters</h4>
+                    <p className="text-sm sm:text-base text-foreground leading-relaxed">{feature.whyItMatters}</p>
                   </div>
                 </div>
               </div>
@@ -164,28 +164,28 @@ const FeaturesSection = () => {
       </section>
 
       {/* Key Features */}
-      <section id="key-features" className="py-24 bg-gradient-to-br from-background via-background to-accent/5">
-        <div className="container mx-auto px-6">
-          <div className="text-center mb-16">
-            <h2 className="text-4xl font-bold text-primary mb-4">Key Features</h2>
-            <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
+      <section id="key-features" className="py-16 sm:py-20 md:py-24 bg-gradient-to-br from-background via-background to-accent/5">
+        <div className="container mx-auto px-4 sm:px-6">
+          <div className="text-center mb-12 sm:mb-16">
+            <h2 className="text-3xl sm:text-4xl font-bold text-primary mb-3 sm:mb-4 px-4">Key Features</h2>
+            <p className="text-muted-foreground text-base sm:text-lg max-w-2xl mx-auto px-4">
               Everything you need to streamline your CRM development workflow
             </p>
           </div>
 
-          <div className="grid md:grid-cols-3 gap-8 max-w-6xl mx-auto">
+          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8 max-w-6xl mx-auto">
             {keyFeatures.map((feature, index) => (
               <Card
                 key={index}
                 className="text-center transition-all duration-300 hover:shadow-2xl hover:-translate-y-2 animate-fade-in border-none shadow-lg bg-card/80 backdrop-blur-sm group"
                 style={{ animationDelay: `${index * 0.1}s` }}
               >
-                <CardHeader className="space-y-4">
-                  <div className="w-20 h-20 bg-gradient-to-br from-accent to-accent/70 rounded-2xl flex items-center justify-center mx-auto shadow-lg group-hover:shadow-accent/50 transition-all duration-300 group-hover:scale-110">
-                    <feature.icon className="w-10 h-10 text-white" strokeWidth={2} />
+                <CardHeader className="space-y-3 sm:space-y-4 p-4 sm:p-6">
+                  <div className="w-16 h-16 sm:w-20 sm:h-20 bg-gradient-to-br from-accent to-accent/70 rounded-2xl flex items-center justify-center mx-auto shadow-lg group-hover:shadow-accent/50 transition-all duration-300 group-hover:scale-110">
+                    <feature.icon className="w-8 h-8 sm:w-10 sm:h-10 text-white" strokeWidth={2} />
                   </div>
-                  <CardTitle className="text-xl font-bold text-primary">{feature.title}</CardTitle>
-                  <CardDescription className="text-muted-foreground leading-relaxed">
+                  <CardTitle className="text-lg sm:text-xl font-bold text-primary">{feature.title}</CardTitle>
+                  <CardDescription className="text-sm sm:text-base text-muted-foreground leading-relaxed">
                     {feature.description}
                   </CardDescription>
                 </CardHeader>

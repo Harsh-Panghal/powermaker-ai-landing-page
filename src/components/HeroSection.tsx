@@ -77,36 +77,36 @@ const HeroSection = () => {
         }
       `}</style>
 
-      <div className="container mx-auto px-6 relative">
+      <div className="container mx-auto px-4 sm:px-6 relative">
         {/* Hero Text */}
-        <div className="flex flex-col items-center text-center max-w-4xl mx-auto mb-16 animate-fade-in">
-          <h1 className="text-5xl md:text-6xl font-bold text-primary mb-4 leading-tight">
+        <div className="flex flex-col items-center text-center max-w-4xl mx-auto mb-8 sm:mb-16 animate-fade-in">
+          <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-primary mb-4 leading-tight px-2">
             AI That Understands Dynamics 365
           </h1>
-          <p className="text-3xl md:text-4xl text-accent italic font-medium mb-6">
+          <p className="text-xl sm:text-2xl md:text-3xl lg:text-4xl text-accent italic font-medium mb-4 sm:mb-6 px-2">
             So You Don't Have to Start from Scratch
           </p>
-          <p className="text-lg text-foreground max-w-2xl mb-8 leading-relaxed">
+          <p className="text-base sm:text-lg text-foreground max-w-2xl mb-6 sm:mb-8 leading-relaxed px-4">
             Design entities, fix plugins, and resolve issues faster—all through guided, intelligent
             workflows.
           </p>
 
-          <div className="flex flex-col sm:flex-row gap-4 mb-4">
-            <Button variant="hero" size="lg">
+          <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 mb-4 w-full sm:w-auto px-4 sm:px-0">
+            <Button variant="hero" size="lg" className="w-full sm:w-auto">
               Request Demo
             </Button>
-            <Button variant="outline-primary" size="lg">
+            <Button variant="outline-primary" size="lg" className="w-full sm:w-auto">
               Contact Us
             </Button>
           </div>
 
-          <p className="text-sm text-accent italic mt-2">
+          <p className="text-xs sm:text-sm text-accent italic mt-2 px-4">
             Your Assistant for Effortless Dynamics 365 Customizations
           </p>
         </div>
 
-        {/* Dashboard Video Preview */}
-        <div className="max-w-6xl mx-auto animate-slide-up" style={{ animationDelay: "0.2s" }}>
+        {/* Dashboard Video Preview - Hidden on mobile, shown on tablet+ */}
+        <div className="hidden lg:block max-w-6xl mx-auto animate-slide-up" style={{ animationDelay: "0.2s" }}>
           <div className="bg-card border-2 border-accent rounded-xl shadow-2xl p-4 relative">
             {/* Play Button Overlay */}
             <div className="absolute inset-0 flex items-center justify-center z-10">

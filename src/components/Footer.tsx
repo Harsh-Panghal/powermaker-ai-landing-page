@@ -11,14 +11,14 @@ const Footer = () => {
         <div className="absolute bottom-0 right-1/4 w-96 h-96 bg-primary-foreground rounded-full blur-3xl" />
       </div>
 
-      <div className="relative container mx-auto px-6 py-16">
+      <div className="relative container mx-auto px-4 sm:px-6 py-12 sm:py-16">
         {/* Newsletter Section */}
-        <div className="mb-16 max-w-2xl mx-auto text-center">
-          <h3 className="text-3xl font-bold mb-4">Stay Updated</h3>
-          <p className="text-primary-foreground/80 mb-6">
+        <div className="mb-12 sm:mb-16 max-w-2xl mx-auto text-center">
+          <h3 className="text-2xl sm:text-3xl font-bold mb-3 sm:mb-4">Stay Updated</h3>
+          <p className="text-primary-foreground/80 mb-4 sm:mb-6 text-sm sm:text-base px-4">
             Get the latest updates on PowerMaker AI features and Dynamics 365 tips
           </p>
-          <div className="flex gap-2 max-w-md mx-auto">
+          <div className="flex flex-col sm:flex-row gap-2 max-w-md mx-auto px-4">
             <Input 
               type="email" 
               placeholder="Enter your email"
@@ -31,7 +31,7 @@ const Footer = () => {
         </div>
 
         {/* Main Footer Content */}
-        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-12 mb-12">
+        <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-8 sm:gap-12 mb-12">
           {/* Brand Column */}
           <div className="lg:col-span-2">
             <div className="flex items-center gap-2 mb-6">
