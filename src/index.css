@@ -50,6 +50,47 @@ All colors MUST be HSL.
     --shadow-elevated: 0 8px 24px rgba(26, 54, 93, 0.12);
     --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   }
+
+  .dark {
+    /* PowerMaker AI Dark Theme */
+    
+    /* Core Brand Colors */
+    --primary: 207 89% 70%;           /* Bright Blue #60A5FA */
+    --primary-foreground: 222 47% 11%; /* Dark Blue Text */
+    
+    --accent: 207 76% 59%;            /* Soft Blue #4A90E2 */
+    --accent-foreground: 0 0% 100%;   /* White */
+    
+    /* Backgrounds */
+    --background: 222 47% 11%;        /* Dark Navy #0F172A */
+    --foreground: 210 40% 98%;        /* Light Text #F8FAFC */
+    
+    --card: 217 33% 17%;              /* Dark Card #1E293B */
+    --card-foreground: 210 40% 98%;
+    
+    /* Secondary & Muted */
+    --secondary: 217 33% 17%;
+    --secondary-foreground: 210 40% 98%;
+    
+    --muted: 215 28% 17%;
+    --muted-foreground: 217 33% 70%;
+    
+    /* UI Elements */
+    --border: 217 33% 25%;
+    --input: 217 33% 25%;
+    --ring: 207 89% 70%;
+    
+    --popover: 217 33% 17%;
+    --popover-foreground: 210 40% 98%;
+    
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 0 0% 100%;
+    
+    /* Custom Design Tokens */
+    --gradient-hero: linear-gradient(135deg, hsl(222, 47%, 11%) 0%, hsl(217, 33%, 17%) 100%);
+    --shadow-card: 0 4px 12px rgba(0, 0, 0, 0.3);
+    --shadow-elevated: 0 8px 24px rgba(0, 0, 0, 0.4);
+  }
 }
 
 @layer base {

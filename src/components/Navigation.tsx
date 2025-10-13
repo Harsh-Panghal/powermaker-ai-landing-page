@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Sparkles, Menu, X } from "lucide-react";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
+import ThemeToggle from "@/components/ThemeToggle";
 
 const Navigation = () => {
   const [scrolled, setScrolled] = useState(false);
@@ -57,44 +58,48 @@ const Navigation = () => {
           >
             Contact Us
           </button>
+          <ThemeToggle />
           <Button variant="accent" size="sm">
             Request Demo
           </Button>
         </div>
 
         {/* Mobile Menu */}
-        <Sheet open={mobileMenuOpen} onOpenChange={setMobileMenuOpen}>
-          <SheetTrigger asChild className="md:hidden">
-            <Button variant="ghost" size="icon">
-              <Menu className="w-6 h-6 text-primary" />
-            </Button>
-          </SheetTrigger>
-          <SheetContent side="right" className="w-[280px]">
-            <div className="flex flex-col gap-6 mt-8">
-              <button
-                onClick={() => scrollToSection("hero")}
-                className="text-left text-lg text-primary hover:text-accent transition-colors"
-              >
-                Home
-              </button>
-              <button
-                onClick={() => scrollToSection("blog")}
-                className="text-left text-lg text-primary hover:text-accent transition-colors"
-              >
-                Documentation
-              </button>
-              <button
-                onClick={() => scrollToSection("contact")}
-                className="text-left text-lg text-primary hover:text-accent transition-colors"
-              >
-                Contact Us
-              </button>
-              <Button variant="accent" size="lg" className="w-full mt-4">
-                Request Demo
+        <div className="flex items-center gap-3 md:hidden">
+          <ThemeToggle />
+          <Sheet open={mobileMenuOpen} onOpenChange={setMobileMenuOpen}>
+            <SheetTrigger asChild>
+              <Button variant="ghost" size="icon">
+                <Menu className="w-6 h-6 text-primary" />
               </Button>
-            </div>
-          </SheetContent>
-        </Sheet>
+            </SheetTrigger>
+            <SheetContent side="right" className="w-[280px]">
+              <div className="flex flex-col gap-6 mt-8">
+                <button
+                  onClick={() => scrollToSection("hero")}
+                  className="text-left text-lg text-primary hover:text-accent transition-colors"
+                >
+                  Home
+                </button>
+                <button
+                  onClick={() => scrollToSection("blog")}
+                  className="text-left text-lg text-primary hover:text-accent transition-colors"
+                >
+                  Documentation
+                </button>
+                <button
+                  onClick={() => scrollToSection("contact")}
+                  className="text-left text-lg text-primary hover:text-accent transition-colors"
+                >
+                  Contact Us
+                </button>
+                <Button variant="accent" size="lg" className="w-full mt-4">
+                  Request Demo
+                </Button>
+              </div>
+            </SheetContent>
+          </Sheet>
+        </div>
       </div>
     </nav>
   );
