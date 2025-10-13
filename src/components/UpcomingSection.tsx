@@ -1,9 +1,10 @@
 import { Button } from "@/components/ui/button";
 
 const upcomingFeatures = [
-  "Advanced Analytics Dashboard",
-  "Multi-Language Support",
-  "Team Collaboration Tools",
+  "Auto-Generated Plugin & JS Snippets",
+  "One-Click CRM Export",
+  "Built-in CRM Schema Visualizer",
+  "Scalable & Extensible Architecture",
 ];
 
 const UpcomingSection = () => {

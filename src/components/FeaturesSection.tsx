@@ -65,29 +65,9 @@ const keyFeatures = [
     icon: MessageSquare,
   },
   {
-    title: "Auto-Generated Plugin & JS Snippets",
-    description: "Turn ideas into ready-to-use code — C#, JavaScript, and TypeScript — tailored for your CRM scenario.",
-    icon: FileCode,
-  },
-  {
-    title: "One-Click CRM Export",
-    description: "Generate solution-ready JSON or XRM packages — Push directly to your CRM with a single action.",
-    icon: Download,
-  },
-  {
-    title: "Built-in CRM Schema Visualizer",
-    description: "View entity relationships, attributes, and data types in an interactive, user-friendly diagram.",
-    icon: Network,
-  },
-  {
     title: "Enterprise-Ready Security",
     description: "Your data is safe — encrypted handling, API token-based access, and deployment-ready for secure environments.",
     icon: Shield,
-  },
-  {
-    title: "Scalable & Extensible",
-    description: "Built to grow with your team — Add more models, integrate deeper with CRM APIs, or plug into CI/CD pipelines.",
-    icon: ArrowUpRight,
   },
 ];
 
