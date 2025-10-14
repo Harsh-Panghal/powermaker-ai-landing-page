@@ -34,7 +34,8 @@ const Navigation = () => {
     >
       <div className="container mx-auto px-4 sm:px-6 h-full flex items-center justify-between">
         <div className="flex items-center gap-2">
-          <Sparkles className="w-5 h-5 sm:w-6 sm:h-6 text-accent" />
+          {/* <Sparkles className="w-5 h-5 sm:w-6 sm:h-6 text-accent" /> */}
+          <img src="logo.svg" alt="PowerMaker AI Logo" className="w-10 h-10" />
           <span className="text-lg sm:text-xl font-bold text-primary">PowerMaker AI</span>
         </div>
 

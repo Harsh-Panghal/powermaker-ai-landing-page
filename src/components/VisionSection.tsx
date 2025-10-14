@@ -2,6 +2,13 @@ import { Button } from "@/components/ui/button";
 import teamImage from "@/assets/team-collaboration.jpg";
 
 const VisionSection = () => {
+  const scrollToSection = (id: string) => {
+    const element = document.getElementById(id);
+    if (element) {
+      element.scrollIntoView({ behavior: "smooth" });
+    }
+  };
+
   return (
     <section id="vision" className="py-16 sm:py-20 md:py-24 bg-background">
       <div className="container mx-auto px-4 sm:px-6">
@@ -21,7 +28,7 @@ const VisionSection = () => {
               consultant feedback.
             </p>
 
-            <Button variant="accent" size="lg" className="mt-4 w-full sm:w-auto">
+            <Button variant="accent" size="lg" className="mt-4 w-full sm:w-auto" onClick={() => scrollToSection("contact")}>
               Contact Us
             </Button>
           </div>

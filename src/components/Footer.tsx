@@ -43,7 +43,8 @@ const Footer = () => {
           <div className="lg:col-span-2">
             <div className="flex items-center gap-2 mb-6">
               <div className="p-2 bg-primary-foreground/10 rounded-lg backdrop-blur-sm">
-                <Sparkles className="w-8 h-8" />
+                {/* <Sparkles className="w-8 h-8" /> */}
+                <img src="logo.svg" alt="Logo" className="w-10 h-10" />
               </div>
               <span className="text-2xl font-bold">PowerMaker AI</span>
             </div>

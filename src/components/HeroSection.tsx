@@ -2,6 +2,13 @@ import { Button } from "@/components/ui/button";
 import { Play } from "lucide-react";
 
 const HeroSection = () => {
+  const scrollToSection = (id: string) => {
+    const element = document.getElementById(id);
+    if (element) {
+      element.scrollIntoView({ behavior: "smooth" });
+    }
+  };
+
   return (
     <section id="hero" className="relative min-h-[120vh] bg-background pt-24 pb-16 overflow-hidden">
       {/* Animated Background Lights */}
@@ -95,7 +102,7 @@ const HeroSection = () => {
             <Button variant="hero" size="lg" className="w-full sm:w-auto">
               Request Demo
             </Button>
-            <Button variant="outline-primary" size="lg" className="w-full sm:w-auto">
+            <Button variant="outline-primary" size="lg" className="w-full sm:w-auto" onClick={() => scrollToSection("contact")}>
               Contact Us
             </Button>
           </div>

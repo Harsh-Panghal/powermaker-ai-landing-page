@@ -4,7 +4,7 @@ import { Puzzle, Search, Code, MessageSquare, FileCode, Download, Network, Shiel
 const currentFeatures = [
   {
     title: "AI-Powered Entity Builder with Visualizer",
-    tagline: "Transform Ideas into structured CRM entities instantly.",
+    tagline: "Transform natural language into structured CRM schema effortlessly",
     whatItDoes: "PowerMakerAI turns plain English descriptions into complete CRM schemas instantly. For example, saying \"Create a Contact entity with name, email, phone, and a custom status field\" generates a full entity configuration with appropriate attribute types and properties.",
     highlights: [
       "Interactive drag-and-drop schema builder",
@@ -17,7 +17,7 @@ const currentFeatures = [
   },
   {
     title: "Plugin Trace Log Analyzer",
-    tagline: "Diagnose errors without digging through endless logs.",
+    tagline: "Diagnose plugin errors without digging through endless logs.",
     whatItDoes: "PowerMakerAI simplifies diagnosing plugin errors by analyzing raw PluginTraceLog content or uploaded trace files. It highlights failed plugins, summarizes root causes, and offers likely solutions.",
     highlights: [
       "Parses complex, multi-level logs",
@@ -50,7 +50,7 @@ const keyFeatures = [
     icon: Puzzle,
   },
   {
-    title: "Smart Plugin Trace Analyzer",
+    title: "Smart Plugin Trace Log Analyzer",
     description: "Paste your logs and get instant summaries, root-causes, and fix suggestions.",
     icon: Search,
   },
