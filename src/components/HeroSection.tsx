@@ -99,7 +99,7 @@ const HeroSection = () => {
           </p>
 
           <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 mb-4 w-full sm:w-auto px-4 sm:px-0">
-            <Button variant="hero" size="lg" className="w-full sm:w-auto">
+            <Button variant="hero" size="lg" className="w-full sm:w-auto" onClick={() => window.open('https://chat.powermakerai.com/', '_blank')}>
               Request Demo
             </Button>
             <Button variant="outline-primary" size="lg" className="w-full sm:w-auto" onClick={() => scrollToSection("contact")}>

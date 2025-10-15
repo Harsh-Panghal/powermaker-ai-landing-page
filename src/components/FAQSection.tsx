@@ -9,37 +9,53 @@ const faqs = [
   {
     question: "What is PowerMaker AI?",
     answer:
-      "PowerMaker AI is an AI-powered assistant designed specifically for Dynamics 365 developers and consultants. It helps you build entities, debug plugins, and streamline customizations through intelligent workflows.",
+      "PowerMakerAI is an AI-powered assistant that helps Dynamics CRM users streamline customizations, generate entities, analyze plugin trace logs, and automate routine tasks using natural language.",
   },
   {
-    question: "How does the AI Entity Builder work?",
+    question: "Do I need coding knowledge to use PowerMakerAI?",
     answer:
-      "Simply describe your data model in natural language, and PowerMaker AI will generate fully-configured Dynamics 365 entities with relationships, fields, forms, and views—ready to deploy.",
+      "Not necessarily. While some features are helpful for developers, many tasks can be performed using plain English — no deep technical skills required.",
   },
   {
-    question: "Can I analyze plugin trace logs?",
+    question: "Is PowerMakerAI compatible with all versions of Dynamics 365?",
     answer:
-      "Yes! Upload your plugin trace logs and our AI will instantly identify errors, explain root causes, and provide actionable recommendations to fix issues.",
+      "PowerMakerAI is designed to work with modern Dynamics 365 Online environments. Compatibility with on-premise or older versions may be limited.",
   },
   {
-    question: "Is PowerMaker AI secure?",
+    question: "What kind of customizations can PowerMakerAI handle?",
     answer:
-      "Absolutely. We implement enterprise-grade security measures and follow industry best practices to ensure your data and CRM environment remain protected.",
+      "You can generate entities, update schema fields, fetch plugin trace logs, create sample plugins, and even trigger CRM actions using simple prompts.",
   },
   {
-    question: "What pricing plans are available?",
+    question: "Is my data safe with PowerMakerAI?",
     answer:
-      "During the beta period, PowerMaker AI is free for all users. We're gathering feedback to shape our future pricing structure.",
+      "Absolutely. We don’t store or access your Dynamics CRM data without your permission. All processing is handled securely, and you maintain full control of your environment.",
   },
   {
-    question: "Can I integrate PowerMaker AI with my existing Dynamics 365 environment?",
+    question: "Can PowerMakerAI help debug plugin errors?",
     answer:
-      "Yes, PowerMaker AI integrates seamlessly with your Dynamics 365 environment, allowing you to perform live operations and export configurations directly.",
+      "Yes! One of the core features is Plugin Trace Log analysis. You can upload or query logs, and the AI will explain errors in plain language — with suggestions.",
   },
   {
-    question: "How do I get started?",
+    question:
+      "How is PowerMakerAI different from Power Platform tools like Power Automate?",
     answer:
-      "Simply request a demo or contact us to get started. Our team will help you set up and get the most out of PowerMaker AI.",
+      "PowerMakerAI is designed to enhance developer productivity with AI guidance — not replace Power Platform tools, but complement them by offering quick insights and automation.",
+  },
+  {
+    question: "Is there a free trial available?",
+    answer:
+      "Yes. You can sign up and explore the beta version of PowerMakerAI with access to core features.",
+  },
+  {
+    question: "How do I request support or report a bug?",
+    answer:
+      "You can use the “Contact Us” section or email us directly at [support@powermaker.ai].",
+  },
+  {
+    question: "Will PowerMakerAI get more features in the future?",
+    answer:
+      "Definitely! We’re actively working on integrations, form scripting support, and full PowerApps integration. Stay tuned.",
   },
 ];
 
@@ -51,13 +67,23 @@ const FAQSection = () => {
           Frequently Asked Questions
         </h2>
 
-        <Accordion type="single" collapsible className="max-w-3xl mx-auto space-y-3 sm:space-y-4">
+        <Accordion
+          type="single"
+          collapsible
+          className="max-w-3xl mx-auto space-y-3 sm:space-y-4"
+        >
           {faqs.map((faq, index) => (
-            <AccordionItem key={index} value={`item-${index}`} className="border rounded-lg px-4 sm:px-6">
+            <AccordionItem
+              key={index}
+              value={`item-${index}`}
+              className="border rounded-lg px-4 sm:px-6"
+            >
               <AccordionTrigger className="text-base sm:text-lg font-medium text-primary hover:text-accent text-left">
                 {faq.question}
               </AccordionTrigger>
-              <AccordionContent className="text-sm sm:text-base text-foreground">{faq.answer}</AccordionContent>
+              <AccordionContent className="text-sm sm:text-base text-foreground">
+                {faq.answer}
+              </AccordionContent>
             </AccordionItem>
           ))}
         </Accordion>

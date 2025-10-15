@@ -86,6 +86,7 @@ const PricingSection = () => {
               <Button 
                 className="w-full bg-white text-accent hover:bg-white/90 font-bold text-base sm:text-lg h-12 sm:h-14 rounded-xl shadow-lg"
                 size="lg"
+                onClick={() => window.open('https://chat.powermakerai.com/', '_blank')}
               >
                 Get Started Free
               </Button>
