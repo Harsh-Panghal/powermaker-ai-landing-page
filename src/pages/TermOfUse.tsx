@@ -1,6 +1,19 @@
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-import { ChevronDown, ChevronRight, Shield, Lock, Eye, FileText, Globe, Users, Clock, AlertCircle, Cookie, RefreshCw } from "lucide-react";
+import {
+  ChevronDown,
+  ChevronRight,
+  Shield,
+  Lock,
+  Eye,
+  FileText,
+  Globe,
+  Users,
+  Clock,
+  AlertCircle,
+  Cookie,
+  RefreshCw,
+} from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
   Accordion,
@@ -10,26 +23,31 @@ import {
 } from "@/components/ui/accordion";
 import Footer from "@/components/Footer";
 
-const PrivacyPolicy = () => {
+const TermOfUse = () => {
   const [activeSection, setActiveSection] = useState("info-collect");
   const [scrollProgress, setScrollProgress] = useState(0);
 
   const sections = [
-    { id: "info-collect", label: "Information We Collect", icon: FileText },
-    { id: "how-use", label: "How We Use Your Information", icon: Eye },
-    { id: "sharing", label: "Sharing Your Information", icon: Users },
-    { id: "rights", label: "Your Rights and Choices", icon: Shield },
-    { id: "retention", label: "Data Retention", icon: Clock },
-    { id: "security", label: "Security", icon: Lock },
-    { id: "transfers", label: "International Data Transfers", icon: Globe },
-    { id: "children", label: "Children's Privacy", icon: AlertCircle },
-    { id: "cookies", label: "Cookies", icon: Cookie },
-    { id: "changes", label: "Changes to This Policy", icon: RefreshCw },
+    { id: "Your Use", label: "Your Use of the Services", icon: FileText },
+    { id: "registration", label: "Registration and Access", icon: Eye },
+    { id: "content", label: "Content", icon: Users },
+    { id: "availability", label: "Service Availability", icon: Shield },
+    { id: "fees", label: "Fees and Payment", icon: Clock },
+    { id: "termination", label: "Termination", icon: Lock },
+    {
+      id: "disclaimers",
+      label: "Disclaimers and Limitation of Liability",
+      icon: Globe,
+    },
+    { id: "indemnity", label: "Indemnity", icon: AlertCircle },
+    { id: "governing", label: "Governing Law", icon: Cookie },
+    { id: "changes", label: "Changes to These Terms", icon: RefreshCw },
   ];
 
   useEffect(() => {
     const handleScroll = () => {
-      const totalHeight = document.documentElement.scrollHeight - window.innerHeight;
+      const totalHeight =
+        document.documentElement.scrollHeight - window.innerHeight;
       const progress = (window.scrollY / totalHeight) * 100;
       setScrollProgress(progress);
     };
@@ -45,10 +63,10 @@ const PrivacyPolicy = () => {
       const headerHeight = 80; // Adjust this value to match your header height
       const elementPosition = element.getBoundingClientRect().top;
       const offsetPosition = elementPosition + window.scrollY - headerHeight;
-      
+
       window.scrollTo({
         top: offsetPosition,
-        behavior: "smooth"
+        behavior: "smooth",
       });
     }
   };
@@ -64,7 +82,7 @@ const PrivacyPolicy = () => {
 
       {/* Scroll Progress Bar */}
       <div className="fixed top-0 left-0 right-0 h-1 bg-muted z-50">
-        <div 
+        <div
           className="h-full bg-gradient-to-r from-primary via-accent to-primary transition-all duration-300"
           style={{ width: `${scrollProgress}%` }}
         />
@@ -75,7 +93,11 @@ const PrivacyPolicy = () => {
         <div className="container mx-auto px-4 sm:px-6 py-4">
           <div className="flex items-center justify-between">
             <Link to="/" className="flex items-center gap-2 group">
-              <img src="/logo.svg" alt="PowerMaker AI" className="w-10 h-10 transition-transform group-hover:scale-110" />
+              <img
+                src="/logo.svg"
+                alt="PowerMaker AI"
+                className="w-10 h-10 transition-transform group-hover:scale-110"
+              />
               <span className="text-xl font-bold bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
                 PowerMaker AI
               </span>
@@ -84,13 +106,13 @@ const PrivacyPolicy = () => {
             <div className="hidden md:flex items-center gap-3">
               <Shield className="w-6 h-6 text-primary" />
               <h1 className="text-2xl font-bold bg-gradient-to-r from-primary to-primary/70 bg-clip-text text-transparent">
-                Privacy Policy
+                Terms of Use
               </h1>
             </div>
 
             <Button className="bg-gradient-to-r from-accent to-accent/80 hover:from-accent/90 hover:to-accent/70 text-accent-foreground shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105"
             onClick={() => window.open('https://chat.powermakerai.com/', '_blank')}
-            >
+             >
               Request Demo
             </Button>
           </div>
@@ -124,9 +146,13 @@ const PrivacyPolicy = () => {
                             : "text-muted-foreground hover:text-primary hover:bg-muted/50 hover:translate-x-1"
                         }`}
                       >
-                        <Icon className={`w-4 h-4 transition-all ${
-                          activeSection === section.id ? "text-primary" : "text-muted-foreground group-hover:text-primary"
-                        }`} />
+                        <Icon
+                          className={`w-4 h-4 transition-all ${
+                            activeSection === section.id
+                              ? "text-primary"
+                              : "text-muted-foreground group-hover:text-primary"
+                          }`}
+                        />
                         <span className="flex-1">{section.label}</span>
                         {activeSection === section.id && (
                           <ChevronRight className="w-4 h-4 text-primary animate-pulse" />
@@ -146,28 +172,27 @@ const PrivacyPolicy = () => {
               {/* Decorative corner accents */}
               <div className="absolute top-0 right-0 w-32 h-32 bg-gradient-to-br from-primary/10 to-transparent rounded-bl-full" />
               <div className="absolute bottom-0 left-0 w-24 h-24 bg-gradient-to-tr from-accent/10 to-transparent rounded-tr-full" />
-              
+
               <div className="relative z-10">
                 <div className="flex items-center gap-3 mb-6 lg:hidden">
                   <Shield className="w-8 h-8 text-primary" />
                   <h1 className="text-3xl md:text-4xl font-bold bg-gradient-to-r from-primary via-primary to-accent bg-clip-text text-transparent">
-                    Privacy Policy
+                    Terms of Use
                   </h1>
                 </div>
-                
+
                 <div className="inline-flex items-center gap-2 px-4 py-2 bg-primary/10 border border-primary/20 rounded-full mb-6">
                   <Clock className="w-4 h-4 text-primary" />
                   <p className="text-sm font-medium text-primary">
-                    Effective: January 1, 2025
+                    Effective: 1st August 2025
                   </p>
                 </div>
-                
+
                 <p className="text-lg leading-relaxed text-foreground/90">
-                  PowerMaker AI ("we", "our", or "us") is committed to protecting
-                  your privacy. This Privacy Policy explains how we collect, use,
-                  share, and protect your personal information when you use our
-                  services, websites, and applications (collectively, the
-                  "Services").
+                  These Terms of Use (“Terms”) govern your access to, and use of
+                  the services, products, and applications (the “Services”)
+                  provided by Power Maker AI ("we", "our", or "us"). By using
+                  our Services, you agree to be bound by these Terms.
                 </p>
               </div>
             </div>
@@ -179,10 +204,10 @@ const PrivacyPolicy = () => {
               className="space-y-6"
               defaultValue="info-collect"
             >
-              {/* Information We Collect */}
+              {/* Your use of the Services */}
               <AccordionItem
-                value="info-collect"
-                id="info-collect"
+                value="your-use"
+                id="Your Use"
                 className="border-0 bg-gradient-to-br from-card via-card to-card/50 backdrop-blur-sm rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 overflow-hidden group"
               >
                 <div className="absolute inset-0 bg-gradient-to-r from-primary/5 to-accent/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
@@ -191,87 +216,53 @@ const PrivacyPolicy = () => {
                     <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-primary/10 to-accent/10 flex items-center justify-center group-hover:scale-110 transition-transform">
                       <FileText className="w-5 h-5 text-primary" />
                     </div>
-                    Information We Collect
+                    Your Use of the Services
                   </div>
                 </AccordionTrigger>
                 <AccordionContent className="text-foreground pb-6 px-6">
                   <div className="bg-gradient-to-br from-muted/30 to-transparent rounded-xl p-6 mb-6 border border-border/30">
                     <p className="leading-relaxed">
-                      We collect the following types of information:
+                      You must use our Services in compliance with all
+                      applicable laws. You may not use the Services for any
+                      illegal, harmful, or abusive activity. This includes, but
+                      is not limited to:
                     </p>
                   </div>
 
-                  <h3 className="text-lg font-semibold text-primary mb-4 flex items-center gap-2">
-                    <div className="w-2 h-2 rounded-full bg-primary animate-pulse" />
-                    Information You Provide
-                  </h3>
                   <ul className="space-y-3 mb-8 ml-2">
                     <li className="flex gap-3 group hover:translate-x-1 transition-transform">
-                      <span className="text-accent mt-1 w-6 h-6 rounded-full bg-accent/10 flex items-center justify-center text-xs flex-shrink-0 group-hover:scale-110 transition-transform">•</span>
+                      <span className="text-accent mt-1 w-6 h-6 rounded-full bg-accent/10 flex items-center justify-center text-xs flex-shrink-0 group-hover:scale-110 transition-transform">
+                        •
+                      </span>
                       <span className="bg-card/30 rounded-lg p-3 flex-1 border border-border/20">
-                        <strong className="text-primary">Account Information:</strong> name, email
-                        address, company details, and password.
+                        Violating any law or regulation;
                       </span>
                     </li>
                     <li className="flex gap-3 group hover:translate-x-1 transition-transform">
-                      <span className="text-accent mt-1 w-6 h-6 rounded-full bg-accent/10 flex items-center justify-center text-xs flex-shrink-0 group-hover:scale-110 transition-transform">•</span>
+                      <span className="text-accent mt-1 w-6 h-6 rounded-full bg-accent/10 flex items-center justify-center text-xs flex-shrink-0 group-hover:scale-110 transition-transform">
+                        •
+                      </span>
                       <span className="bg-card/30 rounded-lg p-3 flex-1 border border-border/20">
-                        <strong className="text-primary">Contact Details:</strong> when you contact us or
-                        request support.
+                        Violating the rights of any third party;
                       </span>
                     </li>
                     <li className="flex gap-3 group hover:translate-x-1 transition-transform">
-                      <span className="text-accent mt-1 w-6 h-6 rounded-full bg-accent/10 flex items-center justify-center text-xs flex-shrink-0 group-hover:scale-110 transition-transform">•</span>
-                      <span className="bg-card/30 rounded-lg p-3 flex-1 border border-border/20">
-                        <strong className="text-primary">Payment Information:</strong> processed securely
-                        via third-party payment processors (we do not store your
-                        credit card details).
+                      <span className="text-accent mt-1 w-6 h-6 rounded-full bg-accent/10 flex items-center justify-center text-xs flex-shrink-0 group-hover:scale-110 transition-transform">
+                        •
                       </span>
-                    </li>
-                    <li className="flex gap-3 group hover:translate-x-1 transition-transform">
-                      <span className="text-accent mt-1 w-6 h-6 rounded-full bg-accent/10 flex items-center justify-center text-xs flex-shrink-0 group-hover:scale-110 transition-transform">•</span>
                       <span className="bg-card/30 rounded-lg p-3 flex-1 border border-border/20">
-                        <strong className="text-primary">Content You Submit:</strong> including
-                        customizations, CRM configurations, or AI queries
-                        submitted via our platform.
-                      </span>
-                    </li>
-                  </ul>
-
-                  <h3 className="text-lg font-semibold text-primary mb-4 flex items-center gap-2">
-                    <div className="w-2 h-2 rounded-full bg-primary animate-pulse" />
-                    Automatically Collected Information
-                  </h3>
-                  <ul className="space-y-3 ml-2">
-                    <li className="flex gap-3 group hover:translate-x-1 transition-transform">
-                      <span className="text-accent mt-1 w-6 h-6 rounded-full bg-accent/10 flex items-center justify-center text-xs flex-shrink-0 group-hover:scale-110 transition-transform">•</span>
-                      <span className="bg-card/30 rounded-lg p-3 flex-1 border border-border/20">
-                        <strong className="text-primary">Usage Data:</strong> such as pages visited,
-                        features used, time spent, and interactions.
-                      </span>
-                    </li>
-                    <li className="flex gap-3 group hover:translate-x-1 transition-transform">
-                      <span className="text-accent mt-1 w-6 h-6 rounded-full bg-accent/10 flex items-center justify-center text-xs flex-shrink-0 group-hover:scale-110 transition-transform">•</span>
-                      <span className="bg-card/30 rounded-lg p-3 flex-1 border border-border/20">
-                        <strong className="text-primary">Device And Log Data:</strong> IP address,
-                        browser type, operating system, and error logs.
-                      </span>
-                    </li>
-                    <li className="flex gap-3 group hover:translate-x-1 transition-transform">
-                      <span className="text-accent mt-1 w-6 h-6 rounded-full bg-accent/10 flex items-center justify-center text-xs flex-shrink-0 group-hover:scale-110 transition-transform">•</span>
-                      <span className="bg-card/30 rounded-lg p-3 flex-1 border border-border/20">
-                        <strong className="text-primary">Cookies:</strong> to enhance functionality and
-                        user experience (see "Cookies" below).
+                        Violating the privacy or security of any person or
+                        entity;
                       </span>
                     </li>
                   </ul>
                 </AccordionContent>
               </AccordionItem>
 
-              {/* How We Use Your Information */}
+              {/* Registeration and access */}
               <AccordionItem
-                value="how-use"
-                id="how-use"
+                value="registration"
+                id="registration"
                 className="border-0 bg-gradient-to-br from-card via-card to-card/50 backdrop-blur-sm rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 overflow-hidden group"
               >
                 <div className="absolute inset-0 bg-gradient-to-r from-primary/5 to-accent/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
@@ -280,58 +271,26 @@ const PrivacyPolicy = () => {
                     <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-primary/10 to-accent/10 flex items-center justify-center group-hover:scale-110 transition-transform">
                       <Eye className="w-5 h-5 text-primary" />
                     </div>
-                    How We Use Your Information
+                    Registration and Access
                   </div>
                 </AccordionTrigger>
                 <AccordionContent className="text-foreground pb-6 px-6">
                   <div className="bg-gradient-to-br from-muted/30 to-transparent rounded-xl p-6 mb-6 border border-border/30">
                     <p className="leading-relaxed">
-                      PowerMaker AI is built to support CRM professionals with
-                      smarter tools powered by AI. We use your information to:
+                      To use certain features, you may need to register for an
+                      account. You must provide accurate and complete
+                      information during registration and keep it up to date.
+                      You are responsible for any activity that occurs under
+                      your account.
                     </p>
                   </div>
-                  <ul className="space-y-3 ml-2">
-                    <li className="flex gap-3 group/item hover:translate-x-1 transition-transform">
-                      <span className="text-accent mt-1 w-6 h-6 rounded-full bg-accent/10 flex items-center justify-center text-xs flex-shrink-0 group-hover/item:scale-110 transition-transform">•</span>
-                      <span className="bg-card/30 rounded-lg p-3 flex-1 border border-border/20">Provide, maintain, and improve our Services</span>
-                    </li>
-                    <li className="flex gap-3 group/item hover:translate-x-1 transition-transform">
-                      <span className="text-accent mt-1 w-6 h-6 rounded-full bg-accent/10 flex items-center justify-center text-xs flex-shrink-0 group-hover/item:scale-110 transition-transform">•</span>
-                      <span className="bg-card/30 rounded-lg p-3 flex-1 border border-border/20">
-                        Process transactions and send related information
-                      </span>
-                    </li>
-                    <li className="flex gap-3 group/item hover:translate-x-1 transition-transform">
-                      <span className="text-accent mt-1 w-6 h-6 rounded-full bg-accent/10 flex items-center justify-center text-xs flex-shrink-0 group-hover/item:scale-110 transition-transform">•</span>
-                      <span className="bg-card/30 rounded-lg p-3 flex-1 border border-border/20">Respond to your requests and provide support</span>
-                    </li>
-                    <li className="flex gap-3 group/item hover:translate-x-1 transition-transform">
-                      <span className="text-accent mt-1 w-6 h-6 rounded-full bg-accent/10 flex items-center justify-center text-xs flex-shrink-0 group-hover/item:scale-110 transition-transform">•</span>
-                      <span className="bg-card/30 rounded-lg p-3 flex-1 border border-border/20">
-                        Send updates, security alerts, and administrative
-                        messages
-                      </span>
-                    </li>
-                    <li className="flex gap-3 group/item hover:translate-x-1 transition-transform">
-                      <span className="text-accent mt-1 w-6 h-6 rounded-full bg-accent/10 flex items-center justify-center text-xs flex-shrink-0 group-hover/item:scale-110 transition-transform">•</span>
-                      <span className="bg-card/30 rounded-lg p-3 flex-1 border border-border/20">
-                        Analyze usage patterns to enhance functionality
-                      </span>
-                    </li>
-                    <li className="flex gap-3 group/item hover:translate-x-1 transition-transform">
-                      <span className="text-accent mt-1 w-6 h-6 rounded-full bg-accent/10 flex items-center justify-center text-xs flex-shrink-0 group-hover/item:scale-110 transition-transform">•</span>
-                      <span className="bg-card/30 rounded-lg p-3 flex-1 border border-border/20">
-                        Comply with legal obligations and enforce our terms
-                      </span>
-                    </li>
-                  </ul>
                 </AccordionContent>
               </AccordionItem>
 
-              {/* Sharing Your Information */}
+              {/* content */}
               <AccordionItem
-                value="sharing"
-                id="sharing"
+                value="content"
+                id="content"
                 className="border-0 bg-gradient-to-br from-card via-card to-card/50 backdrop-blur-sm rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 overflow-hidden group"
               >
                 <div className="absolute inset-0 bg-gradient-to-r from-primary/5 to-accent/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
@@ -340,54 +299,30 @@ const PrivacyPolicy = () => {
                     <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-primary/10 to-accent/10 flex items-center justify-center group-hover:scale-110 transition-transform">
                       <Users className="w-5 h-5 text-primary" />
                     </div>
-                    Sharing Your Information
+                    Content
                   </div>
                 </AccordionTrigger>
                 <AccordionContent className="text-foreground pb-6 px-6">
                   <div className="bg-gradient-to-br from-muted/30 to-transparent rounded-xl p-6 mb-6 border border-border/30">
                     <p className="leading-relaxed">
-                      We do not sell your personal information. We may share your
-                      data only in the following circumstances:
+                      You retain ownership of the content you submit to the
+                      Services. However, by submitting content, you grant us a
+                      worldwide, royalty-free license to use, host, store,
+                      reproduce, modify, and create derivative works as
+                      necessary to provide and improve our Services.
+                      <br />
+                      <br />
+                      We may remove content that violates these Terms or
+                      applicable law.
                     </p>
                   </div>
-                  <ul className="space-y-3 ml-2">
-                    <li className="flex gap-3 group/item hover:translate-x-1 transition-transform">
-                      <span className="text-accent mt-1 w-6 h-6 rounded-full bg-accent/10 flex items-center justify-center text-xs flex-shrink-0 group-hover/item:scale-110 transition-transform">•</span>
-                      <span className="bg-card/30 rounded-lg p-3 flex-1 border border-border/20">
-                        <strong className="text-primary">Service Providers:</strong> trusted third parties
-                        who assist with hosting, analytics, and payment
-                        processing
-                      </span>
-                    </li>
-                    <li className="flex gap-3 group/item hover:translate-x-1 transition-transform">
-                      <span className="text-accent mt-1 w-6 h-6 rounded-full bg-accent/10 flex items-center justify-center text-xs flex-shrink-0 group-hover/item:scale-110 transition-transform">•</span>
-                      <span className="bg-card/30 rounded-lg p-3 flex-1 border border-border/20">
-                        <strong className="text-primary">Business Transfers:</strong> in case of merger,
-                        acquisition, or sale of assets
-                      </span>
-                    </li>
-                    <li className="flex gap-3 group/item hover:translate-x-1 transition-transform">
-                      <span className="text-accent mt-1 w-6 h-6 rounded-full bg-accent/10 flex items-center justify-center text-xs flex-shrink-0 group-hover/item:scale-110 transition-transform">•</span>
-                      <span className="bg-card/30 rounded-lg p-3 flex-1 border border-border/20">
-                        <strong className="text-primary">Legal Requirements:</strong> when required by law
-                        or to protect our rights and safety
-                      </span>
-                    </li>
-                    <li className="flex gap-3 group/item hover:translate-x-1 transition-transform">
-                      <span className="text-accent mt-1 w-6 h-6 rounded-full bg-accent/10 flex items-center justify-center text-xs flex-shrink-0 group-hover/item:scale-110 transition-transform">•</span>
-                      <span className="bg-card/30 rounded-lg p-3 flex-1 border border-border/20">
-                        <strong className="text-primary">With Your Consent:</strong> when you explicitly
-                        authorize us to share your information
-                      </span>
-                    </li>
-                  </ul>
                 </AccordionContent>
               </AccordionItem>
 
-              {/* Your Rights and Choices */}
+              {/* service availability */}
               <AccordionItem
-                value="rights"
-                id="rights"
+                value="avilability"
+                id="availability"
                 className="border-0 bg-gradient-to-br from-card via-card to-card/50 backdrop-blur-sm rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 overflow-hidden group"
               >
                 <div className="absolute inset-0 bg-gradient-to-r from-primary/5 to-accent/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
@@ -396,72 +331,25 @@ const PrivacyPolicy = () => {
                     <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-primary/10 to-accent/10 flex items-center justify-center group-hover:scale-110 transition-transform">
                       <Shield className="w-5 h-5 text-primary" />
                     </div>
-                    Your Rights and Choices
+                    Service Availability
                   </div>
                 </AccordionTrigger>
                 <AccordionContent className="text-foreground pb-6 px-6">
                   <div className="bg-gradient-to-br from-muted/30 to-transparent rounded-xl p-6 mb-6 border border-border/30">
                     <p className="leading-relaxed">
-                      Depending on your location, you may have the following
-                      rights:
-                    </p>
-                  </div>
-                  <ul className="space-y-3 ml-2 mb-6">
-                    <li className="flex gap-3 group/item hover:translate-x-1 transition-transform">
-                      <span className="text-accent mt-1 w-6 h-6 rounded-full bg-accent/10 flex items-center justify-center text-xs flex-shrink-0 group-hover/item:scale-110 transition-transform">•</span>
-                      <span className="bg-card/30 rounded-lg p-3 flex-1 border border-border/20">
-                        <strong className="text-primary">Access:</strong> request a copy of your personal
-                        data
-                      </span>
-                    </li>
-                    <li className="flex gap-3 group/item hover:translate-x-1 transition-transform">
-                      <span className="text-accent mt-1 w-6 h-6 rounded-full bg-accent/10 flex items-center justify-center text-xs flex-shrink-0 group-hover/item:scale-110 transition-transform">•</span>
-                      <span className="bg-card/30 rounded-lg p-3 flex-1 border border-border/20">
-                        <strong className="text-primary">Correction:</strong> update or correct inaccurate
-                        information
-                      </span>
-                    </li>
-                    <li className="flex gap-3 group/item hover:translate-x-1 transition-transform">
-                      <span className="text-accent mt-1 w-6 h-6 rounded-full bg-accent/10 flex items-center justify-center text-xs flex-shrink-0 group-hover/item:scale-110 transition-transform">•</span>
-                      <span className="bg-card/30 rounded-lg p-3 flex-1 border border-border/20">
-                        <strong className="text-primary">Deletion:</strong> request deletion of your data
-                        (subject to legal requirements)
-                      </span>
-                    </li>
-                    <li className="flex gap-3 group/item hover:translate-x-1 transition-transform">
-                      <span className="text-accent mt-1 w-6 h-6 rounded-full bg-accent/10 flex items-center justify-center text-xs flex-shrink-0 group-hover/item:scale-110 transition-transform">•</span>
-                      <span className="bg-card/30 rounded-lg p-3 flex-1 border border-border/20">
-                        <strong className="text-primary">Opt-Out:</strong> unsubscribe from marketing
-                        communications
-                      </span>
-                    </li>
-                    <li className="flex gap-3 group/item hover:translate-x-1 transition-transform">
-                      <span className="text-accent mt-1 w-6 h-6 rounded-full bg-accent/10 flex items-center justify-center text-xs flex-shrink-0 group-hover/item:scale-110 transition-transform">•</span>
-                      <span className="bg-card/30 rounded-lg p-3 flex-1 border border-border/20">
-                        <strong className="text-primary">Data Portability:</strong> receive your data in a
-                        structured format
-                      </span>
-                    </li>
-                  </ul>
-                  <div className="bg-gradient-to-r from-primary/5 to-accent/5 rounded-xl p-4 border border-primary/20">
-                    <p className="leading-relaxed">
-                      To exercise these rights, contact us at{" "}
-                      <a
-                        href="mailto:privacy@powermaker.ai"
-                        className="text-primary font-semibold hover:text-accent transition-colors underline decoration-2"
-                      >
-                        privacy@powermaker.ai
-                      </a>
-                      .
+                      We are constantly improving our Services. We may add,
+                      modify, or remove features, and we may suspend or stop the
+                      Services entirely. We will provide reasonable notice when
+                      possible.
                     </p>
                   </div>
                 </AccordionContent>
               </AccordionItem>
 
-              {/* Data Retention */}
+              {/* Fees and Payment */}
               <AccordionItem
-                value="retention"
-                id="retention"
+                value="fees"
+                id="fees"
                 className="border-0 bg-gradient-to-br from-card via-card to-card/50 backdrop-blur-sm rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 overflow-hidden group"
               >
                 <div className="absolute inset-0 bg-gradient-to-r from-primary/5 to-accent/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
@@ -470,25 +358,25 @@ const PrivacyPolicy = () => {
                     <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-primary/10 to-accent/10 flex items-center justify-center group-hover:scale-110 transition-transform">
                       <Clock className="w-5 h-5 text-primary" />
                     </div>
-                    Data Retention
+                    Fees and Payment
                   </div>
                 </AccordionTrigger>
                 <AccordionContent className="text-foreground pb-6 px-6">
                   <div className="bg-gradient-to-br from-muted/30 to-transparent rounded-xl p-6 border border-border/30">
                     <p className="leading-relaxed">
-                      We retain your personal information for as long as necessary
-                      to provide the Services, comply with legal obligations,
-                      resolve disputes, and enforce our agreements. When data is no
-                      longer needed, we securely delete or anonymize it.
+                      Some features of the Services may require payment. All
+                      fees are clearly indicated at the time of purchase. You
+                      are responsible for all applicable taxes and fees
+                      associated with your use of the Services.
                     </p>
                   </div>
                 </AccordionContent>
               </AccordionItem>
 
-              {/* Security */}
+              {/* Termination */}
               <AccordionItem
-                value="security"
-                id="security"
+                value="termination"
+                id="termination"
                 className="border-0 bg-gradient-to-br from-card via-card to-card/50 backdrop-blur-sm rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 overflow-hidden group"
               >
                 <div className="absolute inset-0 bg-gradient-to-r from-primary/5 to-accent/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
@@ -497,26 +385,26 @@ const PrivacyPolicy = () => {
                     <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-primary/10 to-accent/10 flex items-center justify-center group-hover:scale-110 transition-transform">
                       <Lock className="w-5 h-5 text-primary" />
                     </div>
-                    Security
+                    Termination
                   </div>
                 </AccordionTrigger>
                 <AccordionContent className="text-foreground pb-6 px-6">
                   <div className="bg-gradient-to-br from-muted/30 to-transparent rounded-xl p-6 border border-border/30">
                     <p className="leading-relaxed">
-                      We implement industry-standard security measures, including
-                      encryption, secure servers, and access controls, to protect
-                      your data. However, no system is completely secure, and we
-                      cannot guarantee absolute security. Please use strong
-                      passwords and keep your account credentials confidential.
+                      We may suspend or terminate your access to the Services if
+                      you violate these Terms, create risk or legal exposure for
+                      us, or for any other reason, at our sole discretion. Upon
+                      termination, your right to use the Services will end
+                      immediately.
                     </p>
                   </div>
                 </AccordionContent>
               </AccordionItem>
 
-              {/* International Data Transfers */}
+              {/* Disclaimers and Limitation of Liability */}
               <AccordionItem
-                value="transfers"
-                id="transfers"
+                value="disclaimers"
+                id="disclaimers"
                 className="border-0 bg-gradient-to-br from-card via-card to-card/50 backdrop-blur-sm rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 overflow-hidden group"
               >
                 <div className="absolute inset-0 bg-gradient-to-r from-primary/5 to-accent/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
@@ -525,26 +413,30 @@ const PrivacyPolicy = () => {
                     <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-primary/10 to-accent/10 flex items-center justify-center group-hover:scale-110 transition-transform">
                       <Globe className="w-5 h-5 text-primary" />
                     </div>
-                    International Data Transfers
+                    Disclaimers and Limitation of Liability
                   </div>
                 </AccordionTrigger>
                 <AccordionContent className="text-foreground pb-6 px-6">
                   <div className="bg-gradient-to-br from-muted/30 to-transparent rounded-xl p-6 border border-border/30">
                     <p className="leading-relaxed">
-                      Your information may be transferred to and processed in
-                      countries other than your own. We ensure appropriate
-                      safeguards are in place, such as standard contractual clauses
-                      or equivalent mechanisms, to protect your data in accordance
-                      with applicable laws.
+                      We provide the Services “as is” and “as available” without
+                      warranties of any kind. We disclaim all warranties,
+                      express or implied, including the implied warranties of
+                      merchantability, fitness for a particular purpose, and
+                      non-infringement.
+                      <br /> <br />
+                      To the fullest extent permitted by law, we are not liable
+                      for any indirect, incidental, special, or consequential
+                      damages, or loss of profits, revenues, or data.
                     </p>
                   </div>
                 </AccordionContent>
               </AccordionItem>
 
-              {/* Children's Privacy */}
+              {/* Indemnity */}
               <AccordionItem
-                value="children"
-                id="children"
+                value="indemnity"
+                id="indemnity"
                 className="border-0 bg-gradient-to-br from-card via-card to-card/50 backdrop-blur-sm rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 overflow-hidden group"
               >
                 <div className="absolute inset-0 bg-gradient-to-r from-primary/5 to-accent/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
@@ -553,25 +445,26 @@ const PrivacyPolicy = () => {
                     <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-primary/10 to-accent/10 flex items-center justify-center group-hover:scale-110 transition-transform">
                       <AlertCircle className="w-5 h-5 text-primary" />
                     </div>
-                    Children's Privacy
+                    Indemnity
                   </div>
                 </AccordionTrigger>
                 <AccordionContent className="text-foreground pb-6 px-6">
                   <div className="bg-gradient-to-br from-muted/30 to-transparent rounded-xl p-6 border border-border/30">
                     <p className="leading-relaxed">
-                      Our Services are not intended for individuals under the age
-                      of 18. We do not knowingly collect personal information from
-                      children. If we become aware that a child has provided us
-                      with personal data, we will take steps to delete it promptly.
+                      You agree to indemnify and hold harmless Power Maker AI
+                      and its affiliates, officers, agents, and employees from
+                      any claims, liabilities, damages, and expenses arising out
+                      of your use of the Services or your violation of these
+                      Terms.
                     </p>
                   </div>
                 </AccordionContent>
               </AccordionItem>
 
-              {/* Cookies */}
+              {/* Governing Law */}
               <AccordionItem
-                value="cookies"
-                id="cookies"
+                value="governing"
+                id="governing"
                 className="border-0 bg-gradient-to-br from-card via-card to-card/50 backdrop-blur-sm rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 overflow-hidden group"
               >
                 <div className="absolute inset-0 bg-gradient-to-r from-primary/5 to-accent/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
@@ -580,40 +473,21 @@ const PrivacyPolicy = () => {
                     <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-primary/10 to-accent/10 flex items-center justify-center group-hover:scale-110 transition-transform">
                       <Cookie className="w-5 h-5 text-primary" />
                     </div>
-                    Cookies
+                    Governing Law
                   </div>
                 </AccordionTrigger>
                 <AccordionContent className="text-foreground pb-6 px-6">
                   <div className="bg-gradient-to-br from-muted/30 to-transparent rounded-xl p-6 mb-6 border border-border/30">
                     <p className="leading-relaxed">
-                      We use cookies and similar technologies to:
-                    </p>
-                  </div>
-                  <ul className="space-y-3 ml-2 mb-6">
-                    <li className="flex gap-3 group/item hover:translate-x-1 transition-transform">
-                      <span className="text-accent mt-1 w-6 h-6 rounded-full bg-accent/10 flex items-center justify-center text-xs flex-shrink-0 group-hover/item:scale-110 transition-transform">•</span>
-                      <span className="bg-card/30 rounded-lg p-3 flex-1 border border-border/20">Enhance user experience and functionality</span>
-                    </li>
-                    <li className="flex gap-3 group/item hover:translate-x-1 transition-transform">
-                      <span className="text-accent mt-1 w-6 h-6 rounded-full bg-accent/10 flex items-center justify-center text-xs flex-shrink-0 group-hover/item:scale-110 transition-transform">•</span>
-                      <span className="bg-card/30 rounded-lg p-3 flex-1 border border-border/20">Analyze usage patterns and improve our Services</span>
-                    </li>
-                    <li className="flex gap-3 group/item hover:translate-x-1 transition-transform">
-                      <span className="text-accent mt-1 w-6 h-6 rounded-full bg-accent/10 flex items-center justify-center text-xs flex-shrink-0 group-hover/item:scale-110 transition-transform">•</span>
-                      <span className="bg-card/30 rounded-lg p-3 flex-1 border border-border/20">Remember your preferences and settings</span>
-                    </li>
-                  </ul>
-                  <div className="bg-gradient-to-br from-muted/30 to-transparent rounded-xl p-6 border border-border/30">
-                    <p className="leading-relaxed">
-                      You can manage cookie preferences through your browser
-                      settings. Note that disabling cookies may affect the
-                      functionality of our Services.
+                      These Terms are governed by and construed in accordance
+                      with the laws of INDIA, without regard to conflict of law
+                      principles.
                     </p>
                   </div>
                 </AccordionContent>
               </AccordionItem>
 
-              {/* Changes to This Policy */}
+              {/* Changes to These Terms */}
               <AccordionItem
                 value="changes"
                 id="changes"
@@ -625,19 +499,13 @@ const PrivacyPolicy = () => {
                     <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-primary/10 to-accent/10 flex items-center justify-center group-hover:scale-110 transition-transform">
                       <RefreshCw className="w-5 h-5 text-primary" />
                     </div>
-                    Changes to This Policy
+                    Changes to These Terms
                   </div>
                 </AccordionTrigger>
                 <AccordionContent className="text-foreground pb-6 px-6">
                   <div className="bg-gradient-to-br from-muted/30 to-transparent rounded-xl p-6 border border-border/30">
                     <p className="leading-relaxed">
-                      We may update this Privacy Policy from time to time to
-                      reflect changes in our practices or for legal, operational,
-                      or regulatory reasons. We will notify you of significant
-                      changes by posting the updated policy on our website and
-                      updating the "Effective" date. Your continued use of the
-                      Services after changes take effect constitutes acceptance of
-                      the revised policy.
+                      We may update these Terms from time to time. If we make material changes, we will notify you through the Services or by other means. Continued use of the Services after the changes become effective constitutes your acceptance of the new Terms.
                     </p>
                   </div>
                 </AccordionContent>
@@ -648,11 +516,11 @@ const PrivacyPolicy = () => {
             <div className="relative mt-12 overflow-hidden">
               {/* Decorative elements */}
               <div className="absolute inset-0 bg-gradient-to-br from-primary/10 via-accent/10 to-primary/10 rounded-3xl blur-xl" />
-              
+
               <div className="relative p-8 md:p-12 bg-gradient-to-br from-card/90 via-card/95 to-card/90 backdrop-blur-sm rounded-3xl border border-border/50 shadow-2xl">
                 <div className="absolute top-0 right-0 w-32 h-32 bg-gradient-to-br from-accent/20 to-transparent rounded-bl-full" />
                 <div className="absolute bottom-0 left-0 w-24 h-24 bg-gradient-to-tr from-primary/20 to-transparent rounded-tr-full" />
-                
+
                 <div className="relative z-10">
                   <div className="flex items-center gap-3 mb-4">
                     <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-primary to-accent flex items-center justify-center">
@@ -662,12 +530,12 @@ const PrivacyPolicy = () => {
                       Ready to Build the Future of CRM?
                     </h2>
                   </div>
-                  
+
                   <p className="text-foreground/90 mb-8 leading-relaxed text-lg">
-                    If you'd like to connect with us, partner, or give feedback —
-                    reach out anytime. Let's build the future of CRM together.
+                    If you'd like to connect with us, partner, or give feedback
+                    — reach out anytime. Let's build the future of CRM together.
                   </p>
-                  
+
                   <div className="flex flex-col sm:flex-row gap-4">
                     <Button className="bg-gradient-to-r from-accent to-accent/80 hover:from-accent/90 hover:to-accent/70 text-accent-foreground shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105 text-lg px-8 py-6">
                       Request a Demo Today
@@ -692,4 +560,4 @@ const PrivacyPolicy = () => {
   );
 };
 
-export default PrivacyPolicy;
+export default TermOfUse;

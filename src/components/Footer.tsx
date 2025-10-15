@@ -150,14 +150,9 @@ const Footer = () => {
               </li>
               <li>
                 <a
-                  href="#"
+                  href="/term-of-use"
                   className="text-primary-foreground/80 hover:text-primary-foreground hover:translate-x-1 transition-all inline-block"
-                  onClick={() =>
-                    window.open(
-                      "https://powermakerai.com/src/terms.html",
-                      "_blank"
-                    )
-                  }
+                  
                 >
                   Terms of Service
                 </a>
