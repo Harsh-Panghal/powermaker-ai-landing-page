@@ -142,14 +142,8 @@ const Footer = () => {
             <ul className="space-y-3">
               <li>
                 <a
-                  href="#"
+                  href="/privacy-policy"
                   className="text-primary-foreground/80 hover:text-primary-foreground hover:translate-x-1 transition-all inline-block"
-                  onClick={() =>
-                    window.open(
-                      "https://powermakerai.com/src/privacyPolicy.html",
-                      "_blank"
-                    )
-                  }
                 >
                   Privacy Policy
                 </a>

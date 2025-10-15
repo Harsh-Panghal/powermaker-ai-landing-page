@@ -8,28 +8,27 @@ All colors MUST be HSL.
 
 @layer base {
   :root {
-    /* PowerMaker AI Design System - Navy & Soft Blue B2B Theme */
+    /* PowerMaker AI Design System - Professional B2B Theme */
     
     /* Core Brand Colors */
-    --primary: 211 55% 23%;           /* Navy #1A365D */
+    --primary: 216 72% 23%;           /* Primary Blue #123466 */
     --primary-foreground: 0 0% 100%;  /* White */
     
-    --accent: 207 76% 59%;            /* Soft Blue #4A90E2 */
+    --accent: 197 89% 58%;            /* Light Blue #37ACF3 */
     --accent-foreground: 0 0% 100%;   /* White */
     
+    --secondary: 357 43% 72%;         /* Medium Accent #E48D8F */
+    --secondary-foreground: 216 72% 15%; /* Deep Navy Text */
+    
     /* Backgrounds */
-    --background: 210 20% 98%;        /* Light Gray #F7FAFC */
-    --foreground: 214 11% 35%;        /* Gray Text #4A5568 */
+    --background: 0 0% 100%;          /* Pure White */
+    --foreground: 215 83% 15%;        /* Deep Navy #0A2342 */
     
     --card: 0 0% 100%;                /* White Cards */
     --card-foreground: 214 11% 35%;
     
-    /* Secondary & Muted */
-    --secondary: 210 17% 95%;         /* Slightly darker than bg */
-    --secondary-foreground: 211 55% 23%;
-    
-    --muted: 210 17% 95%;
-    --muted-foreground: 214 11% 50%;
+    --muted: 210 17% 96%;
+    --muted-foreground: 215 15% 40%;
     
     /* UI Elements */
     --border: 214 20% 88%;
