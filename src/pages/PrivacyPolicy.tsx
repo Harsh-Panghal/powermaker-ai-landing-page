@@ -92,7 +92,7 @@ const PrivacyPolicy = () => {
         <div className="flex flex-col lg:flex-row gap-8 max-w-7xl mx-auto">
           {/* Sidebar Navigation */}
           <aside className="lg:w-72 shrink-0">
-            <div className="lg:sticky lg:top-24">
+            <div className="sticky top-20 lg:top-24">
               <div className="bg-card/50 backdrop-blur-sm border border-border/50 rounded-2xl p-6 shadow-xl">
                 <div className="flex items-center gap-2 mb-6">
                   <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-primary to-accent flex items-center justify-center">
