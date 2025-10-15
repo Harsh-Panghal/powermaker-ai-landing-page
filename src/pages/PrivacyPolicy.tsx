@@ -64,7 +64,7 @@ const PrivacyPolicy = () => {
       </div>
 
       {/* Header */}
-      <header className="sticky top-0 z-40 bg-background/80 backdrop-blur-xl supports-[backdrop-filter]:bg-background/60 border-b border-border/50 shadow-sm">
+      <header className="fixed top-0 left-0 right-0 z-40 bg-background/80 backdrop-blur-xl supports-[backdrop-filter]:bg-background/60 border-b border-border/50 shadow-sm">
         <div className="container mx-auto px-4 sm:px-6 py-4">
           <div className="flex items-center justify-between">
             <Link to="/" className="flex items-center gap-2 group">
@@ -88,11 +88,11 @@ const PrivacyPolicy = () => {
         </div>
       </header>
 
-      <div className="container mx-auto px-4 sm:px-6 py-8 lg:py-12">
+      <div className="container mx-auto px-4 sm:px-6 py-8 lg:py-12 mt-20">
         <div className="flex flex-col lg:flex-row gap-8 max-w-7xl mx-auto">
           {/* Sidebar Navigation */}
-          <aside className="lg:w-72 shrink-0">
-            <div className="sticky top-20 lg:top-24">
+          <aside className="lg:w-72 shrink-0 lg:sticky lg:top-24 lg:self-start">
+            <div>
               <div className="bg-card/50 backdrop-blur-sm border border-border/50 rounded-2xl p-6 shadow-xl">
                 <div className="flex items-center gap-2 mb-6">
                   <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-primary to-accent flex items-center justify-center">
