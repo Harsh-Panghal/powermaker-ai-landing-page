@@ -1,13 +1,126 @@
 import { useState } from "react";
-import { ChevronDown, ChevronRight, Settings, Zap, Database, MessageSquare, FileOutput, Cpu, Wrench, Activity, GraduationCap, ArrowRight, CheckCircle2, AlertCircle, Clock } from "lucide-react";
+import { Cpu, ArrowRight, AlertCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
-import { Badge } from "@/components/ui/badge";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Link } from "react-router-dom";
 
+// Content renderer helper
+const renderContent = (item: any, index: number) => {
+  if (item.type === "text") {
+    return (
+      <p 
+        key={index} 
+        className="text-[#605E5C] leading-relaxed mb-4"
+        dangerouslySetInnerHTML={{ __html: item.value }}
+      />
+    );
+  }
+  
+  if (item.type === "list") {
+    return (
+      <div key={index} className="mb-4">
+        {item.label && (
+          <p 
+            className="font-semibold text-[#323130] mb-2"
+            dangerouslySetInnerHTML={{ __html: item.label }}
+          />
+        )}
+        <ul className="space-y-2 pl-4">
+          {item.value.map((listItem: any, i: number) => {
+            if (typeof listItem === "string") {
+              return (
+                <li 
+                  key={i} 
+                  className="flex items-start gap-2 text-[#605E5C]"
+                >
+                  <span className="text-[#0078D4] mt-1">•</span>
+                  <span dangerouslySetInnerHTML={{ __html: listItem }} />
+                </li>
+              );
+            }
+            // Handle nested lists
+            return (
+              <li key={i} className="text-[#605E5C]">
+                <span dangerouslySetInnerHTML={{ __html: listItem.text }} />
+                {listItem.children && (
+                  <ul className="ml-4 mt-2 space-y-1">
+                    {listItem.children.map((child: string, ci: number) => (
+                      <li key={ci} className="flex items-start gap-2">
+                        <span className="text-[#0078D4]">◦</span>
+                        <span dangerouslySetInnerHTML={{ __html: child }} />
+                      </li>
+                    ))}
+                  </ul>
+                )}
+              </li>
+            );
+          })}
+        </ul>
+      </div>
+    );
+  }
+  
+  if (item.type === "img") {
+    return (
+      <div key={index} className="my-4">
+        <img 
+          src={item.src} 
+          alt={item.alt}
+          className="rounded-lg border border-[#EDEBE9] max-w-full"
+        />
+      </div>
+    );
+  }
+  
+  if (item.type === "table") {
+    return (
+      <div key={index} className="overflow-x-auto my-4">
+        <table className="w-full border-collapse border border-[#EDEBE9]">
+          <thead>
+            <tr className="bg-[#F3F2F1]">
+              {item.headers.map((header: string, i: number) => (
+                <th key={i} className="border border-[#EDEBE9] px-4 py-2 text-left font-semibold text-[#323130]">
+                  {header}
+                </th>
+              ))}
+            </tr>
+          </thead>
+          <tbody>
+            {item.rows.map((row: string[], i: number) => (
+              <tr key={i} className="hover:bg-[#FAF9F8]">
+                {row.map((cell: string, ci: number) => (
+                  <td key={ci} className="border border-[#EDEBE9] px-4 py-2 text-[#605E5C]">
+                    {cell}
+                  </td>
+                ))}
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    );
+  }
+  
+  if (item.type === "codeblock") {
+    return (
+      <div key={index} className="my-4 bg-[#323130] text-white p-4 rounded-lg font-mono text-sm">
+        {item.lines.map((line: any, i: number) => (
+          <div key={i} className={line.lineClass || ""}>
+            <span>{line.text}</span>
+            {line.highlight && (
+              <span className={line.highlightClass || ""}>{line.highlight}</span>
+            )}
+          </div>
+        ))}
+      </div>
+    );
+  }
+  
+  return null;
+};
+
 const Documentation = () => {
-  const [activeSection, setActiveSection] = useState("overview");
+  const [activeSection, setActiveSection] = useState("get-started");
 
   const scrollToSection = (id: string) => {
     setActiveSection(id);
@@ -18,6 +131,11 @@ const Documentation = () => {
       const offsetPosition = elementPosition + window.pageYOffset - offset;
       window.scrollTo({ top: offsetPosition, behavior: "smooth" });
     }
+  };
+
+  // Generate section ID from heading
+  const getSectionId = (heading: string) => {
+    return heading.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
   };
 
   return (
@@ -46,17 +164,25 @@ const Documentation = () => {
         <aside className="w-[250px] h-[calc(100vh-60px)] sticky top-[60px] bg-[#FAF9F8] border-r border-[#EDEBE9] overflow-y-auto">
           <nav className="p-4 space-y-1">
             <button
-              onClick={() => scrollToSection("overview")}
+              onClick={() => scrollToSection("get-started")}
               className={`w-full text-left px-3 py-2 rounded text-sm font-semibold transition-colors ${
-                activeSection === "overview" ? "text-[#0078D4] bg-[#F3F2F1]" : "text-[#605E5C] hover:bg-[#F3F2F1]"
+                activeSection === "get-started" ? "text-[#0078D4] bg-[#F3F2F1]" : "text-[#605E5C] hover:bg-[#F3F2F1]"
+              }`}
+            >
+              Get Started
+            </button>
+            <button
+              onClick={() => scrollToSection("overview")}
+              className={`w-full text-left px-3 py-2 rounded text-sm transition-colors ${
+                activeSection === "overview" ? "text-[#0078D4] bg-[#F3F2F1] font-semibold" : "text-[#605E5C] hover:bg-[#F3F2F1]"
               }`}
             >
               Overview
             </button>
             <button
-              onClick={() => scrollToSection("crm-connection")}
+              onClick={() => scrollToSection("crm-connection-setup")}
               className={`w-full text-left px-3 py-2 rounded text-sm transition-colors ${
-                activeSection === "crm-connection" ? "text-[#0078D4] bg-[#F3F2F1] font-semibold" : "text-[#605E5C] hover:bg-[#F3F2F1]"
+                activeSection === "crm-connection-setup" ? "text-[#0078D4] bg-[#F3F2F1] font-semibold" : "text-[#605E5C] hover:bg-[#F3F2F1]"
               }`}
             >
               CRM Connection Setup
@@ -67,77 +193,52 @@ const Documentation = () => {
                 activeSection === "quickstart" ? "text-[#0078D4] bg-[#F3F2F1] font-semibold" : "text-[#605E5C] hover:bg-[#F3F2F1]"
               }`}
             >
-              Quickstart (Install App)
+              Quickstart
             </button>
             <button
-              onClick={() => scrollToSection("sign-in")}
+              onClick={() => scrollToSection("available-models")}
               className={`w-full text-left px-3 py-2 rounded text-sm transition-colors ${
-                activeSection === "sign-in" ? "text-[#0078D4] bg-[#F3F2F1] font-semibold" : "text-[#605E5C] hover:bg-[#F3F2F1]"
-              }`}
-            >
-              Sign in/Access Model
-            </button>
-            <button
-              onClick={() => scrollToSection("interact")}
-              className={`w-full text-left px-3 py-2 rounded text-sm transition-colors ${
-                activeSection === "interact" ? "text-[#0078D4] bg-[#F3F2F1] font-semibold" : "text-[#605E5C] hover:bg-[#F3F2F1]"
-              }`}
-            >
-              Interact and Generate Outputs
-            </button>
-            <button
-              onClick={() => scrollToSection("export")}
-              className={`w-full text-left px-3 py-2 rounded text-sm transition-colors ${
-                activeSection === "export" ? "text-[#0078D4] bg-[#F3F2F1] font-semibold" : "text-[#605E5C] hover:bg-[#F3F2F1]"
-              }`}
-            >
-              Export/Apply Outputs
-            </button>
-            <button
-              onClick={() => scrollToSection("models")}
-              className={`w-full text-left px-3 py-2 rounded text-sm transition-colors ${
-                activeSection === "models" ? "text-[#0078D4] bg-[#F3F2F1] font-semibold" : "text-[#605E5C] hover:bg-[#F3F2F1]"
+                activeSection === "available-models" ? "text-[#0078D4] bg-[#F3F2F1] font-semibold" : "text-[#605E5C] hover:bg-[#F3F2F1]"
               }`}
             >
               Available Models
             </button>
+            <button
+              onClick={() => scrollToSection("what-s-next")}
+              className={`w-full text-left px-3 py-2 rounded text-sm transition-colors ${
+                activeSection === "what-s-next" ? "text-[#0078D4] bg-[#F3F2F1] font-semibold" : "text-[#605E5C] hover:bg-[#F3F2F1]"
+              }`}
+            >
+              What's Next?
+            </button>
             
-            <div className="pt-2">
+            <div className="pt-2 border-t border-[#EDEBE9] mt-2">
               <div className="px-3 py-2 text-sm font-semibold text-[#323130]">CRM Customizations</div>
               <button
-                onClick={() => scrollToSection("customizations")}
+                onClick={() => scrollToSection("crm-customizations-0-1")}
                 className={`w-full text-left px-6 py-2 rounded text-sm transition-colors ${
-                  activeSection === "customizations" ? "text-[#0078D4] bg-[#F3F2F1] font-semibold" : "text-[#605E5C] hover:bg-[#F3F2F1]"
+                  activeSection === "crm-customizations-0-1" ? "text-[#0078D4] bg-[#F3F2F1] font-semibold" : "text-[#605E5C] hover:bg-[#F3F2F1]"
                 }`}
               >
                 0.1 Customizations
               </button>
               <button
-                onClick={() => scrollToSection("plugin-tracing")}
+                onClick={() => scrollToSection("plugin-tracing-0-2")}
                 className={`w-full text-left px-6 py-2 rounded text-sm transition-colors ${
-                  activeSection === "plugin-tracing" ? "text-[#0078D4] bg-[#F3F2F1] font-semibold" : "text-[#605E5C] hover:bg-[#F3F2F1]"
+                  activeSection === "plugin-tracing-0-2" ? "text-[#0078D4] bg-[#F3F2F1] font-semibold" : "text-[#605E5C] hover:bg-[#F3F2F1]"
                 }`}
               >
                 0.2 Plugin Tracing
               </button>
               <button
-                onClick={() => scrollToSection("crm-expert")}
+                onClick={() => scrollToSection("crm-expert-0-3")}
                 className={`w-full text-left px-6 py-2 rounded text-sm transition-colors ${
-                  activeSection === "crm-expert" ? "text-[#0078D4] bg-[#F3F2F1] font-semibold" : "text-[#605E5C] hover:bg-[#F3F2F1]"
+                  activeSection === "crm-expert-0-3" ? "text-[#0078D4] bg-[#F3F2F1] font-semibold" : "text-[#605E5C] hover:bg-[#F3F2F1]"
                 }`}
               >
                 0.3 CRM Expert
               </button>
             </div>
-            
-            <button
-              onClick={() => scrollToSection("whats-next")}
-              className={`w-full text-left px-3 py-2 rounded text-sm transition-colors ${
-                activeSection === "whats-next" ? "text-[#0078D4] bg-[#F3F2F1] font-semibold" : "text-[#605E5C] hover:bg-[#F3F2F1]"
-              }`}
-            >
-              What's Next?
-            </button>
           </nav>
         </aside>
 
@@ -166,383 +267,619 @@ const Documentation = () => {
           </section>
 
           <div className="max-w-[900px] mx-auto px-8 py-12 space-y-12">
-            {/* Overview */}
+            {/* Section 1: Get Started, Overview, CRM Connection, Quickstart, Available Models, What's Next */}
+            <section id="get-started" className="scroll-mt-24">
+              <Card className="bg-white shadow-[0_2px_8px_rgba(0,0,0,0.1)] hover:shadow-[0_4px_12px_rgba(0,0,0,0.15)] transition-shadow">
+                <CardHeader>
+                  <CardTitle className="text-[#0078D4] text-3xl">Get Started</CardTitle>
+                </CardHeader>
+                <CardContent className="space-y-4">
+                  <p className="text-[#605E5C] leading-relaxed">
+                    Welcome to Power Maker AI, your AI assistant for Dynamics 365 CRM. This documentation will guide you through everything you need to know—from getting started to using our AI-powered models to accelerate CRM development, analysis, and automation.
+                  </p>
+                  <p className="text-[#605E5C] leading-relaxed">
+                    Whether you're a CRM developer, consultant, tester, or business manager, this guide is designed to help you get the most out of Power Maker AI.
+                  </p>
+                  <p className="text-[#605E5C] leading-relaxed">
+                    <strong>Note:</strong> Official language support is currently available in English only.
+                  </p>
+                </CardContent>
+              </Card>
+            </section>
+
             <section id="overview" className="scroll-mt-24">
               <Card className="bg-white shadow-[0_2px_8px_rgba(0,0,0,0.1)] hover:shadow-[0_4px_12px_rgba(0,0,0,0.15)] transition-shadow">
                 <CardHeader>
-                  <CardTitle className="text-[#0078D4] text-2xl">Overview</CardTitle>
-                  <CardDescription className="text-[#605E5C]">
-                    Power Maker AI is designed for Dynamics 365 CRM developers, consultants, testers, and business managers.
-                  </CardDescription>
+                  <CardTitle className="text-[#0078D4] text-3xl">Overview</CardTitle>
                 </CardHeader>
                 <CardContent className="space-y-4">
                   <p className="text-[#605E5C] leading-relaxed">
-                    This AI assistant streamlines CRM development workflows by understanding natural language inputs and generating 
-                    customizations, analyzing plugin traces, and providing expert guidance on CRM best practices.
+                    Power Maker AI is a web-based AI assistant designed specifically for users working with Microsoft Dynamics 365 CRM. It helps you:
                   </p>
-                  <div className="flex items-start gap-2 p-4 bg-[#E3F2FD] border-l-4 border-[#0078D4] rounded">
-                    <CheckCircle2 className="h-5 w-5 text-[#0078D4] flex-shrink-0 mt-0.5" />
-                    <p className="text-sm text-[#323130]">
-                      <strong>Secure & Simulated Environment:</strong> All operations are simulated unless explicitly configured to connect to your CRM.
-                    </p>
-                  </div>
-                </CardContent>
-              </Card>
-            </section>
-
-            {/* CRM Connection Setup */}
-            <section id="crm-connection" className="scroll-mt-24">
-              <Card className="bg-white shadow-[0_2px_8px_rgba(0,0,0,0.1)] hover:shadow-[0_4px_12px_rgba(0,0,0,0.15)] transition-shadow">
-                <CardHeader>
-                  <div className="flex items-center gap-2">
-                    <Database className="h-6 w-6 text-[#0078D4]" />
-                    <CardTitle className="text-[#0078D4] text-2xl">CRM Connection Setup</CardTitle>
-                  </div>
-                </CardHeader>
-                <CardContent className="space-y-4">
+                  <ul className="space-y-2 pl-4">
+                    <li className="flex items-start gap-2 text-[#605E5C]">
+                      <span className="text-[#0078D4] mt-1">•</span>
+                      <span>Design custom entities and fields tailored to new or ongoing CRM projects, allowing seamless prototyping of CRM customizations.</span>
+                    </li>
+                    <li className="flex items-start gap-2 text-[#605E5C]">
+                      <span className="text-[#0078D4] mt-1">•</span>
+                      <span>Analyze plugin trace logs in a human-readable format.</span>
+                    </li>
+                    <li className="flex items-start gap-2 text-[#605E5C]">
+                      <span className="text-[#0078D4] mt-1">•</span>
+                      <span>Interact with CRM through a conversational AI assistant for data operations and diagnostics.</span>
+                    </li>
+                  </ul>
                   <p className="text-[#605E5C] leading-relaxed">
-                    Configure your CRM connection to enable direct integration with your Dynamics 365 environment.
+                    Power Maker AI leverages cutting-edge language models and CRM-specific logic to interpret your natural language inputs and turn them into meaningful CRM actions.
                   </p>
-                  <div className="space-y-3">
-                    <div className="flex items-start gap-3">
-                      <div className="w-6 h-6 rounded-full bg-[#0078D4] text-white flex items-center justify-center text-sm font-semibold flex-shrink-0">1</div>
-                      <p className="text-[#605E5C]">Navigate to <strong>Settings</strong> → <strong>CRM Connection Detail</strong></p>
-                    </div>
-                    <div className="flex items-start gap-3">
-                      <div className="w-6 h-6 rounded-full bg-[#0078D4] text-white flex items-center justify-center text-sm font-semibold flex-shrink-0">2</div>
-                      <p className="text-[#605E5C]">Enter your CRM URL, authentication credentials, and API version</p>
-                    </div>
-                    <div className="flex items-start gap-3">
-                      <div className="w-6 h-6 rounded-full bg-[#0078D4] text-white flex items-center justify-center text-sm font-semibold flex-shrink-0">3</div>
-                      <p className="text-[#605E5C]">Test the connection and save your configuration</p>
-                    </div>
-                  </div>
-                  <div className="flex items-start gap-2 p-4 bg-[#FFF4E5] border-l-4 border-[#FF8C00] rounded">
+                  <div className="flex items-start gap-2 p-4 bg-[#FFF4E5] border-l-4 border-[#FF8C00] rounded mt-4">
                     <AlertCircle className="h-5 w-5 text-[#FF8C00] flex-shrink-0 mt-0.5" />
                     <p className="text-sm text-[#323130]">
-                      Power Maker AI does not directly connect to your CRM environment unless explicitly configured. 
-                      All data operations require manual export/import or API integration.
+                      ⚠️ Note: Power Maker AI does not directly connect to your CRM environment unless explicitly configured. All data operations and configurations are currently simulated or require manual export/import.
                     </p>
                   </div>
                 </CardContent>
               </Card>
             </section>
 
-            {/* Quickstart */}
+            <section id="crm-connection-setup" className="scroll-mt-24">
+              <Card className="bg-white shadow-[0_2px_8px_rgba(0,0,0,0.1)] hover:shadow-[0_4px_12px_rgba(0,0,0,0.15)] transition-shadow">
+                <CardHeader>
+                  <CardTitle className="text-[#0078D4] text-3xl">CRM Connection Setup</CardTitle>
+                </CardHeader>
+                <CardContent className="space-y-4">
+                  <p className="text-[#605E5C] leading-relaxed">
+                    To configure your CRM connection in PowerMakerAI, follow these steps:
+                  </p>
+                  <p className="text-[#605E5C] leading-relaxed">
+                    <strong>Step 1: Navigate to CRM Connection Settings</strong>
+                  </p>
+                  <p className="text-[#605E5C] leading-relaxed">
+                    Go to <strong>Settings → CRM Connection Detail.</strong>
+                  </p>
+                  <div className="my-4">
+                    <img 
+                      src="./public/assest/crm-connection-img-1.png" 
+                      alt="CRM Connection Settings Screenshot"
+                      className="rounded-lg border border-[#EDEBE9] max-w-full"
+                    />
+                  </div>
+                  <p className="text-[#605E5C] leading-relaxed">
+                    You will see a form where you need to enter your CRM connection details.
+                  </p>
+                  <div className="my-4">
+                    <img 
+                      src="./public/assest/crm-connection-img-2.png" 
+                      alt="CRM Connection Settings Screenshot"
+                      className="rounded-lg border border-[#EDEBE9] max-w-full"
+                    />
+                  </div>
+                  <div className="mb-4">
+                    <p className="font-semibold text-[#323130] mb-2">
+                      <strong>Important Notes:</strong>
+                    </p>
+                    <ul className="space-y-2 pl-4">
+                      <li className="flex items-start gap-2 text-[#605E5C]">
+                        <span className="text-[#0078D4] mt-1">•</span>
+                        <span><strong>Single Connection Limit (Beta):</strong><br />This beta version supports only <strong>one active CRM connection</strong> at a time.</span>
+                      </li>
+                      <li className="flex items-start gap-2 text-[#605E5C]">
+                        <span className="text-[#0078D4] mt-1">•</span>
+                        <span><strong>Azure App Registration Required:</strong><br />You may need to <strong>register your application in Azure</strong> to obtain the necessary credentials (Client ID, Tenant ID, etc.).</span>
+                      </li>
+                      <li className="flex items-start gap-2 text-[#605E5C]">
+                        <span className="text-[#0078D4] mt-1">•</span>
+                        <span><strong>User Permissions:</strong><br />Ensure that the user has the appropriate <strong>Dataverse security roles and permissions.</strong><br /> PowerMakerAI adheres to standard Dataverse user security when interacting with your environment.</span>
+                      </li>
+                    </ul>
+                  </div>
+                </CardContent>
+              </Card>
+            </section>
+
             <section id="quickstart" className="scroll-mt-24">
               <Card className="bg-white shadow-[0_2px_8px_rgba(0,0,0,0.1)] hover:shadow-[0_4px_12px_rgba(0,0,0,0.15)] transition-shadow">
                 <CardHeader>
-                  <div className="flex items-center gap-2">
-                    <Zap className="h-6 w-6 text-[#0078D4]" />
-                    <CardTitle className="text-[#0078D4] text-2xl">Quickstart (Install App)</CardTitle>
-                  </div>
-                </CardHeader>
-                <CardContent className="space-y-4">
-                  <p className="text-[#605E5C] leading-relaxed">
-                    Get up and running with Power Maker AI in minutes.
-                  </p>
-                  <ul className="space-y-2">
-                    <li className="flex items-start gap-2">
-                      <CheckCircle2 className="h-5 w-5 text-[#0078D4] flex-shrink-0 mt-0.5" />
-                      <span className="text-[#605E5C]">Install the Power Maker AI app from your organization's app store</span>
-                    </li>
-                    <li className="flex items-start gap-2">
-                      <CheckCircle2 className="h-5 w-5 text-[#0078D4] flex-shrink-0 mt-0.5" />
-                      <span className="text-[#605E5C]">Complete the initial setup wizard</span>
-                    </li>
-                    <li className="flex items-start gap-2">
-                      <CheckCircle2 className="h-5 w-5 text-[#0078D4] flex-shrink-0 mt-0.5" />
-                      <span className="text-[#605E5C]">Configure your workspace preferences</span>
-                    </li>
-                    <li className="flex items-start gap-2">
-                      <CheckCircle2 className="h-5 w-5 text-[#0078D4] flex-shrink-0 mt-0.5" />
-                      <span className="text-[#605E5C]">Start creating customizations with natural language</span>
-                    </li>
-                  </ul>
-                </CardContent>
-              </Card>
-            </section>
-
-            {/* Sign in/Access Model */}
-            <section id="sign-in" className="scroll-mt-24">
-              <Card className="bg-white shadow-[0_2px_8px_rgba(0,0,0,0.1)] hover:shadow-[0_4px_12px_rgba(0,0,0,0.15)] transition-shadow">
-                <CardHeader>
-                  <CardTitle className="text-[#0078D4] text-2xl">Sign in/Access Model</CardTitle>
-                </CardHeader>
-                <CardContent className="space-y-4">
-                  <p className="text-[#605E5C] leading-relaxed">
-                    Access Power Maker AI using your organization's credentials or Microsoft account.
-                  </p>
-                  <div className="grid md:grid-cols-2 gap-6">
-                    <div className="p-4 border border-[#EDEBE9] rounded-lg">
-                      <h4 className="font-semibold text-[#323130] mb-2">Single Sign-On (SSO)</h4>
-                      <p className="text-sm text-[#605E5C]">Use your existing Microsoft 365 credentials for seamless access</p>
-                    </div>
-                    <div className="p-4 border border-[#EDEBE9] rounded-lg">
-                      <h4 className="font-semibold text-[#323130] mb-2">Role-Based Access</h4>
-                      <p className="text-sm text-[#605E5C]">Access features based on your assigned role and permissions</p>
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
-            </section>
-
-            {/* Interact and Generate */}
-            <section id="interact" className="scroll-mt-24">
-              <Card className="bg-white shadow-[0_2px_8px_rgba(0,0,0,0.1)] hover:shadow-[0_4px_12px_rgba(0,0,0,0.15)] transition-shadow">
-                <CardHeader>
-                  <div className="flex items-center gap-2">
-                    <MessageSquare className="h-6 w-6 text-[#0078D4]" />
-                    <CardTitle className="text-[#0078D4] text-2xl">Interact and Generate Outputs</CardTitle>
-                  </div>
-                </CardHeader>
-                <CardContent className="space-y-6">
-                  <p className="text-[#605E5C] leading-relaxed">
-                    Use natural language to describe what you want to build, and Power Maker AI will generate the necessary CRM customizations.
-                  </p>
-                  
-                  <div className="grid md:grid-cols-2 gap-6">
-                    <div className="space-y-3">
-                      <div className="flex items-center gap-2 text-[#323130] font-semibold">
-                        <MessageSquare className="h-5 w-5 text-[#0078D4]" />
-                        <span>Natural Language Input</span>
-                      </div>
-                      <p className="text-sm text-[#605E5C]">
-                        Describe your requirements in plain English. The AI understands context, intent, and CRM-specific terminology.
-                      </p>
-                    </div>
-                    <div className="space-y-3">
-                      <div className="flex items-center gap-2 text-[#323130] font-semibold">
-                        <FileOutput className="h-5 w-5 text-[#0078D4]" />
-                        <span>Generated Output</span>
-                      </div>
-                      <p className="text-sm text-[#605E5C]">
-                        Receive ready-to-use CRM configurations, entity schemas, workflows, and plugin code.
-                      </p>
-                    </div>
-                  </div>
-
-                  <div className="bg-[#F3F2F1] p-4 rounded-lg">
-                    <p className="text-sm font-semibold text-[#323130] mb-2">Sample Prompt:</p>
-                    <code className="text-sm text-[#605E5C] block bg-white p-3 rounded border border-[#EDEBE9]">
-                      "Create a custom entity called Project with fields for Name, Start Date, End Date, Budget, and Status. 
-                      Add a lookup to the Account entity and create a 1:N relationship."
-                    </code>
-                  </div>
-                </CardContent>
-              </Card>
-            </section>
-
-            {/* Export/Apply */}
-            <section id="export" className="scroll-mt-24">
-              <Card className="bg-white shadow-[0_2px_8px_rgba(0,0,0,0.1)] hover:shadow-[0_4px_12px_rgba(0,0,0,0.15)] transition-shadow">
-                <CardHeader>
-                  <div className="flex items-center gap-2">
-                    <FileOutput className="h-6 w-6 text-[#0078D4]" />
-                    <CardTitle className="text-[#0078D4] text-2xl">Export/Apply Outputs</CardTitle>
-                  </div>
-                </CardHeader>
-                <CardContent className="space-y-4">
-                  <p className="text-[#605E5C] leading-relaxed">
-                    Export generated configurations and apply them to your CRM environment.
-                  </p>
-                  <ul className="space-y-2">
-                    <li className="flex items-start gap-2">
-                      <CheckCircle2 className="h-5 w-5 text-[#0078D4] flex-shrink-0 mt-0.5" />
-                      <span className="text-[#605E5C]"><strong>Export as Solution:</strong> Download as a Dynamics 365 solution file (.zip)</span>
-                    </li>
-                    <li className="flex items-start gap-2">
-                      <CheckCircle2 className="h-5 w-5 text-[#0078D4] flex-shrink-0 mt-0.5" />
-                      <span className="text-[#605E5C]"><strong>Export as JSON:</strong> Get raw configuration data for custom processing</span>
-                    </li>
-                    <li className="flex items-start gap-2">
-                      <CheckCircle2 className="h-5 w-5 text-[#0078D4] flex-shrink-0 mt-0.5" />
-                      <span className="text-[#605E5C]"><strong>Direct Apply:</strong> Push changes directly to connected CRM (when configured)</span>
-                    </li>
-                  </ul>
-                  <div className="flex items-start gap-2 p-4 bg-[#E8F5E9] border-l-4 border-[#4CAF50] rounded">
-                    <CheckCircle2 className="h-5 w-5 text-[#4CAF50] flex-shrink-0 mt-0.5" />
-                    <p className="text-sm text-[#323130]">
-                      <strong>Best Practice:</strong> Always test in a development environment before applying to production.
-                    </p>
-                  </div>
-                </CardContent>
-              </Card>
-            </section>
-
-            {/* Available Models */}
-            <section id="models" className="scroll-mt-24">
-              <Card className="bg-white shadow-[0_2px_8px_rgba(0,0,0,0.1)] hover:shadow-[0_4px_12px_rgba(0,0,0,0.15)] transition-shadow">
-                <CardHeader>
-                  <div className="flex items-center gap-2">
-                    <Cpu className="h-6 w-6 text-[#0078D4]" />
-                    <CardTitle className="text-[#0078D4] text-2xl">Available Models</CardTitle>
-                  </div>
-                </CardHeader>
-                <CardContent className="space-y-4">
-                  <p className="text-[#605E5C] leading-relaxed">
-                    Power Maker AI offers specialized models for different CRM tasks.
-                  </p>
-                  <div className="grid gap-4">
-                    <div className="p-4 border-l-4 border-[#0078D4] bg-[#F3F2F1] rounded">
-                      <h4 className="font-semibold text-[#323130] mb-1">0.1 CRM Customizations</h4>
-                      <p className="text-sm text-[#605E5C]">Entity creation, field management, relationships, and UI customizations</p>
-                    </div>
-                    <div className="p-4 border-l-4 border-[#605E5C] bg-[#F3F2F1] rounded opacity-60">
-                      <div className="flex items-center gap-2 mb-1">
-                        <h4 className="font-semibold text-[#323130]">0.2 Plugin Tracing</h4>
-                        <Badge variant="secondary" className="text-xs">Coming Soon</Badge>
-                      </div>
-                      <p className="text-sm text-[#605E5C]">Analyze plugin execution logs and identify performance issues</p>
-                    </div>
-                    <div className="p-4 border-l-4 border-[#605E5C] bg-[#F3F2F1] rounded opacity-60">
-                      <div className="flex items-center gap-2 mb-1">
-                        <h4 className="font-semibold text-[#323130]">0.3 CRM Expert</h4>
-                        <Badge variant="secondary" className="text-xs">Coming Soon</Badge>
-                      </div>
-                      <p className="text-sm text-[#605E5C]">Expert guidance on best practices, architecture, and troubleshooting</p>
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
-            </section>
-
-            {/* CRM Customizations 0.1 */}
-            <section id="customizations" className="scroll-mt-24">
-              <Card className="bg-white shadow-[0_2px_8px_rgba(0,0,0,0.1)] hover:shadow-[0_4px_12px_rgba(0,0,0,0.15)] transition-shadow">
-                <CardHeader>
-                  <div className="flex items-center gap-2">
-                    <Wrench className="h-6 w-6 text-[#0078D4]" />
-                    <CardTitle className="text-[#0078D4] text-2xl">CRM Customizations 0.1</CardTitle>
-                  </div>
-                  <CardDescription className="text-[#605E5C]">
-                    Generate comprehensive CRM customizations from natural language descriptions
-                  </CardDescription>
+                  <CardTitle className="text-[#0078D4] text-3xl">Quickstart</CardTitle>
                 </CardHeader>
                 <CardContent className="space-y-6">
                   <div>
-                    <h4 className="font-semibold text-[#323130] mb-3">Key Capabilities:</h4>
-                    <ul className="space-y-2">
-                      <li className="flex items-start gap-2">
-                        <div className="w-1.5 h-1.5 rounded-full bg-[#0078D4] mt-2 flex-shrink-0"></div>
-                        <span className="text-[#605E5C]">Create custom entities with full schema definitions</span>
+                    <h3 className="text-xl font-semibold text-[#323130] mb-3">1. Sign In / Access the App</h3>
+                    <p className="text-[#605E5C] leading-relaxed mb-2">
+                      Visit https://chat.powermaker.ai and log in with your user account. New users may be prompted to create an account.
+                    </p>
+                    <p className="text-[#605E5C] leading-relaxed">
+                      📝 Users can log in using their Google account or sign up manually with an email ID and password.
+                    </p>
+                  </div>
+                  
+                  <div>
+                    <h3 className="text-xl font-semibold text-[#323130] mb-3">2. Choose a Model</h3>
+                    <p className="text-[#605E5C] leading-relaxed mb-2">
+                      You can start working by selecting one of the available models from the sidebar:
+                    </p>
+                    <ul className="space-y-2 pl-4">
+                      <li className="flex items-start gap-2 text-[#605E5C]">
+                        <span className="text-[#0078D4] mt-1">•</span>
+                        <span>CRM Customizations</span>
                       </li>
-                      <li className="flex items-start gap-2">
-                        <div className="w-1.5 h-1.5 rounded-full bg-[#0078D4] mt-2 flex-shrink-0"></div>
-                        <span className="text-[#605E5C]">Define field types, validation rules, and default values</span>
+                      <li className="flex items-start gap-2 text-[#605E5C]">
+                        <span className="text-[#0078D4] mt-1">•</span>
+                        <span>Plugin Tracing</span>
                       </li>
-                      <li className="flex items-start gap-2">
-                        <div className="w-1.5 h-1.5 rounded-full bg-[#0078D4] mt-2 flex-shrink-0"></div>
-                        <span className="text-[#605E5C]">Configure entity relationships (1:N, N:1, N:N)</span>
+                      <li className="flex items-start gap-2 text-[#605E5C]">
+                        <span className="text-[#0078D4] mt-1">•</span>
+                        <span>CRM Expert</span>
                       </li>
-                      <li className="flex items-start gap-2">
-                        <div className="w-1.5 h-1.5 rounded-full bg-[#0078D4] mt-2 flex-shrink-0"></div>
-                        <span className="text-[#605E5C]">Design forms, views, and dashboards</span>
+                    </ul>
+                    <p className="text-[#605E5C] leading-relaxed mt-2">
+                      Each model is tailored to solve a different problem—see the next section for a breakdown.
+                    </p>
+                  </div>
+
+                  <div>
+                    <h3 className="text-xl font-semibold text-[#323130] mb-3">3. Interact and Generate Output</h3>
+                    <p className="text-[#605E5C] leading-relaxed mb-2">
+                      Use natural language or UI-based prompts depending on the model.
+                    </p>
+                    <p className="font-semibold text-[#323130] mb-2">Examples:</p>
+                    <ul className="space-y-2 pl-4 mb-2">
+                      <li className="flex items-start gap-2 text-[#605E5C]">
+                        <span className="text-[#0078D4] mt-1">•</span>
+                        <span>"Create a custom entity for API Configuration"</span>
                       </li>
-                      <li className="flex items-start gap-2">
-                        <div className="w-1.5 h-1.5 rounded-full bg-[#0078D4] mt-2 flex-shrink-0"></div>
-                        <span className="text-[#605E5C]">Generate business rules and workflows</span>
+                      <li className="flex items-start gap-2 text-[#605E5C]">
+                        <span className="text-[#0078D4] mt-1">•</span>
+                        <span>"Show plugin errors from the last 7 days"</span>
+                      </li>
+                      <li className="flex items-start gap-2 text-[#605E5C]">
+                        <span className="text-[#0078D4] mt-1">•</span>
+                        <span>"Update all contacts in Delhi to Inactive"</span>
+                      </li>
+                    </ul>
+                    <p className="font-semibold text-[#323130] mb-2">Outputs can include:</p>
+                    <ul className="space-y-2 pl-4">
+                      <li className="flex items-start gap-2 text-[#605E5C]">
+                        <span className="text-[#0078D4] mt-1">•</span>
+                        <span>CRM schema mock-ups</span>
+                      </li>
+                      <li className="flex items-start gap-2 text-[#605E5C]">
+                        <span className="text-[#0078D4] mt-1">•</span>
+                        <span>Exception trace analysis</span>
+                      </li>
+                      <li className="flex items-start gap-2 text-[#605E5C]">
+                        <span className="text-[#0078D4] mt-1">•</span>
+                        <span>Data operation summaries</span>
+                      </li>
+                      <li className="flex items-start gap-2 text-[#605E5C]">
+                        <span className="text-[#0078D4] mt-1">•</span>
+                        <span>Configuration exports (coming soon)</span>
                       </li>
                     </ul>
                   </div>
 
-                  <Accordion type="single" collapsible className="border rounded-lg">
-                    <AccordionItem value="use-cases">
-                      <AccordionTrigger className="px-4 hover:no-underline">
-                        <span className="font-semibold text-[#323130]">Example Use Cases</span>
-                      </AccordionTrigger>
-                      <AccordionContent className="px-4 pb-4">
-                        <ol className="space-y-2 list-decimal list-inside text-[#605E5C]">
-                          <li>Creating a Project Management module with tasks, milestones, and resource allocation</li>
-                          <li>Building a custom Support Ticket system with SLA tracking</li>
-                          <li>Designing a Sales Pipeline with custom stages and approval workflows</li>
-                          <li>Implementing a Product Catalog with inventory management</li>
-                        </ol>
-                      </AccordionContent>
-                    </AccordionItem>
-                  </Accordion>
+                  <div>
+                    <h3 className="text-xl font-semibold text-[#323130] mb-3">4. Export / Apply Outputs</h3>
+                    <p className="text-[#605E5C] leading-relaxed">
+                      Most outputs can be copied or downloaded. You'll soon be able to directly push changes to your CRM (integration in development).
+                    </p>
+                  </div>
+                </CardContent>
+              </Card>
+            </section>
 
-                  <div className="bg-[#F3F2F1] p-4 rounded-lg space-y-3">
-                    <p className="text-sm font-semibold text-[#323130]">Sample Interaction:</p>
-                    <div className="space-y-2">
-                      <div className="bg-white p-3 rounded border border-[#EDEBE9]">
-                        <p className="text-xs text-[#605E5C] mb-1">User Input:</p>
-                        <code className="text-sm text-[#323130]">
-                          "I need a Training Management system. Create an entity for Training Sessions with fields for Title, Description, 
-                          Start Date, End Date, Location, Max Attendees, and Status (Draft/Published/Completed). 
-                          Link it to Contact entity for attendees with N:N relationship."
-                        </code>
+            <section id="available-models" className="scroll-mt-24">
+              <Card className="bg-white shadow-[0_2px_8px_rgba(0,0,0,0.1)] hover:shadow-[0_4px_12px_rgba(0,0,0,0.15)] transition-shadow">
+                <CardHeader>
+                  <CardTitle className="text-[#0078D4] text-3xl">Available Models</CardTitle>
+                </CardHeader>
+                <CardContent className="space-y-6">
+                  <div>
+                    <h3 className="text-xl font-semibold text-[#323130] mb-3">1. CRM Customizations</h3>
+                    <p className="text-[#605E5C] leading-relaxed mb-2">
+                      Purpose: Helps you quickly design custom entities and fields using simple prompts or structured controls.
+                    </p>
+                    <p className="font-semibold text-[#323130] mb-2">Capabilities:</p>
+                    <ul className="space-y-2 pl-4 mb-2">
+                      <li className="flex items-start gap-2 text-[#605E5C]">
+                        <span className="text-[#0078D4] mt-1">•</span>
+                        <span>Create entity prototypes</span>
+                      </li>
+                      <li className="flex items-start gap-2 text-[#605E5C]">
+                        <span className="text-[#0078D4] mt-1">•</span>
+                        <span>Define fields and datatypes</span>
+                      </li>
+                      <li className="flex items-start gap-2 text-[#605E5C]">
+                        <span className="text-[#0078D4] mt-1">•</span>
+                        <span>Preview configurations before exporting</span>
+                      </li>
+                    </ul>
+                    <p className="font-semibold text-[#323130] mb-2">Limitations:</p>
+                    <ul className="space-y-2 pl-4">
+                      <li className="flex items-start gap-2 text-[#605E5C]">
+                        <span className="text-[#0078D4] mt-1">•</span>
+                        <span>No live deployment to CRM (yet)</span>
+                      </li>
+                      <li className="flex items-start gap-2 text-[#605E5C]">
+                        <span className="text-[#0078D4] mt-1">•</span>
+                        <span>Does not handle advanced logic (e.g., business rules, workflows)</span>
+                      </li>
+                    </ul>
+                  </div>
+
+                  <div>
+                    <h3 className="text-xl font-semibold text-[#323130] mb-3">2. Plugin Tracing</h3>
+                    <p className="text-[#605E5C] leading-relaxed mb-2">
+                      Purpose: Use natural language to query plugin trace logs and receive readable diagnostics.
+                    </p>
+                    <p className="font-semibold text-[#323130] mb-2">Capabilities:</p>
+                    <ul className="space-y-2 pl-4 mb-2">
+                      <li className="flex items-start gap-2 text-[#605E5C]">
+                        <span className="text-[#0078D4] mt-1">•</span>
+                        <span>Filter logs by entity, date, error status, etc.</span>
+                      </li>
+                      <li className="flex items-start gap-2 text-[#605E5C]">
+                        <span className="text-[#0078D4] mt-1">•</span>
+                        <span>Translate raw logs into clean summaries and exceptions</span>
+                      </li>
+                      <li className="flex items-start gap-2 text-[#605E5C]">
+                        <span className="text-[#0078D4] mt-1">•</span>
+                        <span>View structured trace tables</span>
+                      </li>
+                    </ul>
+                    <p className="font-semibold text-[#323130] mb-2">Limitations:</p>
+                    <ul className="space-y-2 pl-4">
+                      <li className="flex items-start gap-2 text-[#605E5C]">
+                        <span className="text-[#0078D4] mt-1">•</span>
+                        <span>Requires logs to be available in the system or uploaded</span>
+                      </li>
+                      <li className="flex items-start gap-2 text-[#605E5C]">
+                        <span className="text-[#0078D4] mt-1">•</span>
+                        <span>Works best with standard plugin trace formats</span>
+                      </li>
+                    </ul>
+                  </div>
+
+                  <div>
+                    <h3 className="text-xl font-semibold text-[#323130] mb-3">3. CRM Expert</h3>
+                    <p className="text-[#605E5C] leading-relaxed mb-2">
+                      Purpose: Your all-in-one conversational AI for CRM data tasks, config queries, and error diagnostics.
+                    </p>
+                    <p className="font-semibold text-[#323130] mb-2">Capabilities:</p>
+                    <ul className="space-y-2 pl-4 mb-2">
+                      <li className="flex items-start gap-2 text-[#605E5C]">
+                        <span className="text-[#0078D4] mt-1">•</span>
+                        <span>Perform CRUD-like operations through text (simulation)</span>
+                      </li>
+                      <li className="flex items-start gap-2 text-[#605E5C]">
+                        <span className="text-[#0078D4] mt-1">•</span>
+                        <span>Suggest configuration steps</span>
+                      </li>
+                      <li className="flex items-start gap-2 text-[#605E5C]">
+                        <span className="text-[#0078D4] mt-1">•</span>
+                        <span>Answer questions like a Dynamics consultant</span>
+                      </li>
+                    </ul>
+                    <p className="font-semibold text-[#323130] mb-2">Limitations:</p>
+                    <ul className="space-y-2 pl-4">
+                      <li className="flex items-start gap-2 text-[#605E5C]">
+                        <span className="text-[#0078D4] mt-1">•</span>
+                        <span>Requires clear CRM context for deeper operations</span>
+                      </li>
+                      <li className="flex items-start gap-2 text-[#605E5C]">
+                        <span className="text-[#0078D4] mt-1">•</span>
+                        <span>Best for guided exploration, not high-volume automation</span>
+                      </li>
+                    </ul>
+                  </div>
+                </CardContent>
+              </Card>
+            </section>
+
+            <section id="what-s-next" className="scroll-mt-24">
+              <Card className="bg-white shadow-[0_2px_8px_rgba(0,0,0,0.1)] hover:shadow-[0_4px_12px_rgba(0,0,0,0.15)] transition-shadow">
+                <CardHeader>
+                  <CardTitle className="text-[#0078D4] text-3xl">What's Next?</CardTitle>
+                </CardHeader>
+                <CardContent className="space-y-4">
+                  <p className="text-[#605E5C] leading-relaxed">
+                    Once you're familiar with the models, you can explore each in detail. Use the navigation menu to dive deeper into individual features, input formats, and best practices.
+                  </p>
+                  <p className="text-[#605E5C] leading-relaxed">
+                    💬 Need help? Reach out at support@powermaker.ai or via the in-app chat.
+                  </p>
+                </CardContent>
+              </Card>
+            </section>
+
+            {/* Section 2: CRM Customizations 0.1 */}
+            <section id="crm-customizations-0-1" className="scroll-mt-24">
+              <Card className="bg-white shadow-[0_2px_8px_rgba(0,0,0,0.1)] hover:shadow-[0_4px_12px_rgba(0,0,0,0.15)] transition-shadow">
+                <CardHeader>
+                  <CardTitle className="text-[#0078D4] text-3xl">CRM Customizations 0.1</CardTitle>
+                </CardHeader>
+                <CardContent className="space-y-6">
+                  <p className="text-[#605E5C] leading-relaxed">
+                    The CRM Customizations model allows you to define new entities and fields for Microsoft Dynamics 365 CRM using natural language or a visual interface. It simplifies the schema design process—whether you're prototyping or working on live project specifications.
+                  </p>
+                  <p className="text-[#605E5C] leading-relaxed">
+                    This model is ideal for CRM developers, functional consultants, and solution designers who want to quickly design or generate entity definitions without diving into complex forms or technical configurations.
+                  </p>
+
+                  <div>
+                    <h3 className="text-xl font-semibold text-[#323130] mb-3">Key Capabilities</h3>
+                    <ul className="space-y-2 pl-4">
+                      <li className="flex items-start gap-2 text-[#605E5C]">
+                        <span className="text-[#0078D4] mt-1">•</span>
+                        <span>✅ Create custom entities from scratch.</span>
+                      </li>
+                      <li className="flex items-start gap-2 text-[#605E5C]">
+                        <span className="text-[#0078D4] mt-1">•</span>
+                        <span>✅ Add multiple fields (columns) using natural phrases.</span>
+                      </li>
+                      <li className="flex items-start gap-2 text-[#605E5C]">
+                        <span className="text-[#0078D4] mt-1">•</span>
+                        <span>✅ Choose from various field types: Text, Date, Number, Option Set, etc.</span>
+                      </li>
+                      <li className="flex items-start gap-2 text-[#605E5C]">
+                        <span className="text-[#0078D4] mt-1">•</span>
+                        <span>✅ Set field requirements (e.g., required, optional).</span>
+                      </li>
+                      <li className="flex items-start gap-2 text-[#605E5C]">
+                        <span className="text-[#0078D4] mt-1">•</span>
+                        <span>✅ Visualize schema before exporting.</span>
+                      </li>
+                      <li className="flex items-start gap-2 text-[#605E5C]">
+                        <span className="text-[#0078D4] mt-1">•</span>
+                        <span>🟡 Upcoming: Support for editing existing entities.</span>
+                      </li>
+                      <li className="flex items-start gap-2 text-[#605E5C]">
+                        <span className="text-[#0078D4] mt-1">•</span>
+                        <span>🟡 Upcoming: Support for relationships (lookups, N:N, 1:N).</span>
+                      </li>
+                    </ul>
+                  </div>
+
+                  <div>
+                    <h3 className="text-xl font-semibold text-[#323130] mb-3">How It Works</h3>
+                    <p className="text-[#605E5C] leading-relaxed mb-4">
+                      You can interact with the model in two main ways:
+                    </p>
+
+                    <div className="space-y-4">
+                      <div>
+                        <h4 className="font-semibold text-[#323130] mb-2">1. Natural Language Input</h4>
+                        <p className="text-[#605E5C] leading-relaxed mb-2">
+                          Just describe what you want to build.
+                        </p>
+                        <p className="font-semibold text-[#323130] mb-2">Example prompts:</p>
+                        <ul className="space-y-2 pl-4 mb-2">
+                          <li className="flex items-start gap-2 text-[#605E5C]">
+                            <span className="text-[#0078D4] mt-1">•</span>
+                            <span>"Create an entity called Project with fields: Project Name (text), Start Date (date), Status (option set)."</span>
+                          </li>
+                          <li className="flex items-start gap-2 text-[#605E5C]">
+                            <span className="text-[#0078D4] mt-1">•</span>
+                            <span>"I need an entity for Event Registration with attendee name, event date, and participation status."</span>
+                          </li>
+                        </ul>
+                        <p className="font-semibold text-[#323130] mb-2">The model will:</p>
+                        <ul className="space-y-2 pl-4">
+                          <li className="flex items-start gap-2 text-[#605E5C]">
+                            <span className="text-[#0078D4] mt-1">•</span>
+                            <span>Parse your intent.</span>
+                          </li>
+                          <li className="flex items-start gap-2 text-[#605E5C]">
+                            <span className="text-[#0078D4] mt-1">•</span>
+                            <span>Create a structured representation of the entity.</span>
+                          </li>
+                          <li className="flex items-start gap-2 text-[#605E5C]">
+                            <span className="text-[#0078D4] mt-1">•</span>
+                            <span>Suggest field types and requirement levels.</span>
+                          </li>
+                          <li className="flex items-start gap-2 text-[#605E5C]">
+                            <span className="text-[#0078D4] mt-1">•</span>
+                            <span>Let you fine-tune the result before generating output.</span>
+                          </li>
+                        </ul>
                       </div>
-                      <div className="bg-[#E3F2FD] p-3 rounded border border-[#0078D4]">
-                        <p className="text-xs text-[#605E5C] mb-1">AI Output Summary:</p>
-                        <ul className="text-sm text-[#323130] space-y-1">
-                          <li>✓ Created "Training Session" custom entity</li>
-                          <li>✓ Added 7 fields with appropriate data types</li>
-                          <li>✓ Configured N:N relationship with Contact</li>
-                          <li>✓ Generated main form with sections</li>
-                          <li>✓ Created Active Training Sessions view</li>
+
+                      <div>
+                        <h4 className="font-semibold text-[#323130] mb-2">2. Visual Field Designer (UI Controls)</h4>
+                        <p className="font-semibold text-[#323130] mb-2">For users who prefer structured input:</p>
+                        <ul className="space-y-2 pl-4">
+                          <li className="flex items-start gap-2 text-[#605E5C]">
+                            <span className="text-[#0078D4] mt-1">•</span>
+                            <span>Add or remove fields manually.</span>
+                          </li>
+                          <li className="flex items-start gap-2 text-[#605E5C]">
+                            <span className="text-[#0078D4] mt-1">•</span>
+                            <span>Select data types from a dropdown.</span>
+                          </li>
+                          <li className="flex items-start gap-2 text-[#605E5C]">
+                            <span className="text-[#0078D4] mt-1">•</span>
+                            <span>Set required/optional toggle.</span>
+                          </li>
+                          <li className="flex items-start gap-2 text-[#605E5C]">
+                            <span className="text-[#0078D4] mt-1">•</span>
+                            <span>Rename or reorder fields.</span>
+                          </li>
+                          <li className="flex items-start gap-2 text-[#605E5C]">
+                            <span className="text-[#0078D4] mt-1">•</span>
+                            <span>See a live preview of the entity schema.</span>
+                          </li>
                         </ul>
                       </div>
                     </div>
                   </div>
 
-                  <div className="flex items-start gap-2 p-4 bg-[#FFF4E5] border-l-4 border-[#FF8C00] rounded">
-                    <AlertCircle className="h-5 w-5 text-[#FF8C00] flex-shrink-0 mt-0.5" />
-                    <div className="text-sm text-[#323130]">
-                      <p className="font-semibold mb-1">Limitations:</p>
-                      <ul className="space-y-1">
-                        <li>• Complex calculated fields may require manual JavaScript customization</li>
-                        <li>• Advanced security roles must be configured separately</li>
-                        <li>• Integration with external systems requires additional setup</li>
-                      </ul>
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
-            </section>
-
-            {/* Plugin Tracing 0.2 */}
-            <section id="plugin-tracing" className="scroll-mt-24">
-              <Card className="bg-white shadow-[0_2px_8px_rgba(0,0,0,0.1)] opacity-75 hover:shadow-[0_4px_12px_rgba(0,0,0,0.15)] transition-all">
-                <CardHeader>
-                  <div className="flex items-center gap-3">
-                    <Activity className="h-6 w-6 text-[#605E5C]" />
-                    <div>
-                      <div className="flex items-center gap-2">
-                        <CardTitle className="text-[#605E5C] text-2xl">Plugin Tracing 0.2</CardTitle>
-                        <Badge variant="secondary" className="bg-[#0078D4] text-white">
-                          <Clock className="h-3 w-3 mr-1" />
-                          Coming Soon
-                        </Badge>
-                      </div>
-                      <CardDescription className="text-[#605E5C]">
-                        AI-powered plugin execution analysis and debugging
-                      </CardDescription>
-                    </div>
-                  </div>
-                </CardHeader>
-                <CardContent className="space-y-4">
-                  <p className="text-[#605E5C] leading-relaxed">
-                    Analyze plugin trace logs to identify performance bottlenecks, errors, and optimization opportunities.
-                  </p>
                   <div>
-                    <h4 className="font-semibold text-[#323130] mb-3">Planned Features:</h4>
-                    <ul className="space-y-2">
-                      <li className="flex items-start gap-2">
-                        <div className="w-1.5 h-1.5 rounded-full bg-[#605E5C] mt-2 flex-shrink-0"></div>
-                        <span className="text-[#605E5C]">Automatic error detection and root cause analysis</span>
+                    <h3 className="text-xl font-semibold text-[#323130] mb-3">Output</h3>
+                    <p className="font-semibold text-[#323130] mb-2">Once your entity is designed, you can:</p>
+                    <ul className="space-y-2 pl-4">
+                      <li className="flex items-start gap-2 text-[#605E5C]">
+                        <span className="text-[#0078D4] mt-1">•</span>
+                        <span>View a clean schema summary.</span>
                       </li>
-                      <li className="flex items-start gap-2">
-                        <div className="w-1.5 h-1.5 rounded-full bg-[#605E5C] mt-2 flex-shrink-0"></div>
-                        <span className="text-[#605E5C]">Performance metrics and execution timeline visualization</span>
+                      <li className="flex items-start gap-2 text-[#605E5C]">
+                        <span className="text-[#0078D4] mt-1">•</span>
+                        <span>See suggested logical names for fields.</span>
                       </li>
-                      <li className="flex items-start gap-2">
-                        <div className="w-1.5 h-1.5 rounded-full bg-[#605E5C] mt-2 flex-shrink-0"></div>
-                        <span className="text-[#605E5C]">Recommendations for code optimization</span>
+                      <li className="flex items-start gap-2 text-[#605E5C]">
+                        <span className="text-[#0078D4] mt-1">•</span>
+                        <span>Copy the configuration for CRM deployment (XML/JSON – coming soon).</span>
                       </li>
-                      <li className="flex items-start gap-2">
-                        <div className="w-1.5 h-1.5 rounded-full bg-[#605E5C] mt-2 flex-shrink-0"></div>
-                        <span className="text-[#605E5C]">Comparison of trace logs across multiple executions</span>
+                      <li className="flex items-start gap-2 text-[#605E5C]">
+                        <span className="text-[#0078D4] mt-1">•</span>
+                        <span>Use the structure for documentation or mockups.</span>
+                      </li>
+                    </ul>
+                  </div>
+
+                  <div>
+                    <h3 className="text-xl font-semibold text-[#323130] mb-3">Limitations</h3>
+                    <ul className="space-y-2 pl-4">
+                      <li className="flex items-start gap-2 text-[#605E5C]">
+                        <span className="text-[#0078D4] mt-1">•</span>
+                        <span>❌ Currently does not support editing existing entities (coming soon).</span>
+                      </li>
+                      <li className="text-[#605E5C]">
+                        <span>❌ Does not yet include:</span>
+                        <ul className="ml-4 mt-2 space-y-1">
+                          <li className="flex items-start gap-2">
+                            <span className="text-[#0078D4]">◦</span>
+                            <span>Entity icons or color customization</span>
+                          </li>
+                          <li className="flex items-start gap-2">
+                            <span className="text-[#0078D4]">◦</span>
+                            <span>Relationship definitions (N:1, 1:N, N:N)</span>
+                          </li>
+                          <li className="flex items-start gap-2">
+                            <span className="text-[#0078D4]">◦</span>
+                            <span>Business Rules, Views, or Forms</span>
+                          </li>
+                        </ul>
+                      </li>
+                      <li className="flex items-start gap-2 text-[#605E5C]">
+                        <span className="text-[#0078D4] mt-1">•</span>
+                        <span>❌ No direct CRM deployment (manual export only).</span>
+                      </li>
+                      <li className="flex items-start gap-2 text-[#605E5C]">
+                        <span className="text-[#0078D4] mt-1">•</span>
+                        <span>❌ For Lookup customizations, use the exact entity name for accurate results.</span>
+                      </li>
+                    </ul>
+                  </div>
+
+                  <div>
+                    <h3 className="text-xl font-semibold text-[#323130] mb-3">Example Use Cases</h3>
+                    <div className="overflow-x-auto my-4">
+                      <table className="w-full border-collapse border border-[#EDEBE9]">
+                        <thead>
+                          <tr className="bg-[#F3F2F1]">
+                            <th className="border border-[#EDEBE9] px-4 py-2 text-left font-semibold text-[#323130]">Scenario</th>
+                            <th className="border border-[#EDEBE9] px-4 py-2 text-left font-semibold text-[#323130]">How CRM Customizations Helps</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <tr className="hover:bg-[#FAF9F8]">
+                            <td className="border border-[#EDEBE9] px-4 py-2 text-[#605E5C]">Starting a new solution</td>
+                            <td className="border border-[#EDEBE9] px-4 py-2 text-[#605E5C]">Quickly draft entity structures with minimal clicks</td>
+                          </tr>
+                          <tr className="hover:bg-[#FAF9F8]">
+                            <td className="border border-[#EDEBE9] px-4 py-2 text-[#605E5C]">Business discussions</td>
+                            <td className="border border-[#EDEBE9] px-4 py-2 text-[#605E5C]">Use schema preview to align requirements visually</td>
+                          </tr>
+                          <tr className="hover:bg-[#FAF9F8]">
+                            <td className="border border-[#EDEBE9] px-4 py-2 text-[#605E5C]">Functional documentation</td>
+                            <td className="border border-[#EDEBE9] px-4 py-2 text-[#605E5C]">Export configurations to include in requirement specs</td>
+                          </tr>
+                          <tr className="hover:bg-[#FAF9F8]">
+                            <td className="border border-[#EDEBE9] px-4 py-2 text-[#605E5C]">Pre-dev planning</td>
+                            <td className="border border-[#EDEBE9] px-4 py-2 text-[#605E5C]">Save time by designing entities before going to PowerApps</td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+
+                  <div>
+                    <h3 className="text-xl font-semibold text-[#323130] mb-3">Best Practices</h3>
+                    <ul className="space-y-2 pl-4">
+                      <li className="flex items-start gap-2 text-[#605E5C]">
+                        <span className="text-[#0078D4] mt-1">•</span>
+                        <span>Start with natural language if you're unsure what fields you need—Power Maker AI will assist with intelligent defaults.</span>
+                      </li>
+                      <li className="flex items-start gap-2 text-[#605E5C]">
+                        <span className="text-[#0078D4] mt-1">•</span>
+                        <span>Use the visual designer to fine-tune and validate your schema.</span>
+                      </li>
+                      <li className="flex items-start gap-2 text-[#605E5C]">
+                        <span className="text-[#0078D4] mt-1">•</span>
+                        <span>Always review field names and types before exporting or using in a live CRM system.</span>
+                      </li>
+                      <li className="flex items-start gap-2 text-[#605E5C]">
+                        <span className="text-[#0078D4] mt-1">•</span>
+                        <span>Add entity descriptions for better context (future support coming).</span>
+                      </li>
+                    </ul>
+                  </div>
+
+                  <div>
+                    <h3 className="text-xl font-semibold text-[#323130] mb-3">Sample Prompt & Output</h3>
+                    <div className="space-y-4">
+                      <div>
+                        <h4 className="font-semibold text-[#323130] mb-2">Prompt:</h4>
+                        <p className="text-[#605E5C] leading-relaxed">
+                          "Create an entity called 'Onboarding Task' with fields: Task Name (text), Due Date (date), Assigned To (lookup to user), Completed (boolean)"
+                        </p>
+                      </div>
+                      <div>
+                        <h4 className="font-semibold text-[#323130] mb-2">Output Preview:</h4>
+                        <p className="text-[#605E5C] leading-relaxed mb-2">Entity: Onboarding Task</p>
+                        <p className="font-semibold text-[#323130] mb-2">Fields:</p>
+                        <ul className="space-y-2 pl-4">
+                          <li className="flex items-start gap-2 text-[#605E5C]">
+                            <span className="text-[#0078D4] mt-1">•</span>
+                            <span>Task Name (Text, Required)</span>
+                          </li>
+                          <li className="flex items-start gap-2 text-[#605E5C]">
+                            <span className="text-[#0078D4] mt-1">•</span>
+                            <span>Due Date (Date, Optional)</span>
+                          </li>
+                          <li className="flex items-start gap-2 text-[#605E5C]">
+                            <span className="text-[#0078D4] mt-1">•</span>
+                            <span>Assigned To (Lookup to User, Required)</span>
+                          </li>
+                          <li className="flex items-start gap-2 text-[#605E5C]">
+                            <span className="text-[#0078D4] mt-1">•</span>
+                            <span>Completed (Boolean, Optional)</span>
+                          </li>
+                        </ul>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div>
+                    <h3 className="text-xl font-semibold text-[#323130] mb-3">What's Next?</h3>
+                    <p className="font-semibold text-[#323130] mb-2">We're working on additional features such as:</p>
+                    <ul className="space-y-2 pl-4">
+                      <li className="flex items-start gap-2 text-[#605E5C]">
+                        <span className="text-[#0078D4] mt-1">•</span>
+                        <span>✨ Update existing entity metadata.</span>
+                      </li>
+                      <li className="flex items-start gap-2 text-[#605E5C]">
+                        <span className="text-[#0078D4] mt-1">•</span>
+                        <span>✨ Relationships (Lookups, N:N, 1:N).</span>
+                      </li>
+                      <li className="flex items-start gap-2 text-[#605E5C]">
+                        <span className="text-[#0078D4] mt-1">•</span>
+                        <span>✨ Direct deployment into CRM.</span>
+                      </li>
+                      <li className="flex items-start gap-2 text-[#605E5C]">
+                        <span className="text-[#0078D4] mt-1">•</span>
+                        <span>✨ Downloadable export formats for solution packaging.</span>
                       </li>
                     </ul>
                   </div>
@@ -550,113 +887,49 @@ const Documentation = () => {
               </Card>
             </section>
 
-            {/* CRM Expert 0.3 */}
-            <section id="crm-expert" className="scroll-mt-24">
-              <Card className="bg-white shadow-[0_2px_8px_rgba(0,0,0,0.1)] opacity-75 hover:shadow-[0_4px_12px_rgba(0,0,0,0.15)] transition-all">
-                <CardHeader>
-                  <div className="flex items-center gap-3">
-                    <GraduationCap className="h-6 w-6 text-[#605E5C]" />
-                    <div>
-                      <div className="flex items-center gap-2">
-                        <CardTitle className="text-[#605E5C] text-2xl">CRM Expert 0.3</CardTitle>
-                        <Badge variant="secondary" className="bg-[#0078D4] text-white">
-                          <Clock className="h-3 w-3 mr-1" />
-                          Coming Soon
-                        </Badge>
-                      </div>
-                      <CardDescription className="text-[#605E5C]">
-                        Expert guidance and best practices consultation
-                      </CardDescription>
-                    </div>
-                  </div>
-                </CardHeader>
-                <CardContent className="space-y-4">
-                  <p className="text-[#605E5C] leading-relaxed">
-                    Get expert advice on CRM architecture, design patterns, and troubleshooting complex scenarios.
-                  </p>
-                  <div>
-                    <h4 className="font-semibold text-[#323130] mb-3">Planned Capabilities:</h4>
-                    <ul className="space-y-2">
-                      <li className="flex items-start gap-2">
-                        <div className="w-1.5 h-1.5 rounded-full bg-[#605E5C] mt-2 flex-shrink-0"></div>
-                        <span className="text-[#605E5C]">Architecture review and recommendations</span>
-                      </li>
-                      <li className="flex items-start gap-2">
-                        <div className="w-1.5 h-1.5 rounded-full bg-[#605E5C] mt-2 flex-shrink-0"></div>
-                        <span className="text-[#605E5C]">Best practices for scalability and performance</span>
-                      </li>
-                      <li className="flex items-start gap-2">
-                        <div className="w-1.5 h-1.5 rounded-full bg-[#605E5C] mt-2 flex-shrink-0"></div>
-                        <span className="text-[#605E5C]">Security and compliance guidance</span>
-                      </li>
-                      <li className="flex items-start gap-2">
-                        <div className="w-1.5 h-1.5 rounded-full bg-[#605E5C] mt-2 flex-shrink-0"></div>
-                        <span className="text-[#605E5C]">Troubleshooting complex integration issues</span>
-                      </li>
-                      <li className="flex items-start gap-2">
-                        <div className="w-1.5 h-1.5 rounded-full bg-[#605E5C] mt-2 flex-shrink-0"></div>
-                        <span className="text-[#605E5C]">Code review and optimization suggestions</span>
-                      </li>
-                    </ul>
-                  </div>
-                </CardContent>
-              </Card>
-            </section>
-
-            {/* What's Next */}
-            <section id="whats-next" className="scroll-mt-24">
+            {/* Section 3: Plugin Tracing 0.2 */}
+            <section id="plugin-tracing-0-2" className="scroll-mt-24">
               <Card className="bg-white shadow-[0_2px_8px_rgba(0,0,0,0.1)] hover:shadow-[0_4px_12px_rgba(0,0,0,0.15)] transition-shadow">
                 <CardHeader>
-                  <div className="flex items-center gap-2">
-                    <ArrowRight className="h-6 w-6 text-[#0078D4]" />
-                    <CardTitle className="text-[#0078D4] text-2xl">What's Next?</CardTitle>
-                  </div>
+                  <CardTitle className="text-[#0078D4] text-3xl">Plugin Tracing 0.2</CardTitle>
                 </CardHeader>
-                <CardContent className="space-y-4">
+                <CardContent className="space-y-6">
                   <p className="text-[#605E5C] leading-relaxed">
-                    Ready to accelerate your CRM development? Here are your next steps:
+                    The Plugin Tracing model in Power Maker AI helps you analyze Microsoft Dynamics 365 CRM plugin trace logs using natural language queries. Instead of manually inspecting complex trace logs, this model simplifies diagnostics by extracting meaningful summaries and exception insights from raw plugin data.
                   </p>
-                  <div className="grid md:grid-cols-2 gap-4">
-                    <a 
-                      href="#crm-connection" 
-                      className="p-4 border-2 border-[#EDEBE9] rounded-lg hover:border-[#0078D4] hover:shadow-md transition-all cursor-pointer group"
-                    >
-                      <div className="flex items-center gap-2 mb-2">
-                        <Settings className="h-5 w-5 text-[#0078D4]" />
-                        <h4 className="font-semibold text-[#323130] group-hover:text-[#0078D4]">Configure CRM Connection</h4>
-                      </div>
-                      <p className="text-sm text-[#605E5C]">Set up your environment and connect to Dynamics 365</p>
-                    </a>
-                    <a 
-                      href="#customizations" 
-                      className="p-4 border-2 border-[#EDEBE9] rounded-lg hover:border-[#0078D4] hover:shadow-md transition-all cursor-pointer group"
-                    >
-                      <div className="flex items-center gap-2 mb-2">
-                        <Wrench className="h-5 w-5 text-[#0078D4]" />
-                        <h4 className="font-semibold text-[#323130] group-hover:text-[#0078D4]">Try CRM Customizations</h4>
-                      </div>
-                      <p className="text-sm text-[#605E5C]">Start building custom entities and workflows</p>
-                    </a>
-                  </div>
-                  <div className="p-4 bg-[#F3F2F1] rounded-lg border border-[#EDEBE9]">
-                    <h4 className="font-semibold text-[#323130] mb-2">Need Help?</h4>
-                    <p className="text-sm text-[#605E5C] mb-3">
-                      Our team is here to support your CRM development journey.
-                    </p>
-                    <Button variant="outline" className="border-[#0078D4] text-[#0078D4] hover:bg-[#0078D4] hover:text-white">
-                      Contact Support
-                    </Button>
-                  </div>
+                  <p className="text-[#605E5C] leading-relaxed">
+                    It is designed for developers, testers, admins, and support teams to accelerate debugging, reduce analysis effort, and communicate issues more clearly.
+                  </p>
+                </CardContent>
+              </Card>
+            </section>
+
+            {/* Section 4: CRM Expert 0.3 */}
+            <section id="crm-expert-0-3" className="scroll-mt-24">
+              <Card className="bg-white shadow-[0_2px_8px_rgba(0,0,0,0.1)] hover:shadow-[0_4px_12px_rgba(0,0,0,0.15)] transition-shadow">
+                <CardHeader>
+                  <CardTitle className="text-[#0078D4] text-3xl">CRM Expert 0.3</CardTitle>
+                </CardHeader>
+                <CardContent className="space-y-6">
+                  <p className="text-[#605E5C] leading-relaxed">
+                    The CRM Expert model is an intelligent, chat-like assistant designed to perform a wide range of Microsoft Dynamics CRM tasks through natural language commands. It acts as your AI-powered CRM co-pilot—capable of handling data operations, entity customizations, and plugin trace analysis without needing to navigate complex UI or write FetchXML manually.
+                  </p>
+                  <p className="text-[#605E5C] leading-relaxed">
+                    It's ideal for developers, analysts, managers, testers, and anyone seeking a conversational way to work with CRM.
+                  </p>
                 </CardContent>
               </Card>
             </section>
           </div>
 
           {/* Footer */}
-          <footer className="bg-white border-t border-[#EDEBE9] py-8 mt-16">
-            <div className="max-w-[900px] mx-auto px-8 text-center">
+          <footer className="bg-[#F3F2F1] border-t border-[#EDEBE9] py-8 px-8">
+            <div className="max-w-[900px] mx-auto text-center">
               <p className="text-sm text-[#605E5C]">
-                Powered by <span className="font-semibold">xAI</span> | © 2025 Power Maker AI
+                Powered by xAI
+              </p>
+              <p className="text-sm text-[#605E5C] mt-2">
+                © 2025 Power Maker AI. All rights reserved.
               </p>
             </div>
           </footer>
