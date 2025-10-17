@@ -1,5 +1,5 @@
-import { useState, useEffect } from "react";
-import { Cpu, Menu, X, ChevronRight, BookOpen, CheckCircle2, AlertCircle, Code2, Database, Settings } from "lucide-react";
+import { useState } from "react";
+import { Cpu, Menu, X, ChevronRight, BookOpen, CheckCircle2, AlertCircle, Code2, Database, Settings, ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 const sidebarStructure = [
@@ -617,16 +617,16 @@ const ContentBlock = ({ item }: { item: any }) => {
     case "text":
       return (
         <p
-          className="text-sm md:text-base text-foreground leading-relaxed"
+          className="text-[15px] leading-relaxed text-foreground/90"
           dangerouslySetInnerHTML={{ __html: item.value }}
         />
       );
 
     case "alert":
       const alertStyles = {
-        info: "bg-accent/10 border-accent/30 text-accent-foreground",
-        warning: "bg-destructive/10 border-destructive/30 text-destructive",
-        success: "bg-green-50 border-green-300 text-green-900 dark:bg-green-900/10 dark:text-green-400 dark:border-green-700"
+        info: "bg-accent/10 border-l-4 border-accent text-accent-foreground",
+        warning: "bg-orange-50 dark:bg-orange-950/20 border-l-4 border-orange-400 text-orange-900 dark:text-orange-300",
+        success: "bg-emerald-50 dark:bg-emerald-950/20 border-l-4 border-emerald-500 text-emerald-900 dark:text-emerald-300"
       };
       const alertIcons = {
         info: CheckCircle2,
@@ -636,29 +636,26 @@ const ContentBlock = ({ item }: { item: any }) => {
       const AlertIcon = alertIcons[item.severity as keyof typeof alertIcons];
 
       return (
-        <div
-          className={`flex gap-2 md:gap-3 p-3 md:p-4 rounded-lg border text-sm md:text-base ${
-            alertStyles[item.severity as keyof typeof alertStyles]
-          }`}
-        >
-          <AlertIcon className="w-4 h-4 md:w-5 md:h-5 flex-shrink-0 mt-0.5" />
-          <div dangerouslySetInnerHTML={{ __html: item.value }} />
+        <div className={`flex gap-3 p-4 rounded-r-lg ${alertStyles[item.severity as keyof typeof alertStyles]}`}>
+          <AlertIcon className="w-5 h-5 flex-shrink-0 mt-0.5" />
+          <div className="text-sm leading-relaxed" dangerouslySetInnerHTML={{ __html: item.value }} />
         </div>
       );
 
     case "list":
       return (
-        <div className="space-y-2">
+        <div className="space-y-2.5">
           {item.label && (
-            <p className="font-medium text-sm md:text-base text-foreground" dangerouslySetInnerHTML={{ __html: item.label }} />
+            <p className="font-semibold text-[15px] text-foreground" dangerouslySetInnerHTML={{ __html: item.label }} />
           )}
-          <ul className="space-y-2 ml-4 md:ml-6">
+          <ul className="space-y-2.5 ml-1">
             {item.items.map((listItem: string, idx: number) => (
-              <li
-                key={idx}
-                className="text-sm md:text-base text-foreground leading-relaxed list-disc"
-                dangerouslySetInnerHTML={{ __html: listItem }}
-              />
+              <li key={idx} className="flex items-start gap-3 text-[15px] text-foreground/90 leading-relaxed">
+                <span className="flex-shrink-0 mt-1.5">
+                  <div className="w-1.5 h-1.5 rounded-full bg-primary" />
+                </span>
+                <span className="flex-1" dangerouslySetInnerHTML={{ __html: listItem }} />
+              </li>
             ))}
           </ul>
         </div>
@@ -666,35 +663,31 @@ const ContentBlock = ({ item }: { item: any }) => {
 
     case "table":
       return (
-        <div className="overflow-x-auto rounded-lg border border-border -mx-4 md:mx-0">
-          <table className="w-full min-w-[600px]">
-            <thead className="bg-muted/50">
-              <tr>
-                {item.headers.map((header: string, idx: number) => (
-                  <th
-                    key={idx}
-                    className="px-4 md:px-6 py-2 md:py-3 text-left text-xs md:text-sm font-semibold text-foreground"
-                  >
-                    {header}
-                  </th>
-                ))}
-              </tr>
-            </thead>
-            <tbody className="divide-y divide-border">
-              {item.rows.map((row: string[], rowIdx: number) => (
-                <tr key={rowIdx} className="hover:bg-muted/30 transition-colors">
-                  {row.map((cell: string, cellIdx: number) => (
-                    <td
-                      key={cellIdx}
-                      className="px-4 md:px-6 py-3 md:py-4 text-xs md:text-sm text-foreground"
-                    >
-                      {cell}
-                    </td>
+        <div className="overflow-hidden rounded-xl border border-border shadow-sm">
+          <div className="overflow-x-auto">
+            <table className="w-full min-w-[600px]">
+              <thead className="bg-muted/50">
+                <tr>
+                  {item.headers.map((header: string, idx: number) => (
+                    <th key={idx} className="px-6 py-4 text-left text-sm font-semibold text-foreground border-b border-border">
+                      {header}
+                    </th>
                   ))}
                 </tr>
-              ))}
-            </tbody>
-          </table>
+              </thead>
+              <tbody className="bg-card">
+                {item.rows.map((row: string[], rowIdx: number) => (
+                  <tr key={rowIdx} className="border-b border-border last:border-0 hover:bg-muted/30 transition-colors">
+                    {row.map((cell: string, cellIdx: number) => (
+                      <td key={cellIdx} className="px-6 py-4 text-sm text-foreground/90">
+                        {cell}
+                      </td>
+                    ))}
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
         </div>
       );
 
@@ -739,15 +732,15 @@ const Documentation = () => {
               toggleSection(section.id);
               scrollToSection(section.id);
             }}
-            className={`w-full flex items-center justify-between px-3 py-2.5 rounded-lg text-left transition-all ${
+            className={`w-full flex items-center justify-between px-4 py-3 rounded-lg text-left transition-all group ${
               isActive
                 ? "bg-primary text-primary-foreground shadow-sm"
-                : "hover:bg-muted/80 text-foreground"
+                : "hover:bg-muted/70 text-foreground"
             }`}
           >
-            <div className="flex items-center gap-2.5">
-              <Icon className="w-4 h-4 flex-shrink-0" />
-              <span className="font-medium text-sm">{section.title}</span>
+            <div className="flex items-center gap-3">
+              <Icon className="w-[18px] h-[18px] flex-shrink-0" />
+              <span className="font-semibold text-[14px]">{section.title}</span>
             </div>
             <ChevronRight
               className={`w-4 h-4 transition-transform flex-shrink-0 ${
@@ -757,14 +750,14 @@ const Documentation = () => {
           </button>
 
           {isExpanded && section.children && (
-            <div className="mt-1 ml-6 space-y-0.5">
+            <div className="mt-1 ml-8 space-y-0.5 border-l-2 border-border pl-4">
               {section.children.map((child) => (
                 <button
                   key={child.id}
                   onClick={() => scrollToSection(child.id)}
-                  className={`w-full text-left px-3 py-2 rounded-md text-sm transition-colors ${
+                  className={`w-full text-left px-3 py-2 rounded-md text-[13px] transition-colors ${
                     activeSection === child.id
-                      ? "text-primary font-medium bg-primary/10"
+                      ? "text-primary font-semibold bg-primary/10"
                       : "text-muted-foreground hover:text-foreground hover:bg-muted/50"
                   }`}
                 >
@@ -783,14 +776,17 @@ const Documentation = () => {
     if (!data) return null;
 
     return (
-      <div className="space-y-6 md:space-y-8 animate-fade-in">
+      <div className="space-y-8 animate-fade-in">
         {/* Section Header */}
-        <div className="space-y-3 md:space-y-4 pb-4 md:pb-6 border-b border-border">
-          <h1 className="text-2xl md:text-3xl lg:text-4xl font-bold text-foreground tracking-tight leading-tight">
-            {data.title}
-          </h1>
+        <div className="space-y-4">
+          <div className="flex items-center gap-3 mb-2">
+            <div className="w-1 h-10 bg-primary rounded-full" />
+            <h1 className="text-3xl md:text-4xl font-bold text-foreground tracking-tight">
+              {data.title}
+            </h1>
+          </div>
           {data.description && (
-            <p className="text-base md:text-lg text-muted-foreground leading-relaxed">
+            <p className="text-lg text-muted-foreground leading-relaxed pl-7">
               {data.description}
             </p>
           )}
@@ -798,7 +794,7 @@ const Documentation = () => {
 
         {/* Main Content */}
         {data.content && (
-          <div className="space-y-4 md:space-y-6">
+          <div className="space-y-5 pl-7">
             {data.content.map((item: any, idx: number) => (
               <ContentBlock key={idx} item={item} />
             ))}
@@ -807,8 +803,8 @@ const Documentation = () => {
 
         {/* Subtitle */}
         {data.subtitle && (
-          <div className="bg-card border border-border rounded-lg md:rounded-xl p-4 md:p-6 shadow-sm">
-            <h2 className="text-xl md:text-2xl font-semibold text-foreground">
+          <div className="bg-gradient-to-r from-primary/5 to-transparent border-l-4 border-primary rounded-r-xl p-6 pl-7">
+            <h2 className="text-2xl font-bold text-foreground">
               {data.subtitle}
             </h2>
           </div>
@@ -817,19 +813,19 @@ const Documentation = () => {
         {/* Sections */}
         {data.sections &&
           data.sections.map((section: any, idx: number) => (
-            <div
-              key={idx}
-              className="bg-card border border-border rounded-lg md:rounded-xl p-4 md:p-6 lg:p-8 shadow-sm space-y-4 md:space-y-6"
-            >
+            <div key={idx} className="bg-card border border-border rounded-2xl p-8 shadow-sm hover:shadow-md transition-all">
               {section.subtitle && (
-                <h3 className="text-lg md:text-xl font-semibold text-foreground">
+                <h3 className="text-xl font-bold text-foreground mb-6 flex items-center gap-3">
+                  <div className="w-1.5 h-6 bg-primary rounded-full" />
                   {section.subtitle}
                 </h3>
               )}
-              {section.content &&
-                section.content.map((item: any, itemIdx: number) => (
-                  <ContentBlock key={itemIdx} item={item} />
-                ))}
+              <div className="space-y-5 pl-6">
+                {section.content &&
+                  section.content.map((item: any, itemIdx: number) => (
+                    <ContentBlock key={itemIdx} item={item} />
+                  ))}
+              </div>
             </div>
           ))}
       </div>
@@ -837,9 +833,9 @@ const Documentation = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-background via-background to-muted/20">
+    <div className="min-h-screen bg-background">
       {/* Fixed Header */}
-      <header className="fixed top-0 left-0 right-0 h-16 bg-background/95 backdrop-blur-sm border-b border-border z-50 shadow-sm">
+      <header className="fixed top-0 left-0 right-0 h-16 bg-card/95 backdrop-blur-md border-b border-border z-50 shadow-sm">
         <div className="h-full px-4 md:px-6 flex items-center justify-between max-w-[1600px] mx-auto">
           <div className="flex items-center gap-3">
             <Button
@@ -850,17 +846,19 @@ const Documentation = () => {
             >
               {sidebarOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
             </Button>
-            <div className="relative">
-              <Cpu className="w-7 h-7 md:w-8 md:h-8 text-primary" />
-              <div className="absolute inset-0 bg-primary/20 blur-xl rounded-full" />
-            </div>
-            <div>
-              <h1 className="text-lg md:text-xl font-bold text-foreground">Power Maker AI</h1>
-              <p className="text-xs text-muted-foreground hidden sm:block">Documentation</p>
+            <div className="flex items-center gap-3">
+              <div className="w-10 h-10 bg-primary rounded-xl flex items-center justify-center shadow-sm">
+                <Cpu className="w-5 h-5 text-primary-foreground" />
+              </div>
+              <div>
+                <h1 className="text-lg font-bold text-foreground">Power Maker AI</h1>
+                <p className="text-xs text-muted-foreground hidden sm:block">Documentation</p>
+              </div>
             </div>
           </div>
-          <Button className="hidden sm:inline-flex" onClick={() => scrollToSection("quickstart")}>
+          <Button className="hidden sm:inline-flex gap-2" onClick={() => scrollToSection("quickstart")}>
             Get Started
+            <ArrowRight className="w-4 h-4" />
           </Button>
         </div>
       </header>
@@ -877,42 +875,44 @@ const Documentation = () => {
 
         {/* Sidebar */}
         <aside className={`
-          fixed left-0 top-16 bottom-0 w-72 bg-card/95 backdrop-blur-sm border-r border-border overflow-y-auto z-50
+          fixed left-0 top-16 bottom-0 w-80 bg-card/50 backdrop-blur-md border-r border-border overflow-y-auto z-50
           transition-transform duration-300 ease-in-out
           ${sidebarOpen ? 'translate-x-0' : '-translate-x-full'}
           lg:translate-x-0 lg:z-40
         `}>
-          <nav className="p-4 md:p-6 space-y-1">{renderSidebarItems()}</nav>
+          <nav className="p-6 space-y-1">{renderSidebarItems()}</nav>
         </aside>
 
         {/* Main Content */}
-        <main className="flex-1 lg:ml-72 min-h-screen">
+        <main className="flex-1 lg:ml-80 min-h-screen">
           {/* Hero Section */}
-          <section className="relative h-48 md:h-56 lg:h-64 bg-gradient-to-br from-primary via-primary/90 to-accent overflow-hidden">
-            <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHZpZXdCb3g9IjAgMCA2MCA2MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZyBmaWxsPSJub25lIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiPjxwYXRoIGQ9Ik0zNiAxOGMzLjMxNCAwIDYgMi42ODYgNiA2cy0yLjY4NiA2LTYgNi02LTIuNjg2LTYtNiAyLjY4Ni02IDYtNnoiIHN0cm9rZT0iI2ZmZiIgc3Ryb2tlLW9wYWNpdHk9Ii4xIi8+PC9nPjwvc3ZnPg==')] opacity-10" />
-            <div className="relative h-full flex flex-col items-center justify-center text-center px-4 md:px-6 z-10">
-              <h1 className="text-2xl md:text-4xl lg:text-5xl font-bold text-white mb-2 md:mb-4 drop-shadow-lg leading-tight">
+          <section className="relative h-72 bg-gradient-to-br from-primary via-primary to-accent overflow-hidden">
+            <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHZpZXdCb3g9IjAgMCA2MCA2MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZyBmaWxsPSJub25lIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiPjxwYXRoIGQ9Ik0zNiAxOGMzLjMxNCAwIDYgMi42ODYgNiA2cy0yLjY4NiA2LTYgNi02LTIuNjg2LTYtNiAyLjY4Ni02IDYtNnoiIHN0cm9rZT0iI2ZmZiIgc3Ryb2tlLW9wYWNpdHk9Ii4wNSIvPjwvZz48L3N2Zz4=')] opacity-30" />
+            <div className="relative h-full flex flex-col items-center justify-center text-center px-6 z-10">
+              <h1 className="text-5xl font-bold text-white mb-4 drop-shadow-lg">
                 Welcome to Power Maker AI
               </h1>
-              <p className="text-sm md:text-lg lg:text-xl text-white/90 mb-4 md:mb-6 max-w-3xl drop-shadow px-4">
+              <p className="text-xl text-white/90 mb-8 max-w-2xl drop-shadow">
                 Your AI Assistant for Dynamics 365 CRM – Accelerate development, analysis, and automation
               </p>
-              <Button 
-                className="bg-white text-primary hover:bg-white/90 shadow-lg hover:shadow-xl hidden md:inline-flex"
+              <Button
+                size="lg"
+                className="bg-white text-primary hover:bg-white/90 shadow-xl hover:shadow-2xl font-semibold gap-2"
                 onClick={() => scrollToSection("quickstart")}
               >
                 Get Started
+                <ArrowRight className="w-5 h-5" />
               </Button>
-              <p className="text-xs md:text-sm text-white/70 mt-2 md:mt-4 italic">
+              <p className="text-sm text-white/70 mt-6 italic">
                 Official language support currently available in English only
               </p>
             </div>
           </section>
 
           {/* Documentation Content */}
-          <div className="max-w-5xl mx-auto px-4 md:px-6 lg:px-8 py-8 md:py-12">
+          <div className="max-w-4xl mx-auto px-6 md:px-8 py-12">
             {Object.entries(docData).map(([key]) => (
-              <div key={key} id={key} className="scroll-mt-24 mb-8 md:mb-12">
+              <div key={key} id={key} className="scroll-mt-24 mb-16">
                 {activeSection === key && renderContent()}
               </div>
             ))}
