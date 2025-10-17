@@ -48,7 +48,7 @@ const Navigation = () => {
             Home
           </button>
           <button
-            onClick={() => window.open("https://powermakerai.com/Documentation/", "_blank")}
+            onClick={() => {window.open("/docs", "_blank")}}
             className="text-sm text-primary hover:text-accent transition-colors"
           >
             Documentation
