@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
-import { Cpu, Menu, X, ChevronDown, Search, BookOpen, Zap, Shield, ArrowRight, CheckCircle2, AlertCircle, Code2, Database, Settings } from "lucide-react";
+import { Cpu, Menu, X, ChevronRight, BookOpen, CheckCircle2, AlertCircle, Code2, Database, Settings } from "lucide-react";
+import { Button } from "@/components/ui/button";
 
 const sidebarStructure = [
   {
@@ -460,7 +461,12 @@ const docData: Record<string, any> = {
       {
         subtitle: "Output Preview:",
         content: [
-          { type: "code", value: "3 Logs Found\n\n1. Plugin: PostContactUpdate\nDate: July 25, 2025\nStatus: Failed\nSummary: NullReferenceException in line 42 of UpdateContactMethod()\nException: Object reference not set to an instance of an object.\n[View Full Trace] [Copy Summary]" }
+          { type: "text", value: "<strong>3 Logs Found</strong>" },
+          { type: "text", value: "1. <strong>Plugin:</strong> PostContactUpdate" },
+          { type: "text", value: "<strong>Date:</strong> July 25, 2025" },
+          { type: "text", value: "<strong>Status:</strong> Failed" },
+          { type: "text", value: "<strong>Summary:</strong> NullReferenceException in line 42 of UpdateContactMethod()" },
+          { type: "text", value: "<strong>Exception:</strong> Object reference not set to an instance of an object." }
         ]
       }
     ]
@@ -488,11 +494,11 @@ const docData: Record<string, any> = {
     title: "Key Capabilities",
     content: [
       { type: "list", items: [
-        "Perform CRUD operations (Create, Read, Update, Delete) on records using plain English",
-        "Ask questions like 'Get all open leads created last week' or 'Update the contact record for John Doe'",
-        "Create new entities and fields through guided natural commands",
-        "Search and analyze plugin trace logs like the Plugin Tracing model",
-        "Combine multiple operations in one query (e.g., 'Create an entity and add two fields')"
+        "✅ Perform CRUD operations (Create, Read, Update, Delete) on records using plain English",
+        "✅ Ask questions like 'Get all open leads created last week' or 'Update the contact record for John Doe'",
+        "✅ Create new entities and fields through guided natural commands",
+        "✅ Search and analyze plugin trace logs like the Plugin Tracing model",
+        "✅ Combine multiple operations in one query (e.g., \"Create an entity and add two fields\")"
       ]}
     ]
   },
@@ -529,10 +535,10 @@ const docData: Record<string, any> = {
     title: "Input/Output Behavior",
     content: [
       { type: "table", headers: ["Input Type", "Behavior"], rows: [
-        ["Query (e.g., 'Get active accounts')", "Returns table of matching records"],
-        ["Instruction (e.g., 'Update contact with ID X')", "Performs the operation and returns success/failure"],
-        ["Customization Request (e.g., 'Add a choice field to lead')", "Guides you through creation"],
-        ["Error Log Query (e.g., 'What plugin failed for lead update?')", "Returns plugin trace with explanation"]
+        ["Query (e.g., \"Get active accounts\")", "Returns table of matching records"],
+        ["Instruction (e.g., \"Update contact with ID X\")", "Performs the operation and returns success/failure"],
+        ["Customization Request (e.g., \"Add a choice field to lead\")", "Guides you through creation"],
+        ["Error Log Query (e.g., \"What plugin failed for lead update?\")", "Returns plugin trace with explanation"]
       ]},
       { type: "list", label: "Outputs are shown in:", items: [
         "Tables (for records)",
@@ -606,106 +612,105 @@ const docData: Record<string, any> = {
   }
 };
 
-const renderContent = (item: any, index: number) => {
-  if (item.type === "text") {
-    return (
-      <p key={index} className="text-slate-700 leading-relaxed text-[15px]" dangerouslySetInnerHTML={{ __html: item.value }} />
-    );
-  }
+const ContentBlock = ({ item }: { item: any }) => {
+  switch (item.type) {
+    case "text":
+      return (
+        <p
+          className="text-sm md:text-base text-foreground leading-relaxed"
+          dangerouslySetInnerHTML={{ __html: item.value }}
+        />
+      );
 
-  if (item.type === "list") {
-    return (
-      <div key={index} className="space-y-2">
-        {item.label && <p className="font-medium text-slate-900 mb-2 text-sm" dangerouslySetInnerHTML={{ __html: item.label }} />}
-        <ul className="space-y-2.5 pl-1">
-          {item.items.map((listItem: string, i: number) => (
-            <li key={i} className="flex items-start gap-3 text-slate-700 text-[15px] group">
-              <span className="mt-1.5 flex-shrink-0">
-                <CheckCircle2 className="w-4 h-4 text-[#2A9D8F]" />
-              </span>
-              <span dangerouslySetInnerHTML={{ __html: listItem }} className="flex-1" />
-            </li>
-          ))}
-        </ul>
-      </div>
-    );
-  }
+    case "alert":
+      const alertStyles = {
+        info: "bg-accent/10 border-accent/30 text-accent-foreground",
+        warning: "bg-destructive/10 border-destructive/30 text-destructive",
+        success: "bg-green-50 border-green-300 text-green-900 dark:bg-green-900/10 dark:text-green-400 dark:border-green-700"
+      };
+      const alertIcons = {
+        info: CheckCircle2,
+        warning: AlertCircle,
+        success: CheckCircle2
+      };
+      const AlertIcon = alertIcons[item.severity as keyof typeof alertIcons];
 
-  if (item.type === "alert") {
-    const alertStyles = {
-      info: "bg-[#E7F1FF] border-[#3A7CCF] text-[#123C66]",
-      warning: "bg-[#FFF3CD] border-[#F4A261] text-[#E76F51]",
-      error: "bg-[#F8D7DA] border-[#E63946] text-[#B71C1C]",
-      success: "bg-[#D1FAE5] border-[#2A9D8F] text-[#1B7A6D]"
-    };
-    return (
-      <div key={index} className={`flex items-start gap-3 p-4 border rounded-xl ${alertStyles[item.severity as keyof typeof alertStyles]}`}>
-        <AlertCircle className="w-5 h-5 flex-shrink-0 mt-0.5 opacity-80" />
-        <p className="text-sm leading-relaxed" dangerouslySetInnerHTML={{ __html: item.value }} />
-      </div>
-    );
-  }
+      return (
+        <div
+          className={`flex gap-2 md:gap-3 p-3 md:p-4 rounded-lg border text-sm md:text-base ${
+            alertStyles[item.severity as keyof typeof alertStyles]
+          }`}
+        >
+          <AlertIcon className="w-4 h-4 md:w-5 md:h-5 flex-shrink-0 mt-0.5" />
+          <div dangerouslySetInnerHTML={{ __html: item.value }} />
+        </div>
+      );
 
-  if (item.type === "table") {
-    return (
-      <div key={index} className="overflow-x-auto my-6">
-        <table className="w-full border-collapse">
-          <thead>
-            <tr className="bg-[#fffeeec]">
-              {item.headers.map((header: string, i: number) => (
-                <th key={i} className="border border-slate-200 px-4 py-3 text-left text-sm font-semibold text-slate-900">
-                  {header}
-                </th>
-              ))}
-            </tr>
-          </thead>
-          <tbody>
-            {item.rows.map((row: string[], i: number) => (
-              <tr key={i} className="hover:bg-slate-50 transition-colors">
-                {row.map((cell: string, j: number) => (
-                  <td key={j} className="border border-slate-200 px-4 py-3 text-sm text-slate-700">
-                    {cell}
-                  </td>
+    case "list":
+      return (
+        <div className="space-y-2">
+          {item.label && (
+            <p className="font-medium text-sm md:text-base text-foreground" dangerouslySetInnerHTML={{ __html: item.label }} />
+          )}
+          <ul className="space-y-2 ml-4 md:ml-6">
+            {item.items.map((listItem: string, idx: number) => (
+              <li
+                key={idx}
+                className="text-sm md:text-base text-foreground leading-relaxed list-disc"
+                dangerouslySetInnerHTML={{ __html: listItem }}
+              />
+            ))}
+          </ul>
+        </div>
+      );
+
+    case "table":
+      return (
+        <div className="overflow-x-auto rounded-lg border border-border -mx-4 md:mx-0">
+          <table className="w-full min-w-[600px]">
+            <thead className="bg-muted/50">
+              <tr>
+                {item.headers.map((header: string, idx: number) => (
+                  <th
+                    key={idx}
+                    className="px-4 md:px-6 py-2 md:py-3 text-left text-xs md:text-sm font-semibold text-foreground"
+                  >
+                    {header}
+                  </th>
                 ))}
               </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
-    );
-  }
+            </thead>
+            <tbody className="divide-y divide-border">
+              {item.rows.map((row: string[], rowIdx: number) => (
+                <tr key={rowIdx} className="hover:bg-muted/30 transition-colors">
+                  {row.map((cell: string, cellIdx: number) => (
+                    <td
+                      key={cellIdx}
+                      className="px-4 md:px-6 py-3 md:py-4 text-xs md:text-sm text-foreground"
+                    >
+                      {cell}
+                    </td>
+                  ))}
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      );
 
-  if (item.type === "code") {
-    return (
-      <div key={index} className="my-4 p-4 bg-slate-900 rounded-lg overflow-x-auto">
-        <pre className="text-sm text-slate-100 whitespace-pre-wrap font-mono">{item.value}</pre>
-      </div>
-    );
+    default:
+      return null;
   }
-
-  return null;
 };
 
-function App() {
+const Documentation = () => {
   const [activeSection, setActiveSection] = useState("get-started");
-  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
-  const [expandedSections, setExpandedSections] = useState(["get-started"]);
-  const [scrollProgress, setScrollProgress] = useState(0);
-
-  useEffect(() => {
-    const handleScroll = () => {
-      const totalHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
-      const progress = (window.scrollY / totalHeight) * 100;
-      setScrollProgress(progress);
-    };
-
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
+  const [expandedSections, setExpandedSections] = useState<string[]>(["get-started"]);
+  const [sidebarOpen, setSidebarOpen] = useState(false);
 
   const scrollToSection = (id: string) => {
     setActiveSection(id);
-    setIsSidebarOpen(false);
+    setSidebarOpen(false);
     const element = document.getElementById(id);
     if (element) {
       const offset = 100;
@@ -716,212 +721,206 @@ function App() {
   };
 
   const toggleSection = (id: string) => {
-    setExpandedSections(prev => prev.includes(id) ? prev.filter(s => s !== id) : [...prev, id]);
+    setExpandedSections(prev =>
+      prev.includes(id) ? prev.filter(s => s !== id) : [...prev, id]
+    );
+  };
+
+  const renderSidebarItems = () => {
+    return sidebarStructure.map((section) => {
+      const Icon = section.icon;
+      const isExpanded = expandedSections.includes(section.id);
+      const isActive = activeSection === section.id;
+
+      return (
+        <div key={section.id} className="mb-1">
+          <button
+            onClick={() => {
+              toggleSection(section.id);
+              scrollToSection(section.id);
+            }}
+            className={`w-full flex items-center justify-between px-3 py-2.5 rounded-lg text-left transition-all ${
+              isActive
+                ? "bg-primary text-primary-foreground shadow-sm"
+                : "hover:bg-muted/80 text-foreground"
+            }`}
+          >
+            <div className="flex items-center gap-2.5">
+              <Icon className="w-4 h-4 flex-shrink-0" />
+              <span className="font-medium text-sm">{section.title}</span>
+            </div>
+            <ChevronRight
+              className={`w-4 h-4 transition-transform flex-shrink-0 ${
+                isExpanded ? "rotate-90" : ""
+              }`}
+            />
+          </button>
+
+          {isExpanded && section.children && (
+            <div className="mt-1 ml-6 space-y-0.5">
+              {section.children.map((child) => (
+                <button
+                  key={child.id}
+                  onClick={() => scrollToSection(child.id)}
+                  className={`w-full text-left px-3 py-2 rounded-md text-sm transition-colors ${
+                    activeSection === child.id
+                      ? "text-primary font-medium bg-primary/10"
+                      : "text-muted-foreground hover:text-foreground hover:bg-muted/50"
+                  }`}
+                >
+                  {child.title}
+                </button>
+              ))}
+            </div>
+          )}
+        </div>
+      );
+    });
+  };
+
+  const renderContent = () => {
+    const data = docData[activeSection];
+    if (!data) return null;
+
+    return (
+      <div className="space-y-6 md:space-y-8 animate-fade-in">
+        {/* Section Header */}
+        <div className="space-y-3 md:space-y-4 pb-4 md:pb-6 border-b border-border">
+          <h1 className="text-2xl md:text-3xl lg:text-4xl font-bold text-foreground tracking-tight leading-tight">
+            {data.title}
+          </h1>
+          {data.description && (
+            <p className="text-base md:text-lg text-muted-foreground leading-relaxed">
+              {data.description}
+            </p>
+          )}
+        </div>
+
+        {/* Main Content */}
+        {data.content && (
+          <div className="space-y-4 md:space-y-6">
+            {data.content.map((item: any, idx: number) => (
+              <ContentBlock key={idx} item={item} />
+            ))}
+          </div>
+        )}
+
+        {/* Subtitle */}
+        {data.subtitle && (
+          <div className="bg-card border border-border rounded-lg md:rounded-xl p-4 md:p-6 shadow-sm">
+            <h2 className="text-xl md:text-2xl font-semibold text-foreground">
+              {data.subtitle}
+            </h2>
+          </div>
+        )}
+
+        {/* Sections */}
+        {data.sections &&
+          data.sections.map((section: any, idx: number) => (
+            <div
+              key={idx}
+              className="bg-card border border-border rounded-lg md:rounded-xl p-4 md:p-6 lg:p-8 shadow-sm space-y-4 md:space-y-6"
+            >
+              {section.subtitle && (
+                <h3 className="text-lg md:text-xl font-semibold text-foreground">
+                  {section.subtitle}
+                </h3>
+              )}
+              {section.content &&
+                section.content.map((item: any, itemIdx: number) => (
+                  <ContentBlock key={itemIdx} item={item} />
+                ))}
+            </div>
+          ))}
+      </div>
+    );
   };
 
   return (
-    <div className="min-h-screen bg-[#fffeeec]">
-      <div className="fixed top-0 left-0 right-0 h-1 bg-slate-200 z-[60]">
-        <div className="h-full bg-gradient-to-r from-[#0A2342] via-[#1E4D8F] to-[#3A7CCF] transition-all duration-300" style={{ width: `${scrollProgress}%` }} />
-      </div>
-
-      <header className="fixed top-0 left-0 right-0 h-16 bg-white/95 backdrop-blur-xl border-b border-slate-200/80 z-50">
-        <div className="max-w-[1600px] mx-auto px-6 lg:px-8 h-full flex items-center justify-between">
-          <div className="flex items-center gap-4">
-            <button
-              onClick={() => setIsSidebarOpen(!isSidebarOpen)}
-              className="lg:hidden p-2 hover:bg-slate-100 rounded-lg transition-colors"
+    <div className="min-h-screen bg-gradient-to-b from-background via-background to-muted/20">
+      {/* Fixed Header */}
+      <header className="fixed top-0 left-0 right-0 h-16 bg-background/95 backdrop-blur-sm border-b border-border z-50 shadow-sm">
+        <div className="h-full px-4 md:px-6 flex items-center justify-between max-w-[1600px] mx-auto">
+          <div className="flex items-center gap-3">
+            <Button
+              variant="ghost"
+              size="icon"
+              className="lg:hidden"
+              onClick={() => setSidebarOpen(!sidebarOpen)}
             >
-              {isSidebarOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
-            </button>
-            <div className="flex items-center gap-3">
-              <div className="w-9 h-9 bg-gradient-to-br from-[#1E4D8F] to-[#0A2342] rounded-lg flex items-center justify-center shadow-sm">
-                <Cpu className="w-5 h-5 text-white" />
-              </div>
-              <div>
-                <span className="text-lg font-bold text-slate-900">Power Maker AI</span>
-                <span className="hidden sm:inline text-xs text-slate-500 ml-2">Documentation</span>
-              </div>
+              {sidebarOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
+            </Button>
+            <div className="relative">
+              <Cpu className="w-7 h-7 md:w-8 md:h-8 text-primary" />
+              <div className="absolute inset-0 bg-primary/20 blur-xl rounded-full" />
+            </div>
+            <div>
+              <h1 className="text-lg md:text-xl font-bold text-foreground">Power Maker AI</h1>
+              <p className="text-xs text-muted-foreground hidden sm:block">Documentation</p>
             </div>
           </div>
-          <button
-            onClick={() => scrollToSection("quickstart")}
-            className="bg-gradient-to-r from-[#1E4D8F] to-[#123C66] hover:from-[#0A2342] hover:to-[#1E4D8F] text-white rounded-lg px-5 py-2 text-sm font-medium transition-all flex items-center gap-2 shadow-sm hover:shadow-md"
-          >
-            Get Started <ArrowRight className="w-4 h-4" />
-          </button>
+          <Button className="hidden sm:inline-flex" onClick={() => scrollToSection("quickstart")}>
+            Get Started
+          </Button>
         </div>
       </header>
 
-      <div className="max-w-[1600px] mx-auto pt-16 flex">
-        {isSidebarOpen && (
+      {/* Main Layout */}
+      <div className="flex pt-16 max-w-[1600px] mx-auto">
+        {/* Sidebar - Mobile Overlay */}
+        {sidebarOpen && (
           <div
-            className="fixed inset-0 bg-slate-900/20 backdrop-blur-sm z-40 lg:hidden"
-            onClick={() => setIsSidebarOpen(false)}
+            className="fixed inset-0 bg-background/80 backdrop-blur-sm z-40 lg:hidden"
+            onClick={() => setSidebarOpen(false)}
           />
         )}
 
-        <aside className={`fixed lg:sticky top-16 left-0 h-[calc(100vh-4rem)] w-80 bg-[#fffeeec] border-r border-slate-200 overflow-y-auto z-40 transition-transform duration-300 ease-in-out ${isSidebarOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'}`}>
-          <div className="p-6">
-            {/* <div className="mb-6 relative">
-              <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
-              <input
-                type="text"
-                placeholder="Search documentation..."
-                className="w-full pl-10 pr-4 py-2.5 text-sm border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#1E4D8F]/20 focus:border-[#1E4D8F] transition-all bg-white"
-              />
-            </div> */}
-
-            <nav className="space-y-1">
-              {sidebarStructure.map((section) => {
-                const Icon = section.icon;
-                return (
-                  <div key={section.id} className="space-y-0.5">
-                    <button
-                      onClick={() => { scrollToSection(section.id); toggleSection(section.id); }}
-                      className={`w-full flex items-center justify-between px-3 py-2.5 rounded-lg text-sm font-semibold transition-all ${activeSection === section.id ? 'bg-[#E7F1FF] text-[#123C66]' : 'text-slate-700 hover:bg-slate-50'}`}
-                    >
-                      <span className="flex items-center gap-2">
-                        <Icon className="w-4 h-4" />
-                        {section.title}
-                      </span>
-                      <ChevronDown className={`w-4 h-4 transition-transform ${expandedSections.includes(section.id) ? 'rotate-180' : ''}`} />
-                    </button>
-
-                    {section.children && expandedSections.includes(section.id) && (
-                      <div className="ml-3 pl-4 border-l-2 border-slate-100 space-y-0.5 py-1">
-                        {section.children.map((child) => (
-                          <button
-                            key={child.id}
-                            onClick={() => scrollToSection(child.id)}
-                            className={`w-full text-left px-3 py-2 rounded-lg text-sm transition-all ${activeSection === child.id ? 'text-[#123C66] bg-[#E7F1FF] font-medium' : 'text-slate-600 hover:text-slate-900 hover:bg-slate-50'}`}
-                          >
-                            {child.title}
-                          </button>
-                        ))}
-                      </div>
-                    )}
-                  </div>
-                );
-              })}
-            </nav>
-          </div>
+        {/* Sidebar */}
+        <aside className={`
+          fixed left-0 top-16 bottom-0 w-72 bg-card/95 backdrop-blur-sm border-r border-border overflow-y-auto z-50
+          transition-transform duration-300 ease-in-out
+          ${sidebarOpen ? 'translate-x-0' : '-translate-x-full'}
+          lg:translate-x-0 lg:z-40
+        `}>
+          <nav className="p-4 md:p-6 space-y-1">{renderSidebarItems()}</nav>
         </aside>
 
-        <main className="flex-1 min-w-0">
-          <section className="relative bg-gradient-to-br from-[#0A2342] via-[#1E4D8F] to-[#123C66] text-white px-8 lg:px-12 py-24 overflow-hidden">
-            <div className="absolute inset-0 opacity-10" style={{ backgroundImage: 'radial-gradient(circle at 2px 2px, white 1px, transparent 1px)', backgroundSize: '48px 48px' }} />
-            <div className="absolute top-20 right-20 w-96 h-96 bg-[#3A7CCF]/20 rounded-full blur-3xl" />
-            <div className="absolute bottom-20 left-20 w-80 h-80 bg-[#1E4D8F]/20 rounded-full blur-3xl" />
-
-            <div className="max-w-4xl mx-auto relative">
-              <div className="inline-flex items-center gap-2 px-4 py-1.5 bg-white/10 backdrop-blur-sm rounded-full mb-6 border border-white/20">
-                <Zap className="w-4 h-4 text-[#296488]" />
-                <span className="text-sm font-medium">AI-Powered CRM Assistant</span>
-              </div>
-              <h1 className="text-5xl lg:text-6xl font-bold mb-6 leading-tight">
-                Welcome to<br />
-                <span className="bg-gradient-to-r from-[#3A7CCF] to-[#296488] bg-clip-text text-transparent">Power Maker AI</span>
+        {/* Main Content */}
+        <main className="flex-1 lg:ml-72 min-h-screen">
+          {/* Hero Section */}
+          <section className="relative h-48 md:h-56 lg:h-64 bg-gradient-to-br from-primary via-primary/90 to-accent overflow-hidden">
+            <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHZpZXdCb3g9IjAgMCA2MCA2MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZyBmaWxsPSJub25lIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiPjxwYXRoIGQ9Ik0zNiAxOGMzLjMxNCAwIDYgMi42ODYgNiA2cy0yLjY4NiA2LTYgNi02LTIuNjg2LTYtNiAyLjY4Ni02IDYtNnoiIHN0cm9rZT0iI2ZmZiIgc3Ryb2tlLW9wYWNpdHk9Ii4xIi8+PC9nPjwvc3ZnPg==')] opacity-10" />
+            <div className="relative h-full flex flex-col items-center justify-center text-center px-4 md:px-6 z-10">
+              <h1 className="text-2xl md:text-4xl lg:text-5xl font-bold text-white mb-2 md:mb-4 drop-shadow-lg leading-tight">
+                Welcome to Power Maker AI
               </h1>
-              <p className="text-xl mb-8 text-slate-200 leading-relaxed max-w-2xl">
-                Your AI Assistant for Dynamics 365 CRM – Accelerate CRM development, analysis, and automation with natural language-powered models.
+              <p className="text-sm md:text-lg lg:text-xl text-white/90 mb-4 md:mb-6 max-w-3xl drop-shadow px-4">
+                Your AI Assistant for Dynamics 365 CRM – Accelerate development, analysis, and automation
               </p>
-              <div className="flex flex-wrap gap-4">
-                <button
-                  onClick={() => scrollToSection("quickstart")}
-                  className="bg-white text-slate-900 hover:bg-slate-100 font-semibold px-8 py-3.5 rounded-lg shadow-lg hover:shadow-xl transition-all flex items-center gap-2"
-                >
-                  Get Started <ArrowRight className="w-5 h-5" />
-                </button>
-                <button
-                  onClick={() => scrollToSection("overview")}
-                  className="border-2 border-white/30 text-white hover:bg-white/10 backdrop-blur-sm font-semibold px-8 py-3.5 rounded-lg flex items-center gap-2 transition-all"
-                >
-                  <BookOpen className="w-5 h-5" /> View Docs
-                </button>
-              </div>
-              <p className="text-sm text-slate-300 mt-8 flex items-center gap-2">
-                <Shield className="w-4 h-4" />
+              <Button 
+                className="bg-white text-primary hover:bg-white/90 shadow-lg hover:shadow-xl hidden md:inline-flex"
+                onClick={() => scrollToSection("quickstart")}
+              >
+                Get Started
+              </Button>
+              <p className="text-xs md:text-sm text-white/70 mt-2 md:mt-4 italic">
                 Official language support currently available in English only
               </p>
             </div>
           </section>
 
-          <div className="max-w-4xl mx-auto px-8 lg:px-12 py-16 space-y-12">
-            {Object.entries(docData).map(([key, section]: [string, any]) => (
-              <article key={key} id={key} className="scroll-mt-24 group">
-                <div className="bg-white border border-slate-200 rounded-2xl overflow-hidden shadow-sm hover:shadow-lg transition-all duration-300">
-                  <div className="h-1.5 bg-gradient-to-r from-[#0A2342] via-[#1E4D8F] to-[#3A7CCF]" />
-                  <div className="p-8 lg:p-10">
-                    <div className="flex items-start gap-4 mb-6">
-                      <div className="w-12 h-12 bg-gradient-to-br from-[#E7F1FF] to-[#3A7CCF]/20 rounded-xl flex items-center justify-center flex-shrink-0">
-                        <BookOpen className="w-6 h-6 text-[#123C66]" />
-                      </div>
-                      <div className="flex-1">
-                        <h2 className="text-3xl font-bold text-slate-900 mb-2">{section.title}</h2>
-                        {section.description && (
-                          <p className="text-slate-600 text-base leading-relaxed">{section.description}</p>
-                        )}
-                      </div>
-                    </div>
-
-                    <div className="space-y-6">
-                      {section.subtitle && (
-                        <h3 className="text-xl font-semibold text-slate-900 flex items-center gap-2">
-                          <span className="w-1.5 h-6 bg-gradient-to-b from-[#1E4D8F] to-[#123C66] rounded-full" />
-                          {section.subtitle}
-                        </h3>
-                      )}
-
-                      {section.content && (
-                        <div className="space-y-4 pl-0">
-                          {section.content.map((item: any, itemIdx: number) => renderContent(item, itemIdx))}
-                        </div>
-                      )}
-
-                      {section.sections?.map((subsection: any, idx: number) => (
-                        <div key={idx} className="space-y-4">
-                          {subsection.subtitle && (
-                            <h3 className="text-xl font-semibold text-slate-900 flex items-center gap-2 mt-8">
-                              <span className="w-1.5 h-6 bg-gradient-to-b from-[#1E4D8F] to-[#123C66] rounded-full" />
-                              {subsection.subtitle}
-                            </h3>
-                          )}
-                          <div className="space-y-4 pl-3.5">
-                            {subsection.content?.map((item: any, itemIdx: number) => renderContent(item, itemIdx))}
-                          </div>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-                </div>
-              </article>
+          {/* Documentation Content */}
+          <div className="max-w-5xl mx-auto px-4 md:px-6 lg:px-8 py-8 md:py-12">
+            {Object.entries(docData).map(([key]) => (
+              <div key={key} id={key} className="scroll-mt-24 mb-8 md:mb-12">
+                {activeSection === key && renderContent()}
+              </div>
             ))}
           </div>
-
-          {/* <footer className="bg-gradient-to-br from-slate-900 to-slate-800 border-t border-slate-700 py-12 px-8 lg:px-12 mt-16">
-            <div className="max-w-4xl mx-auto">
-              <div className="flex flex-col md:flex-row justify-between items-center gap-6">
-                <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 bg-gradient-to-br from-[#1E4D8F] to-[#0A2342] rounded-lg flex items-center justify-center">
-                    <Cpu className="w-6 h-6 text-white" />
-                  </div>
-                  <div>
-                    <div className="font-bold text-white">Power Maker AI</div>
-                    <div className="text-sm text-slate-400">Powered by xAI</div>
-                  </div>
-                </div>
-                <div className="text-center md:text-right">
-                  <p className="text-sm text-slate-400">© 2025 Power Maker AI. All rights reserved.</p>
-                  <p className="text-xs text-slate-500 mt-1">support@powermaker.ai</p>
-                </div>
-              </div>
-            </div>
-          </footer> */}
         </main>
       </div>
     </div>
   );
-}
+};
 
-export default App;
+export default Documentation;
