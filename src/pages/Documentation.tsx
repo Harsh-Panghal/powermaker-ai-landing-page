@@ -1,6 +1,7 @@
-import { useState } from "react";
-import { Cpu, Menu, X, ChevronRight, BookOpen, CheckCircle2, AlertCircle, Code2, Database, Settings, ArrowRight } from "lucide-react";
+import { useState, useEffect } from "react";
+import { Cpu, Menu, X, ChevronRight, BookOpen, CheckCircle2, AlertCircle, Code2, Database, Settings, ArrowRight, Sparkles, Info, AlertTriangle } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { Card } from "@/components/ui/card";
 
 const sidebarStructure = [
   {
@@ -393,10 +394,9 @@ const docData: Record<string, any> = {
             "Interactive link to view trace details"
           ]},
           { type: "list", label: "Each detail view includes:", items: [
-            "💡 Friendly Summary of the error",
-            "📄 Exception message",
-            "🧩 Stack trace context",
-            "🔍 Raw trace (copyable)"
+            "Complete stack trace",
+            "Exception message",
+            "Error location and line number (if available)"
           ]}
         ]
       }
@@ -405,14 +405,10 @@ const docData: Record<string, any> = {
   "output-plugin": {
     title: "Output",
     content: [
-      { type: "list", label: "The Plugin Tracing model outputs results in a two-level format:", items: [
-        "Table View: Summary of all matching logs",
-        "Expanded View: Detailed explanation with exception messages"
-      ]},
-      { type: "list", label: "You can:", items: [
-        "Copy a readable summary for use in tickets/emails",
-        "Inspect stack trace for root cause",
-        "Save raw log if needed for manual CRM troubleshooting"
+      { type: "list", label: "The Plugin Tracing model provides:", items: [
+        "A summary table of plugin trace logs matching your query.",
+        "Detailed views for each log with exception details and stack traces.",
+        "Copy-to-clipboard functionality for sharing with your team."
       ]}
     ]
   },
@@ -420,21 +416,21 @@ const docData: Record<string, any> = {
     title: "Limitations",
     content: [
       { type: "list", items: [
-        "❌ Does not currently connect live to CRM to pull plugin logs (requires import or preloaded logs)",
-        "❌ Cannot show logs that are not recorded in plugin trace settings",
-        "❌ May not parse highly custom or encrypted logs correctly",
-        "❌ Does not yet support advanced filtering by GUIDs, depth, or correlation IDs (coming soon)"
+        "❌ Currently requires manual upload of plugin trace logs (coming soon: live CRM integration).",
+        "❌ Works best with standard plugin trace format from Dynamics 365.",
+        "❌ Does not support custom trace log formats at this time.",
+        "❌ Large trace logs may require pagination or filtering."
       ]}
     ]
   },
   "examples-plugin": {
     title: "Example Use Cases",
     content: [
-      { type: "table", headers: ["Scenario", "Benefit"], rows: [
-        ["QA tester sees an error but doesn't understand it", "Ask the model to explain the log clearly"],
-        ["Developer debugging a failed plugin", "Quickly locate the line or method that caused failure"],
-        ["Support team creating a bug ticket", "Copy the readable exception and attach it"],
-        ["Manager wants a non-technical error summary", "Use friendly explanation to share update"]
+      { type: "table", headers: ["Scenario", "How Plugin Tracing Helps"], rows: [
+        ["Debugging plugin errors", "Quickly identify exception messages and error locations"],
+        ["Performance analysis", "View execution times and identify slow plugins"],
+        ["Support tickets", "Export trace summaries to share with support teams"],
+        ["Post-deployment testing", "Verify plugin behavior after CRM updates"]
       ]}
     ]
   },
@@ -442,10 +438,10 @@ const docData: Record<string, any> = {
     title: "Best Practices",
     content: [
       { type: "list", items: [
-        "Keep plugin tracing enabled only for the relevant period to avoid data overload.",
-        "Use concise natural queries (e.g., 'failures for Lead plugin last 3 days') for accurate filtering.",
-        "Double-check trace depth settings in CRM to ensure logs capture full context.",
-        "Export key logs for your support documentation (feature in development)."
+        "Start with broad queries and refine based on results.",
+        "Use entity names and date ranges to narrow down results.",
+        "Always review the full stack trace for context before applying fixes.",
+        "Export trace summaries for documentation or support tickets."
       ]}
     ]
   },
@@ -455,18 +451,18 @@ const docData: Record<string, any> = {
       {
         subtitle: "Prompt:",
         content: [
-          { type: "text", value: "'Show plugin trace logs for failed plugins in the Contact entity this week'" }
+          { type: "text", value: "'Show all plugin errors for the Account entity from the last 24 hours'" }
         ]
       },
       {
         subtitle: "Output Preview:",
         content: [
-          { type: "text", value: "<strong>3 Logs Found</strong>" },
-          { type: "text", value: "1. <strong>Plugin:</strong> PostContactUpdate" },
-          { type: "text", value: "<strong>Date:</strong> July 25, 2025" },
-          { type: "text", value: "<strong>Status:</strong> Failed" },
-          { type: "text", value: "<strong>Summary:</strong> NullReferenceException in line 42 of UpdateContactMethod()" },
-          { type: "text", value: "<strong>Exception:</strong> Object reference not set to an instance of an object." }
+          { type: "text", value: "<strong>Results:</strong> 3 plugin errors found for Account entity" },
+          { type: "list", items: [
+            "PostAccountUpdate - Error: Object reference not set to an instance of an object",
+            "PreAccountCreate - Error: Timeout expired. The timeout period elapsed",
+            "PostAccountUpdate - Error: Invalid plugin execution context"
+          ]}
         ]
       }
     ]
@@ -474,31 +470,33 @@ const docData: Record<string, any> = {
   "coming-soon-plugin": {
     title: "Coming Soon",
     content: [
-      { type: "text", value: "We're actively working to extend plugin tracing functionality with:" },
-      { type: "list", items: [
-        "🔄 Live sync from CRM environments via authenticated connectors",
-        "📁 Export trace summaries to PDF or text for tickets",
-        "🚦 Auto-classification of error types (e.g., null reference, unauthorized, timeout)"
+      { type: "list", label: "We're enhancing Plugin Tracing with:", items: [
+        "🔗 Direct integration with CRM plugin trace logs (no manual upload)",
+        "📊 Visual charts for plugin performance and error trends",
+        "🤖 AI-powered root cause analysis and fix suggestions",
+        "📄 Export to PDF or Excel for reporting"
       ]},
-      { type: "text", value: "💬 For feedback or support, contact support@powermaker.ai" }
+      { type: "text", value: "💡 Plugin Tracing turns complex logs into actionable insights — debug faster, ship better." }
     ]
   },
   "crm-expert": {
     title: "CRM Expert 0.3",
-    description: "The CRM Expert model is an intelligent, chat-like assistant designed to perform a wide range of Microsoft Dynamics CRM tasks through natural language commands. It acts as your AI-powered CRM co-pilot—capable of handling data operations, entity customizations, and plugin trace analysis without needing to navigate complex UI or write FetchXML manually.",
+    description: "CRM Expert is your conversational AI assistant for all things Dynamics 365 CRM. It allows you to perform data operations, troubleshoot issues, and explore CRM configurations using natural language—no complex queries or technical knowledge required.",
     content: [
-      { type: "text", value: "It's ideal for developers, analysts, managers, testers, and anyone seeking a conversational way to work with CRM." }
+      { type: "text", value: "Whether you need to query records, update data, or get guidance on CRM best practices, CRM Expert is here to help." }
     ]
   },
   "capabilities-expert": {
     title: "Key Capabilities",
     content: [
       { type: "list", items: [
-        "✅ Perform CRUD operations (Create, Read, Update, Delete) on records using plain English",
-        "✅ Ask questions like 'Get all open leads created last week' or 'Update the contact record for John Doe'",
-        "✅ Create new entities and fields through guided natural commands",
-        "✅ Search and analyze plugin trace logs like the Plugin Tracing model",
-        "✅ Combine multiple operations in one query (e.g., \"Create an entity and add two fields\")"
+        "✅ Query CRM data using natural language (e.g., 'Show all active contacts in New York').",
+        "✅ Perform data operations (Create, Read, Update, Delete) through conversation.",
+        "✅ Get configuration guidance and best practices.",
+        "✅ Troubleshoot errors and provide diagnostic insights.",
+        "✅ Explain CRM concepts and relationships.",
+        "🟡 Upcoming: Direct CRM integration for live data operations.",
+        "🟡 Upcoming: Advanced analytics and reporting."
       ]}
     ]
   },
@@ -506,26 +504,31 @@ const docData: Record<string, any> = {
     title: "How It Works",
     sections: [
       {
-        subtitle: "1. Conversational Interface",
+        subtitle: "1. Conversational Queries",
         content: [
-          { type: "text", value: "You interact with CRM Expert like you would with ChatGPT or Gemini. It's available in a chat-style UI and is context-aware — meaning you can have follow-up conversations without repeating everything." },
+          { type: "text", value: "Simply type what you want to do or know in plain English." },
           { type: "list", label: "Examples:", items: [
-            "'Show me all opportunities in the pipeline stage'",
-            "'Add a new field called ProjectCode (Text) to the Project entity'",
-            "'Update all leads with source = 'Event' to source = 'Webinar''",
-            "'What plugins failed yesterday?'"
+            "'List all opportunities created this month'",
+            "'How do I create a custom entity?'",
+            "'Update all inactive accounts to status Archived'"
+          ]},
+          { type: "list", label: "CRM Expert will:", items: [
+            "Understand your intent",
+            "Generate appropriate FetchXML or actions",
+            "Return results in a readable format",
+            "Provide context and explanations"
           ]}
         ]
       },
       {
-        subtitle: "2. Smart Interpretation",
+        subtitle: "2. Data Operations",
         content: [
-          { type: "text", value: "The model breaks down your query into intent and context, then performs one or more CRM API operations accordingly." },
-          { type: "list", label: "Behind the scenes, it:", items: [
-            "Identifies the object (entity, field, plugin, etc.)",
-            "Maps your words to corresponding CRM schema",
-            "Validates your request",
-            "Executes the operation or retrieves information"
+          { type: "list", label: "Supported operations:", items: [
+            "Retrieve records with filters",
+            "Create new records",
+            "Update existing records",
+            "Delete records (with confirmation)",
+            "Bulk operations (coming soon)"
           ]}
         ]
       }
@@ -534,16 +537,16 @@ const docData: Record<string, any> = {
   "behavior-expert": {
     title: "Input/Output Behavior",
     content: [
-      { type: "table", headers: ["Input Type", "Behavior"], rows: [
-        ["Query (e.g., \"Get active accounts\")", "Returns table of matching records"],
-        ["Instruction (e.g., \"Update contact with ID X\")", "Performs the operation and returns success/failure"],
-        ["Customization Request (e.g., \"Add a choice field to lead\")", "Guides you through creation"],
-        ["Error Log Query (e.g., \"What plugin failed for lead update?\")", "Returns plugin trace with explanation"]
+      { type: "list", label: "Input:", items: [
+        "Natural language queries or commands",
+        "Follow-up questions to refine results",
+        "Context from previous interactions"
       ]},
-      { type: "list", label: "Outputs are shown in:", items: [
-        "Tables (for records)",
-        "Visual confirmations (for success/failure)",
-        "Summaries (for trace logs)"
+      { type: "list", label: "Output:", items: [
+        "Data tables with results",
+        "Confirmation messages for operations",
+        "Guidance and explanations",
+        "Error messages with troubleshooting tips"
       ]}
     ]
   },
@@ -551,22 +554,21 @@ const docData: Record<string, any> = {
     title: "Limitations",
     content: [
       { type: "list", items: [
-        "❌ Cannot yet delete entities or fields (for safety reasons)",
-        "❌ Some complex FetchXML conditions (like joins or aggregation) are not fully supported",
-        "❌ Cannot bulk import records (planned)",
-        "❌ Limited context memory — long conversations may lose earlier reference"
+        "❌ Currently operates in simulation mode (no live CRM connection by default).",
+        "❌ Requires clear context for complex operations.",
+        "❌ Best for exploratory queries, not high-volume automation.",
+        "❌ May require follow-up clarification for ambiguous requests."
       ]}
     ]
   },
   "examples-expert": {
     title: "Example Use Cases",
     content: [
-      { type: "table", headers: ["Task", "Prompt"], rows: [
-        ["Quickly pull a CRM report", "'Get all accounts created last 30 days'"],
-        ["Modify a record without UI", "'Update phone number for contact John Smith to 9876543210'"],
-        ["Add a new custom field", "'Add a currency field Budget to Opportunity entity'"],
-        ["Debug plugin issue", "'Show failed plugin logs for Account updates yesterday'"],
-        ["Test logic in UAT", "'Create a dummy lead with source as Test Campaign'"]
+      { type: "table", headers: ["Scenario", "How CRM Expert Helps"], rows: [
+        ["Data exploration", "Query records without writing FetchXML"],
+        ["Quick updates", "Update records through conversation"],
+        ["Learning CRM", "Get explanations and guidance on CRM concepts"],
+        ["Troubleshooting", "Diagnose errors and get fix suggestions"]
       ]}
     ]
   },
@@ -574,10 +576,10 @@ const docData: Record<string, any> = {
     title: "Best Practices",
     content: [
       { type: "list", items: [
-        "Use clear and specific language: 'Update lead named John' works better than 'fix the lead'",
-        "For updates or deletes, always confirm record identifiers like names or GUIDs",
-        "Group related requests in the same session for smoother conversation",
-        "Use Plugin Tracing or CRM Customization models directly if your task is complex or bulk-oriented"
+        "Be specific with your queries to get accurate results.",
+        "Provide context when asking follow-up questions.",
+        "Review results before confirming bulk operations.",
+        "Use CRM Expert for learning and exploration, not production automation."
       ]}
     ]
   },
@@ -587,13 +589,19 @@ const docData: Record<string, any> = {
       {
         subtitle: "Prompt:",
         content: [
-          { type: "text", value: "'Update the phone number for contact 'Priya Sharma' to 9876543210'" }
+          { type: "text", value: "'Show all contacts in California with email addresses'" }
         ]
       },
       {
-        subtitle: "Output:",
+        subtitle: "Output Preview:",
         content: [
-          { type: "alert", severity: "success", value: "✅ Successfully updated phone number for Priya Sharma (Contact ID: 5a3b...)." }
+          { type: "text", value: "<strong>Results:</strong> Found 42 contacts in California" },
+          { type: "list", items: [
+            "John Doe - john.doe@example.com",
+            "Jane Smith - jane.smith@example.com",
+            "Bob Johnson - bob.johnson@example.com"
+          ]},
+          { type: "text", value: "Would you like to export these results or refine the query?" }
         ]
       }
     ]
@@ -616,70 +624,81 @@ const ContentBlock = ({ item }: { item: any }) => {
   switch (item.type) {
     case "text":
       return (
-        <p
-          className="text-[15px] leading-relaxed text-foreground/90"
-          dangerouslySetInnerHTML={{ __html: item.value }}
-        />
+        <div className="prose prose-slate max-w-none">
+          <p className="text-muted-foreground leading-relaxed text-base" dangerouslySetInnerHTML={{ __html: item.value }} />
+        </div>
       );
 
     case "alert":
-      const alertStyles = {
-        info: "bg-accent/10 border-l-4 border-accent text-accent-foreground",
-        warning: "bg-orange-50 dark:bg-orange-950/20 border-l-4 border-orange-400 text-orange-900 dark:text-orange-300",
-        success: "bg-emerald-50 dark:bg-emerald-950/20 border-l-4 border-emerald-500 text-emerald-900 dark:text-emerald-300"
+      const alertConfig = {
+        info: { 
+          bg: "bg-accent/5 border-accent/20 hover:border-accent/30", 
+          icon: Info,
+          iconColor: "text-accent"
+        },
+        warning: { 
+          bg: "bg-secondary/5 border-secondary/20 hover:border-secondary/30", 
+          icon: AlertTriangle,
+          iconColor: "text-secondary"
+        },
+        success: { 
+          bg: "bg-primary/5 border-primary/20 hover:border-primary/30", 
+          icon: CheckCircle2,
+          iconColor: "text-primary"
+        }
       };
-      const alertIcons = {
-        info: CheckCircle2,
-        warning: AlertCircle,
-        success: CheckCircle2
-      };
-      const AlertIcon = alertIcons[item.severity as keyof typeof alertIcons];
-
+      const config = alertConfig[item.severity as keyof typeof alertConfig] || alertConfig.info;
+      const AlertIcon = config.icon;
+      
       return (
-        <div className={`flex gap-3 p-4 rounded-r-lg ${alertStyles[item.severity as keyof typeof alertStyles]}`}>
-          <AlertIcon className="w-5 h-5 flex-shrink-0 mt-0.5" />
-          <div className="text-sm leading-relaxed" dangerouslySetInnerHTML={{ __html: item.value }} />
+        <div className={`p-5 rounded-xl border-l-4 ${config.bg} transition-all duration-300 backdrop-blur-sm`}>
+          <div className="flex items-start gap-4">
+            <div className={`w-8 h-8 rounded-lg ${config.iconColor} bg-current/10 flex items-center justify-center flex-shrink-0`}>
+              <AlertIcon className="w-5 h-5" />
+            </div>
+            <p className="text-sm leading-relaxed" dangerouslySetInnerHTML={{ __html: item.value }} />
+          </div>
         </div>
       );
 
     case "list":
       return (
-        <div className="space-y-2.5">
+        <Card className="p-6 bg-gradient-to-br from-card to-card/50 border-primary/10 shadow-sm hover:shadow-md transition-all duration-300">
           {item.label && (
-            <p className="font-semibold text-[15px] text-foreground" dangerouslySetInnerHTML={{ __html: item.label }} />
+            <p className="font-semibold text-foreground mb-4 flex items-center gap-2" dangerouslySetInnerHTML={{ __html: item.label }} />
           )}
-          <ul className="space-y-2.5 ml-1">
+          <ul className="space-y-3 list-none">
             {item.items.map((listItem: string, idx: number) => (
-              <li key={idx} className="flex items-start gap-3 text-[15px] text-foreground/90 leading-relaxed">
-                <span className="flex-shrink-0 mt-1.5">
-                  <div className="w-1.5 h-1.5 rounded-full bg-primary" />
-                </span>
+              <li key={idx} className="flex items-start gap-3 text-muted-foreground group">
+                <div className="w-6 h-6 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0 mt-0.5 group-hover:bg-primary/20 transition-colors">
+                  <CheckCircle2 className="w-4 h-4 text-primary" />
+                </div>
                 <span className="flex-1" dangerouslySetInnerHTML={{ __html: listItem }} />
               </li>
             ))}
           </ul>
-        </div>
+        </Card>
       );
 
     case "table":
       return (
-        <div className="overflow-hidden rounded-xl border border-border shadow-sm">
+        <Card className="overflow-hidden border-primary/10">
           <div className="overflow-x-auto">
-            <table className="w-full min-w-[600px]">
-              <thead className="bg-muted/50">
-                <tr>
+            <table className="w-full border-collapse">
+              <thead>
+                <tr className="bg-gradient-to-r from-primary/5 to-accent/5">
                   {item.headers.map((header: string, idx: number) => (
-                    <th key={idx} className="px-6 py-4 text-left text-sm font-semibold text-foreground border-b border-border">
+                    <th key={idx} className="text-left py-4 px-6 font-semibold text-foreground border-b-2 border-primary/20">
                       {header}
                     </th>
                   ))}
                 </tr>
               </thead>
-              <tbody className="bg-card">
+              <tbody>
                 {item.rows.map((row: string[], rowIdx: number) => (
-                  <tr key={rowIdx} className="border-b border-border last:border-0 hover:bg-muted/30 transition-colors">
-                    {row.map((cell: string, cellIdx: number) => (
-                      <td key={cellIdx} className="px-6 py-4 text-sm text-foreground/90">
+                  <tr key={rowIdx} className="border-b border-border hover:bg-primary/5 transition-colors duration-200">
+                    {row.map((cell, cellIdx) => (
+                      <td key={cellIdx} className="py-4 px-6 text-muted-foreground">
                         {cell}
                       </td>
                     ))}
@@ -688,7 +707,22 @@ const ContentBlock = ({ item }: { item: any }) => {
               </tbody>
             </table>
           </div>
-        </div>
+        </Card>
+      );
+
+    case "code":
+      return (
+        <Card className="bg-gradient-to-br from-muted/50 to-muted/30 border-primary/10 overflow-hidden">
+          <div className="bg-primary/5 px-4 py-2 border-b border-primary/10 flex items-center gap-2">
+            <Code2 className="w-4 h-4 text-primary" />
+            <span className="text-xs font-medium text-primary">Code</span>
+          </div>
+          <div className="p-4 overflow-x-auto">
+            <pre className="text-sm text-foreground font-mono">
+              <code>{item.value}</code>
+            </pre>
+          </div>
+        </Card>
       );
 
     default:
@@ -697,13 +731,18 @@ const ContentBlock = ({ item }: { item: any }) => {
 };
 
 const Documentation = () => {
-  const [activeSection, setActiveSection] = useState("get-started");
+  const [activeSectionId, setActiveSectionId] = useState("get-started");
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [expandedSections, setExpandedSections] = useState<string[]>(["get-started"]);
-  const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [isVisible, setIsVisible] = useState(false);
+
+  useEffect(() => {
+    setIsVisible(true);
+  }, []);
 
   const scrollToSection = (id: string) => {
-    setActiveSection(id);
-    setSidebarOpen(false);
+    setActiveSectionId(id);
+    setIsMobileMenuOpen(false);
     const element = document.getElementById(id);
     if (element) {
       const offset = 100;
@@ -719,206 +758,226 @@ const Documentation = () => {
     );
   };
 
-  const renderSidebarItems = () => {
-    return sidebarStructure.map((section) => {
-      const Icon = section.icon;
-      const isExpanded = expandedSections.includes(section.id);
-      const isActive = activeSection === section.id;
-
-      return (
-        <div key={section.id} className="mb-1">
-          <button
-            onClick={() => {
-              toggleSection(section.id);
-              scrollToSection(section.id);
-            }}
-            className={`w-full flex items-center justify-between px-4 py-3 rounded-lg text-left transition-all group ${
-              isActive
-                ? "bg-primary text-primary-foreground shadow-sm"
-                : "hover:bg-muted/70 text-foreground"
-            }`}
-          >
-            <div className="flex items-center gap-3">
-              <Icon className="w-[18px] h-[18px] flex-shrink-0" />
-              <span className="font-semibold text-[14px]">{section.title}</span>
+  return (
+    <div className="min-h-screen bg-gradient-to-br from-background via-background to-primary/5">
+      {/* Mobile Header */}
+      <div className="lg:hidden sticky top-0 z-40 bg-background/95 backdrop-blur-md border-b border-primary/20 px-4 py-3 shadow-sm">
+        <div className="flex items-center justify-between">
+          <div className="flex items-center gap-3">
+            <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-primary to-accent flex items-center justify-center">
+              <Cpu className="w-5 h-5 text-white" />
             </div>
-            <ChevronRight
-              className={`w-4 h-4 transition-transform flex-shrink-0 ${
-                isExpanded ? "rotate-90" : ""
-              }`}
-            />
-          </button>
-
-          {isExpanded && section.children && (
-            <div className="mt-1 ml-8 space-y-0.5 border-l-2 border-border pl-4">
-              {section.children.map((child) => (
-                <button
-                  key={child.id}
-                  onClick={() => scrollToSection(child.id)}
-                  className={`w-full text-left px-3 py-2 rounded-md text-[13px] transition-colors ${
-                    activeSection === child.id
-                      ? "text-primary font-semibold bg-primary/10"
-                      : "text-muted-foreground hover:text-foreground hover:bg-muted/50"
-                  }`}
-                >
-                  {child.title}
-                </button>
-              ))}
-            </div>
-          )}
-        </div>
-      );
-    });
-  };
-
-  const renderContent = () => {
-    const data = docData[activeSection];
-    if (!data) return null;
-
-    return (
-      <div className="space-y-8 animate-fade-in">
-        {/* Section Header */}
-        <div className="space-y-4">
-          <div className="flex items-center gap-3 mb-2">
-            <div className="w-1 h-10 bg-primary rounded-full" />
-            <h1 className="text-3xl md:text-4xl font-bold text-foreground tracking-tight">
-              {data.title}
+            <h1 className="text-lg font-bold bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
+              Documentation
             </h1>
           </div>
-          {data.description && (
-            <p className="text-lg text-muted-foreground leading-relaxed pl-7">
-              {data.description}
-            </p>
-          )}
-        </div>
-
-        {/* Main Content */}
-        {data.content && (
-          <div className="space-y-5 pl-7">
-            {data.content.map((item: any, idx: number) => (
-              <ContentBlock key={idx} item={item} />
-            ))}
-          </div>
-        )}
-
-        {/* Subtitle */}
-        {data.subtitle && (
-          <div className="bg-gradient-to-r from-primary/5 to-transparent border-l-4 border-primary rounded-r-xl p-6 pl-7">
-            <h2 className="text-2xl font-bold text-foreground">
-              {data.subtitle}
-            </h2>
-          </div>
-        )}
-
-        {/* Sections */}
-        {data.sections &&
-          data.sections.map((section: any, idx: number) => (
-            <div key={idx} className="bg-card border border-border rounded-2xl p-8 shadow-sm hover:shadow-md transition-all">
-              {section.subtitle && (
-                <h3 className="text-xl font-bold text-foreground mb-6 flex items-center gap-3">
-                  <div className="w-1.5 h-6 bg-primary rounded-full" />
-                  {section.subtitle}
-                </h3>
-              )}
-              <div className="space-y-5 pl-6">
-                {section.content &&
-                  section.content.map((item: any, itemIdx: number) => (
-                    <ContentBlock key={itemIdx} item={item} />
-                  ))}
-              </div>
-            </div>
-          ))}
-      </div>
-    );
-  };
-
-  return (
-    <div className="min-h-screen bg-background">
-      {/* Fixed Header */}
-      <header className="fixed top-0 left-0 right-0 h-16 bg-card/95 backdrop-blur-md border-b border-border z-50 shadow-sm">
-        <div className="h-full px-4 md:px-6 flex items-center justify-between max-w-[1600px] mx-auto">
-          <div className="flex items-center gap-3">
-            <Button
-              variant="ghost"
-              size="icon"
-              className="lg:hidden"
-              onClick={() => setSidebarOpen(!sidebarOpen)}
-            >
-              {sidebarOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
-            </Button>
-            <div className="flex items-center gap-3">
-              <div className="w-10 h-10 bg-primary rounded-xl flex items-center justify-center shadow-sm">
-                <Cpu className="w-5 h-5 text-primary-foreground" />
-              </div>
-              <div>
-                <h1 className="text-lg font-bold text-foreground">Power Maker AI</h1>
-                <p className="text-xs text-muted-foreground hidden sm:block">Documentation</p>
-              </div>
-            </div>
-          </div>
-          <Button className="hidden sm:inline-flex gap-2" onClick={() => scrollToSection("quickstart")}>
-            Get Started
-            <ArrowRight className="w-4 h-4" />
+          <Button
+            variant="ghost"
+            size="icon"
+            onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+            className="hover:bg-primary/10 transition-colors"
+          >
+            {isMobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
           </Button>
         </div>
-      </header>
-
-      {/* Main Layout */}
-      <div className="flex pt-16 max-w-[1600px] mx-auto">
-        {/* Sidebar - Mobile Overlay */}
-        {sidebarOpen && (
-          <div
-            className="fixed inset-0 bg-background/80 backdrop-blur-sm z-40 lg:hidden"
-            onClick={() => setSidebarOpen(false)}
-          />
-        )}
-
-        {/* Sidebar */}
-        <aside className={`
-          fixed left-0 top-16 bottom-0 w-80 bg-card/50 backdrop-blur-md border-r border-border overflow-y-auto z-50
-          transition-transform duration-300 ease-in-out
-          ${sidebarOpen ? 'translate-x-0' : '-translate-x-full'}
-          lg:translate-x-0 lg:z-40
-        `}>
-          <nav className="p-6 space-y-1">{renderSidebarItems()}</nav>
-        </aside>
-
-        {/* Main Content */}
-        <main className="flex-1 lg:ml-80 min-h-screen">
-          {/* Hero Section */}
-          <section className="relative h-72 bg-gradient-to-br from-primary via-primary to-accent overflow-hidden">
-            <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHZpZXdCb3g9IjAgMCA2MCA2MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZyBmaWxsPSJub25lIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiPjxwYXRoIGQ9Ik0zNiAxOGMzLjMxNCAwIDYgMi42ODYgNiA2cy0yLjY4NiA2LTYgNi02LTIuNjg2LTYtNiAyLjY4Ni02IDYtNnoiIHN0cm9rZT0iI2ZmZiIgc3Ryb2tlLW9wYWNpdHk9Ii4wNSIvPjwvZz48L3N2Zz4=')] opacity-30" />
-            <div className="relative h-full flex flex-col items-center justify-center text-center px-6 z-10">
-              <h1 className="text-5xl font-bold text-white mb-4 drop-shadow-lg">
-                Welcome to Power Maker AI
-              </h1>
-              <p className="text-xl text-white/90 mb-8 max-w-2xl drop-shadow">
-                Your AI Assistant for Dynamics 365 CRM – Accelerate development, analysis, and automation
-              </p>
-              <Button
-                size="lg"
-                className="bg-white text-primary hover:bg-white/90 shadow-xl hover:shadow-2xl font-semibold gap-2"
-                onClick={() => scrollToSection("quickstart")}
-              >
-                Get Started
-                <ArrowRight className="w-5 h-5" />
-              </Button>
-              <p className="text-sm text-white/70 mt-6 italic">
-                Official language support currently available in English only
-              </p>
-            </div>
-          </section>
-
-          {/* Documentation Content */}
-          <div className="max-w-4xl mx-auto px-6 md:px-8 py-12">
-            {Object.entries(docData).map(([key]) => (
-              <div key={key} id={key} className="scroll-mt-24 mb-16">
-                {activeSection === key && renderContent()}
-              </div>
-            ))}
-          </div>
-        </main>
       </div>
+
+      {/* Mobile Sidebar Overlay */}
+      {isMobileMenuOpen && (
+        <div
+          className="lg:hidden fixed inset-0 bg-background/90 backdrop-blur-md z-30 animate-fade-in"
+          onClick={() => setIsMobileMenuOpen(false)}
+        />
+      )}
+
+      {/* Sidebar */}
+      <aside
+        className={`
+          fixed lg:sticky top-0 left-0 h-screen w-72 bg-gradient-to-b from-card to-card/50 border-r border-primary/20
+          overflow-y-auto z-40 transition-all duration-300 ease-in-out shadow-xl
+          ${isMobileMenuOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'}
+        `}
+      >
+        <div className="p-6 border-b border-primary/20 hidden lg:block bg-gradient-to-br from-primary/5 to-accent/5">
+          <div className="flex items-center gap-3">
+            <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-primary to-accent flex items-center justify-center shadow-lg">
+              <Cpu className="w-6 h-6 text-white" />
+            </div>
+            <div>
+              <h1 className="text-xl font-bold bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
+                Documentation
+              </h1>
+              <p className="text-xs text-muted-foreground font-medium">Power Maker AI</p>
+            </div>
+          </div>
+        </div>
+
+        <nav className="p-4 space-y-2">
+          {sidebarStructure.map((section) => {
+            const Icon = section.icon;
+            const isExpanded = expandedSections.includes(section.id);
+            const isActive = activeSectionId === section.id;
+            
+            return (
+              <div key={section.id} className="space-y-1">
+                <button
+                  onClick={() => toggleSection(section.id)}
+                  className={`
+                    w-full flex items-center justify-between p-3 rounded-xl
+                    transition-all duration-300 group relative overflow-hidden
+                    ${isActive || isExpanded
+                      ? 'bg-gradient-to-r from-primary/10 to-accent/10 text-primary font-semibold shadow-sm border border-primary/20'
+                      : 'hover:bg-primary/5 text-muted-foreground hover:text-foreground'
+                    }
+                  `}
+                >
+                  {(isActive || isExpanded) && (
+                    <div className="absolute inset-0 bg-gradient-to-r from-primary/5 to-accent/5 animate-pulse" />
+                  )}
+                  <div className="flex items-center gap-3 relative z-10">
+                    <div className={`w-8 h-8 rounded-lg flex items-center justify-center transition-all duration-300 ${
+                      isActive || isExpanded ? 'bg-primary/20' : 'bg-muted/50 group-hover:bg-primary/10'
+                    }`}>
+                      <Icon className="w-4 h-4" />
+                    </div>
+                    <span className="text-sm">{section.title}</span>
+                  </div>
+                  <ChevronRight 
+                    className={`w-4 h-4 transition-transform duration-300 relative z-10 ${isExpanded ? 'rotate-90' : ''}`}
+                  />
+                </button>
+
+                {isExpanded && (
+                  <div className="ml-11 space-y-1 py-2 animate-accordion-down">
+                    {section.children.map((child) => {
+                      const isChildActive = activeSectionId === child.id;
+                      return (
+                        <button
+                          key={child.id}
+                          onClick={() => scrollToSection(child.id)}
+                          className={`
+                            w-full text-left px-3 py-2.5 rounded-lg text-sm
+                            transition-all duration-300 relative group
+                            ${isChildActive
+                              ? 'text-primary font-semibold bg-gradient-to-r from-primary/10 to-transparent border-l-2 border-primary pl-2 shadow-sm'
+                              : 'text-muted-foreground hover:text-foreground hover:bg-primary/5 hover:pl-2'
+                            }
+                          `}
+                        >
+                          <span className="flex items-center gap-2">
+                            {isChildActive && <ArrowRight className="w-3 h-3 animate-pulse" />}
+                            {child.title}
+                          </span>
+                        </button>
+                      );
+                    })}
+                  </div>
+                )}
+              </div>
+            );
+          })}
+        </nav>
+      </aside>
+
+      {/* Main Content */}
+      <main className="flex-1 lg:ml-0">
+        <div className={`max-w-5xl mx-auto px-6 lg:px-12 py-8 lg:py-12 transition-all duration-700 ${
+          isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'
+        }`}>
+          {/* Hero Section */}
+          <div className="mb-16 text-center">
+            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-gradient-to-r from-primary/10 to-accent/10 border border-primary/20 mb-6 animate-fade-in">
+              <Sparkles className="w-4 h-4 text-primary" />
+              <span className="text-sm font-medium text-primary">Comprehensive Documentation</span>
+            </div>
+            <h1 className="text-4xl lg:text-6xl font-bold mb-4 bg-gradient-to-r from-primary via-accent to-primary bg-clip-text text-transparent animate-fade-in">
+              Power Maker AI Docs
+            </h1>
+            <p className="text-lg text-muted-foreground max-w-2xl mx-auto animate-fade-in">
+              Everything you need to master Power Maker AI and build amazing solutions
+            </p>
+          </div>
+
+          {Object.entries(docData).map(([sectionId, section], index) => (
+            <section
+              key={sectionId}
+              id={sectionId}
+              className="mb-16 scroll-mt-20"
+            >
+              {/* Section Title */}
+              <Card className="mb-8 p-8 bg-gradient-to-br from-card to-card/50 border-primary/20 shadow-lg hover:shadow-xl transition-all duration-300 animate-fade-in">
+                <div className="flex items-start gap-4">
+                  <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-primary to-accent flex items-center justify-center flex-shrink-0 shadow-lg">
+                    <BookOpen className="w-6 h-6 text-white" />
+                  </div>
+                  <div className="flex-1">
+                    <h2 className="text-3xl lg:text-4xl font-bold bg-gradient-to-r from-foreground to-foreground/70 bg-clip-text text-transparent mb-3">
+                      {section.title}
+                    </h2>
+                    {section.description && (
+                      <p className="text-base lg:text-lg text-muted-foreground leading-relaxed">
+                        {section.description}
+                      </p>
+                    )}
+                    {section.subtitle && (
+                      <h3 className="text-xl font-semibold text-primary mt-4 flex items-center gap-2">
+                        <ArrowRight className="w-5 h-5" />
+                        {section.subtitle}
+                      </h3>
+                    )}
+                  </div>
+                </div>
+              </Card>
+
+              {/* Section Content */}
+              <div className="space-y-6">
+                {section.content && section.content.map((contentItem: any, i: number) => (
+                  <div key={i} className="animate-fade-in" style={{ animationDelay: `${i * 50}ms` }}>
+                    <ContentBlock item={contentItem} />
+                  </div>
+                ))}
+
+                {section.sections && section.sections.map((subsection: any, i: number) => (
+                  <div key={i} className="space-y-4 mt-10 animate-fade-in" style={{ animationDelay: `${i * 100}ms` }}>
+                    {subsection.subtitle && (
+                      <Card className="p-6 bg-gradient-to-r from-primary/5 to-accent/5 border-primary/20">
+                        <h4 className="text-xl font-semibold text-foreground flex items-center gap-3">
+                          <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-primary to-accent flex items-center justify-center">
+                            <ArrowRight className="w-4 h-4 text-white" />
+                          </div>
+                          {subsection.subtitle}
+                        </h4>
+                      </Card>
+                    )}
+                    {subsection.content && subsection.content.map((contentItem: any, j: number) => (
+                      <div key={j} className="animate-fade-in" style={{ animationDelay: `${j * 50}ms` }}>
+                        <ContentBlock item={contentItem} />
+                      </div>
+                    ))}
+                  </div>
+                ))}
+              </div>
+            </section>
+          ))}
+
+          {/* Footer CTA */}
+          <Card className="p-8 text-center bg-gradient-to-br from-primary/10 via-accent/10 to-primary/10 border-primary/20 shadow-xl animate-fade-in">
+            <Sparkles className="w-12 h-12 text-primary mx-auto mb-4" />
+            <h3 className="text-2xl font-bold text-foreground mb-2">Need More Help?</h3>
+            <p className="text-muted-foreground mb-6">
+              Reach out to our support team or join our community
+            </p>
+            <div className="flex flex-wrap gap-4 justify-center">
+              <Button className="bg-gradient-to-r from-primary to-accent hover:shadow-lg transition-all duration-300">
+                Contact Support
+              </Button>
+              <Button variant="outline" className="border-primary/20 hover:bg-primary/5">
+                Join Community
+              </Button>
+            </div>
+          </Card>
+        </div>
+      </main>
     </div>
   );
 };
