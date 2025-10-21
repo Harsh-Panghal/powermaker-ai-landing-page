@@ -1,13 +1,20 @@
 import { useState, useEffect } from "react";
-import { Cpu, Menu, X, ChevronRight, BookOpen, CheckCircle2, AlertCircle, Code2, Database, Settings, ArrowRight, Sparkles, Info, AlertTriangle } from "lucide-react";
+import {
+  Cpu, Menu, X, ChevronRight, BookOpen, CheckCircle2, AlertCircle, Code2, Database,
+  Settings, ArrowRight, Sparkles, Info, AlertTriangle, Search, Home, Zap, Brain,
+  Network, Play, Copy, ExternalLink
+} from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
+import { Link } from "react-router-dom";
 
 const sidebarStructure = [
   {
     title: "Get Started",
     id: "get-started",
     icon: BookOpen,
+    version: "0.1",
+    color: "emerald",
     children: [
       { title: "Overview", id: "overview" },
       { title: "CRM Connection Setup", id: "crm-connection-setup" },
@@ -20,6 +27,8 @@ const sidebarStructure = [
     title: "CRM Customizations 0.1",
     id: "crm-customizations",
     icon: Settings,
+    version: "0.1",
+    color: "blue",
     children: [
       { title: "Key Capabilities", id: "capabilities-customizations" },
       { title: "How It Works", id: "how-it-works-customizations" },
@@ -35,6 +44,8 @@ const sidebarStructure = [
     title: "Plugin Tracing 0.2",
     id: "plugin-tracing",
     icon: Code2,
+    version: "0.2",
+    color: "green",
     children: [
       { title: "Key Capabilities", id: "capabilities-plugin" },
       { title: "How It Works", id: "how-it-works-plugin" },
@@ -50,6 +61,8 @@ const sidebarStructure = [
     title: "CRM Expert 0.3",
     id: "crm-expert",
     icon: Database,
+    version: "0.3",
+    color: "purple",
     children: [
       { title: "Key Capabilities", id: "capabilities-expert" },
       { title: "How It Works", id: "how-it-works-expert" },
@@ -67,6 +80,7 @@ const docData: Record<string, any> = {
   "get-started": {
     title: "Get Started",
     description: "Welcome to Power Maker AI, your AI assistant for Dynamics 365 CRM. This documentation will guide you through everything you need to know—from getting started to using our AI-powered models to accelerate CRM development, analysis, and automation.",
+    readTime: "2 min",
     content: [
       { type: "text", value: "Whether you're a CRM developer, consultant, tester, or business manager, this guide is designed to help you get the most out of Power Maker AI." },
       { type: "alert", severity: "info", value: "<strong>Note:</strong> Official language support is currently available in English only." }
@@ -76,11 +90,12 @@ const docData: Record<string, any> = {
     title: "Overview",
     description: "Power Maker AI is a web-based AI assistant designed specifically for users working with Microsoft Dynamics 365 CRM.",
     subtitle: "What Power Maker AI Helps You Do",
+    readTime: "3 min",
     content: [
-      { type: "list", items: [
-        "Design custom entities and fields tailored to new or ongoing CRM projects, allowing seamless prototyping of CRM customizations.",
-        "Analyze plugin trace logs in a human-readable format.",
-        "Interact with CRM through a conversational AI assistant for data operations and diagnostics."
+      { type: "features", items: [
+        { icon: "Settings", title: "Design Custom Entities", desc: "Design custom entities and fields tailored to new or ongoing CRM projects, allowing seamless prototyping of CRM customizations." },
+        { icon: "Code2", title: "Analyze Plugin Logs", desc: "Analyze plugin trace logs in a human-readable format with AI-powered diagnostics." },
+        { icon: "Database", title: "Conversational AI", desc: "Interact with CRM through a conversational AI assistant for data operations and diagnostics." }
       ]},
       { type: "text", value: "Power Maker AI leverages cutting-edge language models and CRM-specific logic to interpret your natural language inputs and turn them into meaningful CRM actions." },
       { type: "alert", severity: "warning", value: "⚠️ Note: Power Maker AI does not directly connect to your CRM environment unless explicitly configured. All data operations and configurations are currently simulated or require manual export/import." }
@@ -89,6 +104,7 @@ const docData: Record<string, any> = {
   "crm-connection-setup": {
     title: "CRM Connection Setup",
     description: "To configure your CRM connection in PowerMakerAI, follow these steps:",
+    readTime: "5 min",
     sections: [
       {
         subtitle: "Step 1: Navigate to CRM Connection Settings",
@@ -112,6 +128,7 @@ const docData: Record<string, any> = {
   "quickstart": {
     title: "Quickstart",
     description: "Get up and running with Power Maker AI in minutes.",
+    readTime: "4 min",
     sections: [
       {
         subtitle: "1. Sign In / Access the App",
@@ -155,6 +172,7 @@ const docData: Record<string, any> = {
   },
   "available-models": {
     title: "Available Models",
+    readTime: "6 min",
     sections: [
       {
         subtitle: "1. CRM Customizations",
@@ -205,6 +223,7 @@ const docData: Record<string, any> = {
   },
   "whats-next": {
     title: "What's Next?",
+    readTime: "1 min",
     content: [
       { type: "text", value: "Once you're familiar with the models, you can explore each in detail. Use the navigation menu to dive deeper into individual features, input formats, and best practices." },
       { type: "text", value: "💬 Need help? Reach out at support@powermaker.ai or via the in-app chat." }
@@ -213,12 +232,14 @@ const docData: Record<string, any> = {
   "crm-customizations": {
     title: "CRM Customizations 0.1",
     description: "The CRM Customizations model allows you to define new entities and fields for Microsoft Dynamics 365 CRM using natural language or a visual interface. It simplifies the schema design process—whether you're prototyping or working on live project specifications.",
+    readTime: "2 min",
     content: [
       { type: "text", value: "This model is ideal for CRM developers, functional consultants, and solution designers who want to quickly design or generate entity definitions without diving into complex forms or technical configurations." }
     ]
   },
   "capabilities-customizations": {
     title: "Key Capabilities",
+    readTime: "3 min",
     content: [
       { type: "list", items: [
         "✅ Create custom entities from scratch.",
@@ -234,6 +255,7 @@ const docData: Record<string, any> = {
   "how-it-works-customizations": {
     title: "How It Works",
     description: "You can interact with the model in two main ways:",
+    readTime: "4 min",
     sections: [
       {
         subtitle: "1. Natural Language Input",
@@ -267,6 +289,7 @@ const docData: Record<string, any> = {
   },
   "output-customizations": {
     title: "Output",
+    readTime: "2 min",
     content: [
       { type: "list", label: "Once your entity is designed, you can:", items: [
         "View a clean schema summary.",
@@ -278,6 +301,7 @@ const docData: Record<string, any> = {
   },
   "limitations-customizations": {
     title: "Limitations",
+    readTime: "2 min",
     content: [
       { type: "list", items: [
         "❌ Currently does not support editing existing entities (coming soon).",
@@ -289,6 +313,7 @@ const docData: Record<string, any> = {
   },
   "examples-customizations": {
     title: "Example Use Cases",
+    readTime: "3 min",
     content: [
       { type: "table", headers: ["Scenario", "How CRM Customizations Helps"], rows: [
         ["Starting a new solution", "Quickly draft entity structures with minimal clicks"],
@@ -300,6 +325,7 @@ const docData: Record<string, any> = {
   },
   "best-practices-customizations": {
     title: "Best Practices",
+    readTime: "2 min",
     content: [
       { type: "list", items: [
         "Start with natural language if you're unsure what fields you need—Power Maker AI will assist with intelligent defaults.",
@@ -311,6 +337,7 @@ const docData: Record<string, any> = {
   },
   "sample-customizations": {
     title: "Sample Prompt & Output",
+    readTime: "2 min",
     sections: [
       {
         subtitle: "Prompt:",
@@ -334,6 +361,7 @@ const docData: Record<string, any> = {
   },
   "whats-next-customizations": {
     title: "What's Next?",
+    readTime: "1 min",
     content: [
       { type: "list", label: "We're working on additional features such as:", items: [
         "✨ Update existing entity metadata.",
@@ -345,13 +373,15 @@ const docData: Record<string, any> = {
   },
   "plugin-tracing": {
     title: "Plugin Tracing 0.2",
-    description: "The Plugin Tracing model in Power Maker AI helps you analyze Microsoft Dynamics 365 CRM plugin trace logs using natural language queries. Instead of manually inspecting complex trace logs, this model simplifies diagnostics by extracting meaningful summaries and exception insights from raw plugin data.",
+    description: "The Plugin Tracing model in Power Maker AI helps you analyze Microsoft Dynamics 365 CRM plugin trace logs using natural language queries.",
+    readTime: "2 min",
     content: [
       { type: "text", value: "It is designed for developers, testers, admins, and support teams to accelerate debugging, reduce analysis effort, and communicate issues more clearly." }
     ]
   },
   "capabilities-plugin": {
     title: "Key Capabilities",
+    readTime: "3 min",
     content: [
       { type: "list", items: [
         "✅ Query plugin logs using plain language",
@@ -364,391 +394,67 @@ const docData: Record<string, any> = {
       ]}
     ]
   },
-  "how-it-works-plugin": {
-    title: "How It Works",
-    sections: [
-      {
-        subtitle: "1. Natural Language Query",
-        content: [
-          { type: "text", value: "Type what you're looking for. The model will interpret the request and return relevant logs." },
-          { type: "list", label: "Examples:", items: [
-            "'Show plugin errors for the Opportunity entity from last 7 days'",
-            "'Get failed plugin traces for PostAccountUpdate plugin'",
-            "'List all successful plugin runs for the Contact entity yesterday'"
-          ]},
-          { type: "list", label: "The model will:", items: [
-            "Identify your filter criteria",
-            "Match logs based on your input",
-            "Return them in a structured table"
-          ]}
-        ]
-      },
-      {
-        subtitle: "2. Result Table & Actions",
-        content: [
-          { type: "list", label: "For each result, you get:", items: [
-            "Timestamp",
-            "Plugin Name",
-            "Entity / Message",
-            "Execution Status",
-            "Interactive link to view trace details"
-          ]},
-          { type: "list", label: "Each detail view includes:", items: [
-            "Complete stack trace",
-            "Exception message",
-            "Error location and line number (if available)"
-          ]}
-        ]
-      }
-    ]
-  },
-  "output-plugin": {
-    title: "Output",
-    content: [
-      { type: "list", label: "The Plugin Tracing model provides:", items: [
-        "A summary table of plugin trace logs matching your query.",
-        "Detailed views for each log with exception details and stack traces.",
-        "Copy-to-clipboard functionality for sharing with your team."
-      ]}
-    ]
-  },
-  "limitations-plugin": {
-    title: "Limitations",
-    content: [
-      { type: "list", items: [
-        "❌ Currently requires manual upload of plugin trace logs (coming soon: live CRM integration).",
-        "❌ Works best with standard plugin trace format from Dynamics 365.",
-        "❌ Does not support custom trace log formats at this time.",
-        "❌ Large trace logs may require pagination or filtering."
-      ]}
-    ]
-  },
-  "examples-plugin": {
-    title: "Example Use Cases",
-    content: [
-      { type: "table", headers: ["Scenario", "How Plugin Tracing Helps"], rows: [
-        ["Debugging plugin errors", "Quickly identify exception messages and error locations"],
-        ["Performance analysis", "View execution times and identify slow plugins"],
-        ["Support tickets", "Export trace summaries to share with support teams"],
-        ["Post-deployment testing", "Verify plugin behavior after CRM updates"]
-      ]}
-    ]
-  },
-  "best-practices-plugin": {
-    title: "Best Practices",
-    content: [
-      { type: "list", items: [
-        "Start with broad queries and refine based on results.",
-        "Use entity names and date ranges to narrow down results.",
-        "Always review the full stack trace for context before applying fixes.",
-        "Export trace summaries for documentation or support tickets."
-      ]}
-    ]
-  },
-  "sample-plugin": {
-    title: "Sample Prompt & Output",
-    sections: [
-      {
-        subtitle: "Prompt:",
-        content: [
-          { type: "text", value: "'Show all plugin errors for the Account entity from the last 24 hours'" }
-        ]
-      },
-      {
-        subtitle: "Output Preview:",
-        content: [
-          { type: "text", value: "<strong>Results:</strong> 3 plugin errors found for Account entity" },
-          { type: "list", items: [
-            "PostAccountUpdate - Error: Object reference not set to an instance of an object",
-            "PreAccountCreate - Error: Timeout expired. The timeout period elapsed",
-            "PostAccountUpdate - Error: Invalid plugin execution context"
-          ]}
-        ]
-      }
-    ]
-  },
-  "coming-soon-plugin": {
-    title: "Coming Soon",
-    content: [
-      { type: "list", label: "We're enhancing Plugin Tracing with:", items: [
-        "🔗 Direct integration with CRM plugin trace logs (no manual upload)",
-        "📊 Visual charts for plugin performance and error trends",
-        "🤖 AI-powered root cause analysis and fix suggestions",
-        "📄 Export to PDF or Excel for reporting"
-      ]},
-      { type: "text", value: "💡 Plugin Tracing turns complex logs into actionable insights — debug faster, ship better." }
-    ]
-  },
   "crm-expert": {
     title: "CRM Expert 0.3",
-    description: "CRM Expert is your conversational AI assistant for all things Dynamics 365 CRM. It allows you to perform data operations, troubleshoot issues, and explore CRM configurations using natural language—no complex queries or technical knowledge required.",
+    description: "The CRM Expert model acts as your AI-powered Dynamics 365 consultant.",
+    readTime: "2 min",
     content: [
-      { type: "text", value: "Whether you need to query records, update data, or get guidance on CRM best practices, CRM Expert is here to help." }
-    ]
-  },
-  "capabilities-expert": {
-    title: "Key Capabilities",
-    content: [
-      { type: "list", items: [
-        "✅ Query CRM data using natural language (e.g., 'Show all active contacts in New York').",
-        "✅ Perform data operations (Create, Read, Update, Delete) through conversation.",
-        "✅ Get configuration guidance and best practices.",
-        "✅ Troubleshoot errors and provide diagnostic insights.",
-        "✅ Explain CRM concepts and relationships.",
-        "🟡 Upcoming: Direct CRM integration for live data operations.",
-        "🟡 Upcoming: Advanced analytics and reporting."
-      ]}
-    ]
-  },
-  "how-it-works-expert": {
-    title: "How It Works",
-    sections: [
-      {
-        subtitle: "1. Conversational Queries",
-        content: [
-          { type: "text", value: "Simply type what you want to do or know in plain English." },
-          { type: "list", label: "Examples:", items: [
-            "'List all opportunities created this month'",
-            "'How do I create a custom entity?'",
-            "'Update all inactive accounts to status Archived'"
-          ]},
-          { type: "list", label: "CRM Expert will:", items: [
-            "Understand your intent",
-            "Generate appropriate FetchXML or actions",
-            "Return results in a readable format",
-            "Provide context and explanations"
-          ]}
-        ]
-      },
-      {
-        subtitle: "2. Data Operations",
-        content: [
-          { type: "list", label: "Supported operations:", items: [
-            "Retrieve records with filters",
-            "Create new records",
-            "Update existing records",
-            "Delete records (with confirmation)",
-            "Bulk operations (coming soon)"
-          ]}
-        ]
-      }
-    ]
-  },
-  "behavior-expert": {
-    title: "Input/Output Behavior",
-    content: [
-      { type: "list", label: "Input:", items: [
-        "Natural language queries or commands",
-        "Follow-up questions to refine results",
-        "Context from previous interactions"
-      ]},
-      { type: "list", label: "Output:", items: [
-        "Data tables with results",
-        "Confirmation messages for operations",
-        "Guidance and explanations",
-        "Error messages with troubleshooting tips"
-      ]}
-    ]
-  },
-  "limitations-expert": {
-    title: "Limitations",
-    content: [
-      { type: "list", items: [
-        "❌ Currently operates in simulation mode (no live CRM connection by default).",
-        "❌ Requires clear context for complex operations.",
-        "❌ Best for exploratory queries, not high-volume automation.",
-        "❌ May require follow-up clarification for ambiguous requests."
-      ]}
-    ]
-  },
-  "examples-expert": {
-    title: "Example Use Cases",
-    content: [
-      { type: "table", headers: ["Scenario", "How CRM Expert Helps"], rows: [
-        ["Data exploration", "Query records without writing FetchXML"],
-        ["Quick updates", "Update records through conversation"],
-        ["Learning CRM", "Get explanations and guidance on CRM concepts"],
-        ["Troubleshooting", "Diagnose errors and get fix suggestions"]
-      ]}
-    ]
-  },
-  "best-practices-expert": {
-    title: "Best Practices",
-    content: [
-      { type: "list", items: [
-        "Be specific with your queries to get accurate results.",
-        "Provide context when asking follow-up questions.",
-        "Review results before confirming bulk operations.",
-        "Use CRM Expert for learning and exploration, not production automation."
-      ]}
-    ]
-  },
-  "sample-expert": {
-    title: "Sample Prompt & Output",
-    sections: [
-      {
-        subtitle: "Prompt:",
-        content: [
-          { type: "text", value: "'Show all contacts in California with email addresses'" }
-        ]
-      },
-      {
-        subtitle: "Output Preview:",
-        content: [
-          { type: "text", value: "<strong>Results:</strong> Found 42 contacts in California" },
-          { type: "list", items: [
-            "John Doe - john.doe@example.com",
-            "Jane Smith - jane.smith@example.com",
-            "Bob Johnson - bob.johnson@example.com"
-          ]},
-          { type: "text", value: "Would you like to export these results or refine the query?" }
-        ]
-      }
-    ]
-  },
-  "coming-soon-expert": {
-    title: "Coming Soon",
-    content: [
-      { type: "list", label: "We're enhancing CRM Expert with:", items: [
-        "🧠 Context retention across longer conversations",
-        "📄 FetchXML preview and editing before execution",
-        "🔗 Integration with Power Automate and Azure Logic Apps",
-        "🧩 Plugin registration and deployment from chat"
-      ]},
-      { type: "text", value: "💡 CRM Expert is your natural language gateway to Dynamics CRM. No buttons, no code — just ask." }
+      { type: "text", value: "Ask questions, run queries, and perform CRM operations through natural conversation." }
     ]
   }
 };
 
-const ContentBlock = ({ item }: { item: any }) => {
-  switch (item.type) {
-    case "text":
-      return (
-        <div className="prose prose-slate max-w-none">
-          <p className="text-muted-foreground leading-relaxed text-base" dangerouslySetInnerHTML={{ __html: item.value }} />
-        </div>
-      );
-
-    case "alert":
-      const alertConfig = {
-        info: { 
-          bg: "bg-accent/5 border-accent/20 hover:border-accent/30", 
-          icon: Info,
-          iconColor: "text-accent"
-        },
-        warning: { 
-          bg: "bg-secondary/5 border-secondary/20 hover:border-secondary/30", 
-          icon: AlertTriangle,
-          iconColor: "text-secondary"
-        },
-        success: { 
-          bg: "bg-primary/5 border-primary/20 hover:border-primary/30", 
-          icon: CheckCircle2,
-          iconColor: "text-primary"
-        }
-      };
-      const config = alertConfig[item.severity as keyof typeof alertConfig] || alertConfig.info;
-      const AlertIcon = config.icon;
-      
-      return (
-        <div className={`p-5 rounded-xl border-l-4 ${config.bg} transition-all duration-300 backdrop-blur-sm`}>
-          <div className="flex items-start gap-4">
-            <div className={`w-8 h-8 rounded-lg ${config.iconColor} bg-current/10 flex items-center justify-center flex-shrink-0`}>
-              <AlertIcon className="w-5 h-5" />
-            </div>
-            <p className="text-sm leading-relaxed" dangerouslySetInnerHTML={{ __html: item.value }} />
-          </div>
-        </div>
-      );
-
-    case "list":
-      return (
-        <Card className="p-6 bg-gradient-to-br from-card to-card/50 border-primary/10 shadow-sm hover:shadow-md transition-all duration-300">
-          {item.label && (
-            <p className="font-semibold text-foreground mb-4 flex items-center gap-2" dangerouslySetInnerHTML={{ __html: item.label }} />
-          )}
-          <ul className="space-y-3 list-none">
-            {item.items.map((listItem: string, idx: number) => (
-              <li key={idx} className="flex items-start gap-3 text-muted-foreground group">
-                <div className="w-6 h-6 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0 mt-0.5 group-hover:bg-primary/20 transition-colors">
-                  <CheckCircle2 className="w-4 h-4 text-primary" />
-                </div>
-                <span className="flex-1" dangerouslySetInnerHTML={{ __html: listItem }} />
-              </li>
-            ))}
-          </ul>
-        </Card>
-      );
-
-    case "table":
-      return (
-        <Card className="overflow-hidden border-primary/10">
-          <div className="overflow-x-auto">
-            <table className="w-full border-collapse">
-              <thead>
-                <tr className="bg-gradient-to-r from-primary/5 to-accent/5">
-                  {item.headers.map((header: string, idx: number) => (
-                    <th key={idx} className="text-left py-4 px-6 font-semibold text-foreground border-b-2 border-primary/20">
-                      {header}
-                    </th>
-                  ))}
-                </tr>
-              </thead>
-              <tbody>
-                {item.rows.map((row: string[], rowIdx: number) => (
-                  <tr key={rowIdx} className="border-b border-border hover:bg-primary/5 transition-colors duration-200">
-                    {row.map((cell, cellIdx) => (
-                      <td key={cellIdx} className="py-4 px-6 text-muted-foreground">
-                        {cell}
-                      </td>
-                    ))}
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-        </Card>
-      );
-
-    case "code":
-      return (
-        <Card className="bg-gradient-to-br from-muted/50 to-muted/30 border-primary/10 overflow-hidden">
-          <div className="bg-primary/5 px-4 py-2 border-b border-primary/10 flex items-center gap-2">
-            <Code2 className="w-4 h-4 text-primary" />
-            <span className="text-xs font-medium text-primary">Code</span>
-          </div>
-          <div className="p-4 overflow-x-auto">
-            <pre className="text-sm text-foreground font-mono">
-              <code>{item.value}</code>
-            </pre>
-          </div>
-        </Card>
-      );
-
-    default:
-      return null;
-  }
-};
-
-const Documentation = () => {
-  const [activeSectionId, setActiveSectionId] = useState("get-started");
-  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+export default function Documentation() {
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [activeSection, setActiveSection] = useState("get-started");
   const [expandedSections, setExpandedSections] = useState<string[]>(["get-started"]);
-  const [isVisible, setIsVisible] = useState(false);
+  const [breadcrumb, setBreadcrumb] = useState<string[]>(["Get Started"]);
 
   useEffect(() => {
-    setIsVisible(true);
-  }, []);
+    const handleScroll = () => {
+      const sections = document.querySelectorAll("[data-section-id]");
+      let current = activeSection;
+
+      sections.forEach((section) => {
+        const rect = section.getBoundingClientRect();
+        if (rect.top <= 200 && rect.bottom >= 200) {
+          current = section.getAttribute("data-section-id") || "";
+        }
+      });
+
+      if (current !== activeSection) {
+        setActiveSection(current);
+        updateBreadcrumb(current);
+      }
+    };
+
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, [activeSection]);
+
+  const updateBreadcrumb = (sectionId: string) => {
+    const parent = sidebarStructure.find(s =>
+      s.id === sectionId || s.children.some(c => c.id === sectionId)
+    );
+    
+    if (parent) {
+      const child = parent.children.find(c => c.id === sectionId);
+      if (child) {
+        setBreadcrumb([parent.title, child.title]);
+      } else {
+        setBreadcrumb([parent.title]);
+      }
+    }
+  };
 
   const scrollToSection = (id: string) => {
-    setActiveSectionId(id);
-    setIsMobileMenuOpen(false);
     const element = document.getElementById(id);
     if (element) {
       const offset = 100;
-      const elementPosition = element.getBoundingClientRect().top;
-      const offsetPosition = elementPosition + window.pageYOffset - offset;
-      window.scrollTo({ top: offsetPosition, behavior: "smooth" });
+      const elementPosition = element.getBoundingClientRect().top + window.pageYOffset;
+      window.scrollTo({ top: elementPosition - offset, behavior: "smooth" });
+      setMobileMenuOpen(false);
+      setActiveSection(id);
     }
   };
 
@@ -758,228 +464,596 @@ const Documentation = () => {
     );
   };
 
-  return (
-    <div className="min-h-screen bg-gradient-to-br from-background via-background to-primary/5">
-      {/* Mobile Header */}
-      <div className="lg:hidden sticky top-0 z-40 bg-background/95 backdrop-blur-md border-b border-primary/20 px-4 py-3 shadow-sm">
-        <div className="flex items-center justify-between">
-          <div className="flex items-center gap-3">
-            <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-primary to-accent flex items-center justify-center">
-              <Cpu className="w-5 h-5 text-white" />
-            </div>
-            <h1 className="text-lg font-bold bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
-              Documentation
-            </h1>
+  const renderContent = (content: any, index: number) => {
+    switch (content.type) {
+      case "text":
+        return (
+          <p 
+            key={index} 
+            className="text-base leading-relaxed text-muted-foreground"
+            dangerouslySetInnerHTML={{ __html: content.value }}
+          />
+        );
+
+      case "features":
+        return (
+          <div key={index} className="grid md:grid-cols-3 gap-6 my-8">
+            {content.items.map((item: any, i: number) => {
+              const Icon = item.icon === "Settings" ? Settings : item.icon === "Code2" ? Code2 : Database;
+              return (
+                <Card 
+                  key={i}
+                  className="group p-6 border-2 bg-gradient-to-br from-accent/5 to-transparent hover:shadow-lg hover:shadow-accent/10 transition-all duration-300 hover:-translate-y-1"
+                  style={{ animationDelay: `${i * 100}ms` }}
+                >
+                  <div className="flex flex-col gap-3">
+                    <div className="w-12 h-12 rounded-lg bg-accent/10 flex items-center justify-center group-hover:bg-accent group-hover:scale-110 transition-all duration-300">
+                      <Icon className="w-6 h-6 text-accent group-hover:text-accent-foreground" />
+                    </div>
+                    <h4 className="font-semibold text-lg text-foreground">{item.title}</h4>
+                    <p className="text-sm text-muted-foreground leading-relaxed">{item.desc}</p>
+                  </div>
+                </Card>
+              );
+            })}
           </div>
-          <Button
-            variant="ghost"
-            size="icon"
-            onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-            className="hover:bg-primary/10 transition-colors"
+        );
+
+      case "list":
+        return (
+          <div key={index} className="my-6">
+            {content.label && (
+              <p className="font-medium text-foreground mb-3" dangerouslySetInnerHTML={{ __html: content.label }} />
+            )}
+            <ul className="space-y-3">
+              {content.items.map((item: string, i: number) => (
+                <li key={i} className="flex gap-3 items-start group">
+                  <CheckCircle2 className="w-5 h-5 text-accent flex-shrink-0 mt-0.5 group-hover:scale-110 transition-transform" />
+                  <span 
+                    className="text-muted-foreground leading-relaxed" 
+                    dangerouslySetInnerHTML={{ __html: item }} 
+                  />
+                </li>
+              ))}
+            </ul>
+          </div>
+        );
+
+      case "alert":
+        const isWarning = content.severity === "warning";
+        return (
+          <div
+            key={index}
+            className={`my-6 p-6 rounded-xl border-2 ${
+              isWarning
+                ? "bg-secondary/10 border-secondary/30"
+                : "bg-accent/10 border-accent/30"
+            } animate-fade-in`}
           >
-            {isMobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
-          </Button>
-        </div>
+            <div className="flex gap-4">
+              {isWarning ? (
+                <AlertTriangle className="w-6 h-6 text-secondary flex-shrink-0" />
+              ) : (
+                <Info className="w-6 h-6 text-accent flex-shrink-0" />
+              )}
+              <p 
+                className="text-sm leading-relaxed text-foreground" 
+                dangerouslySetInnerHTML={{ __html: content.value }} 
+              />
+            </div>
+          </div>
+        );
+
+      case "table":
+        return (
+          <div key={index} className="my-8 overflow-hidden rounded-xl border-2 border-border">
+            <table className="w-full">
+              <thead className="bg-muted/50">
+                <tr>
+                  {content.headers.map((header: string, i: number) => (
+                    <th key={i} className="px-6 py-4 text-left text-sm font-semibold text-foreground">
+                      {header}
+                    </th>
+                  ))}
+                </tr>
+              </thead>
+              <tbody>
+                {content.rows.map((row: string[], i: number) => (
+                  <tr 
+                    key={i} 
+                    className="border-t border-border hover:bg-muted/30 transition-colors group"
+                  >
+                    {row.map((cell: string, j: number) => (
+                      <td key={j} className="px-6 py-4 text-sm text-muted-foreground group-hover:text-foreground transition-colors">
+                        {cell}
+                      </td>
+                    ))}
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        );
+
+      default:
+        return null;
+    }
+  };
+
+  return (
+    <div className="min-h-screen bg-gradient-to-b from-background via-background to-muted/20">
+      {/* Neural Network Background Pattern */}
+      <div className="fixed inset-0 opacity-[0.02] pointer-events-none">
+        <svg className="w-full h-full">
+          <defs>
+            <pattern id="neural-grid" width="60" height="60" patternUnits="userSpaceOnUse">
+              <circle cx="30" cy="30" r="1.5" fill="currentColor" className="text-accent" />
+              <line x1="30" y1="30" x2="60" y2="0" stroke="currentColor" strokeWidth="0.5" className="text-accent/30" />
+              <line x1="30" y1="30" x2="60" y2="60" stroke="currentColor" strokeWidth="0.5" className="text-accent/30" />
+            </pattern>
+          </defs>
+          <rect width="100%" height="100%" fill="url(#neural-grid)" />
+        </svg>
       </div>
 
-      {/* Mobile Sidebar Overlay */}
-      {isMobileMenuOpen && (
-        <div
-          className="lg:hidden fixed inset-0 bg-background/90 backdrop-blur-md z-30 animate-fade-in"
-          onClick={() => setIsMobileMenuOpen(false)}
-        />
-      )}
-
-      {/* Sidebar */}
-      <aside
-        className={`
-          fixed lg:sticky top-0 left-0 h-screen w-72 bg-gradient-to-b from-card to-card/50 border-r border-primary/20
-          overflow-y-auto z-40 transition-all duration-300 ease-in-out shadow-xl
-          ${isMobileMenuOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'}
-        `}
-      >
-        <div className="p-6 border-b border-primary/20 hidden lg:block bg-gradient-to-br from-primary/5 to-accent/5">
-          <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-primary to-accent flex items-center justify-center shadow-lg">
-              <Cpu className="w-6 h-6 text-white" />
+      {/* Top Navigation Bar */}
+      <nav className="fixed top-0 left-0 right-0 h-16 bg-background/80 backdrop-blur-xl border-b border-border z-50 shadow-sm">
+        <div className="h-full px-6 flex items-center justify-between max-w-screen-2xl mx-auto">
+          {/* Left: Logo + Breadcrumb */}
+          <div className="flex items-center gap-4">
+            <Link to="/" className="flex items-center gap-2 group">
+              <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-accent to-accent/60 flex items-center justify-center shadow-lg shadow-accent/20 group-hover:shadow-accent/40 transition-all group-hover:scale-105">
+                <Brain className="w-6 h-6 text-white" />
+              </div>
+              <span className="font-bold text-lg hidden sm:block">PMAI</span>
+            </Link>
+            
+            <div className="hidden md:flex items-center gap-2 text-sm text-muted-foreground">
+              <Home className="w-4 h-4" />
+              {breadcrumb.map((crumb, i) => (
+                <div key={i} className="flex items-center gap-2">
+                  <ChevronRight className="w-4 h-4" />
+                  <span className={i === breadcrumb.length - 1 ? "text-foreground font-medium" : ""}>
+                    {crumb}
+                  </span>
+                </div>
+              ))}
             </div>
-            <div>
-              <h1 className="text-xl font-bold bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
-                Documentation
-              </h1>
-              <p className="text-xs text-muted-foreground font-medium">Power Maker AI</p>
+          </div>
+
+          {/* Center: Search */}
+          <div className="hidden lg:flex items-center gap-2 px-4 py-2 bg-muted/50 rounded-lg border border-border hover:border-accent/50 transition-colors flex-1 max-w-md mx-8 group">
+            <Search className="w-4 h-4 text-muted-foreground group-hover:text-accent transition-colors" />
+            <input 
+              type="text" 
+              placeholder="Search documentation..." 
+              className="bg-transparent outline-none text-sm flex-1"
+            />
+            <kbd className="px-2 py-1 text-xs bg-background rounded border border-border">⌘K</kbd>
+          </div>
+
+          {/* Right: CTA */}
+          <div className="flex items-center gap-4">
+            <Button 
+              variant="default"
+              className="hidden sm:flex items-center gap-2 bg-gradient-to-r from-accent to-accent/80 hover:from-accent/90 hover:to-accent/70 shadow-lg shadow-accent/20"
+            >
+              <Zap className="w-4 h-4" />
+              Get Started
+            </Button>
+            
+            <Button
+              variant="ghost"
+              size="icon"
+              className="lg:hidden"
+              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+            >
+              {mobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
+            </Button>
+          </div>
+        </div>
+      </nav>
+
+      {/* Mobile Sidebar Overlay */}
+      {mobileMenuOpen && (
+        <div 
+          className="fixed inset-0 bg-background/80 backdrop-blur-sm z-40 lg:hidden"
+          onClick={() => setMobileMenuOpen(false)}
+        >
+          <div 
+            className="w-80 h-full bg-background border-r border-border shadow-2xl animate-slide-in-left overflow-y-auto"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div className="p-6">
+              <div className="mb-6 flex items-center justify-between">
+                <h3 className="font-bold text-lg">Documentation</h3>
+                <Button variant="ghost" size="icon" onClick={() => setMobileMenuOpen(false)}>
+                  <X className="w-5 h-5" />
+                </Button>
+              </div>
+              
+              {/* Mobile Sidebar Content */}
+              <nav className="space-y-2">
+                {sidebarStructure.map((section, idx) => {
+                  const Icon = section.icon;
+                  const isExpanded = expandedSections.includes(section.id);
+                  
+                  return (
+                    <div key={section.id}>
+                      <button
+                        onClick={() => {
+                          toggleSection(section.id);
+                          scrollToSection(section.id);
+                        }}
+                        className={`w-full flex items-center justify-between p-3 rounded-lg transition-all ${
+                          activeSection === section.id
+                            ? "bg-accent/10 text-accent"
+                            : "hover:bg-muted/50"
+                        }`}
+                      >
+                        <div className="flex items-center gap-3">
+                          <Icon className="w-5 h-5" />
+                          <span className="font-medium text-sm">{section.title}</span>
+                        </div>
+                        <ChevronRight 
+                          className={`w-4 h-4 transition-transform ${isExpanded ? "rotate-90" : ""}`} 
+                        />
+                      </button>
+                      
+                      {isExpanded && (
+                        <div className="ml-8 mt-1 space-y-1 animate-accordion-down">
+                          {section.children.map((child, childIdx) => (
+                            <button
+                              key={child.id}
+                              onClick={() => scrollToSection(child.id)}
+                              className={`w-full text-left p-2 rounded text-sm transition-colors ${
+                                activeSection === child.id
+                                  ? "text-accent font-medium"
+                                  : "text-muted-foreground hover:text-foreground"
+                              }`}
+                              style={{ animationDelay: `${childIdx * 50}ms` }}
+                            >
+                              {child.title}
+                            </button>
+                          ))}
+                        </div>
+                      )}
+                    </div>
+                  );
+                })}
+              </nav>
             </div>
           </div>
         </div>
+      )}
 
-        <nav className="p-4 space-y-2">
-          {sidebarStructure.map((section) => {
-            const Icon = section.icon;
-            const isExpanded = expandedSections.includes(section.id);
-            const isActive = activeSectionId === section.id;
-            
-            return (
-              <div key={section.id} className="space-y-1">
-                <button
-                  onClick={() => toggleSection(section.id)}
-                  className={`
-                    w-full flex items-center justify-between p-3 rounded-xl
-                    transition-all duration-300 group relative overflow-hidden
-                    ${isActive || isExpanded
-                      ? 'bg-gradient-to-r from-primary/10 to-accent/10 text-primary font-semibold shadow-sm border border-primary/20'
-                      : 'hover:bg-primary/5 text-muted-foreground hover:text-foreground'
-                    }
-                  `}
-                >
-                  {(isActive || isExpanded) && (
-                    <div className="absolute inset-0 bg-gradient-to-r from-primary/5 to-accent/5 animate-pulse" />
-                  )}
-                  <div className="flex items-center gap-3 relative z-10">
-                    <div className={`w-8 h-8 rounded-lg flex items-center justify-center transition-all duration-300 ${
-                      isActive || isExpanded ? 'bg-primary/20' : 'bg-muted/50 group-hover:bg-primary/10'
-                    }`}>
-                      <Icon className="w-4 h-4" />
-                    </div>
-                    <span className="text-sm">{section.title}</span>
-                  </div>
-                  <ChevronRight 
-                    className={`w-4 h-4 transition-transform duration-300 relative z-10 ${isExpanded ? 'rotate-90' : ''}`}
+      {/* Desktop Sidebar */}
+      <aside className="hidden lg:block fixed left-0 top-16 w-80 h-[calc(100vh-4rem)] bg-background/50 backdrop-blur-sm border-r border-border overflow-y-auto z-30">
+        <div className="p-6">
+          {/* Progress Rail */}
+          <div className="absolute left-6 top-24 bottom-6 w-0.5 bg-gradient-to-b from-accent/30 via-accent/10 to-transparent" />
+          
+          <nav className="space-y-2 relative">
+            {sidebarStructure.map((section, idx) => {
+              const Icon = section.icon;
+              const isExpanded = expandedSections.includes(section.id);
+              const isActive = activeSection === section.id || section.children.some(c => c.id === activeSection);
+              
+              return (
+                <div key={section.id} className="relative">
+                  {/* Progress Dot */}
+                  <div 
+                    className={`absolute -left-[19px] top-5 w-3 h-3 rounded-full border-2 border-background transition-all duration-300 ${
+                      isActive 
+                        ? "bg-accent shadow-[0_0_12px_rgba(16,185,129,0.6)] scale-125 animate-glow-pulse" 
+                        : "bg-muted"
+                    }`}
                   />
-                </button>
-
-                {isExpanded && (
-                  <div className="ml-11 space-y-1 py-2 animate-accordion-down">
-                    {section.children.map((child) => {
-                      const isChildActive = activeSectionId === child.id;
-                      return (
+                  
+                  <button
+                    onClick={() => {
+                      toggleSection(section.id);
+                      scrollToSection(section.id);
+                    }}
+                    className={`w-full flex items-center justify-between p-4 rounded-xl transition-all group ${
+                      isActive
+                        ? "bg-gradient-to-r from-accent/10 to-transparent border border-accent/20 shadow-lg"
+                        : "hover:bg-muted/50"
+                    }`}
+                  >
+                    <div className="flex items-center gap-3">
+                      <div className={`p-2 rounded-lg transition-all ${
+                        isActive 
+                          ? "bg-accent text-accent-foreground" 
+                          : "bg-muted/50 group-hover:bg-accent/20"
+                      }`}>
+                        <Icon className="w-5 h-5" />
+                      </div>
+                      <div className="text-left">
+                        <div className="font-semibold text-sm">{section.title}</div>
+                        <div className={`text-xs mt-0.5 px-2 py-0.5 rounded-full inline-block ${
+                          section.version === "0.1" ? "bg-blue-100 text-blue-700" :
+                          section.version === "0.2" ? "bg-green-100 text-green-700" :
+                          "bg-purple-100 text-purple-700"
+                        }`}>
+                          Beta
+                        </div>
+                      </div>
+                    </div>
+                    <ChevronRight 
+                      className={`w-4 h-4 transition-transform duration-300 ${
+                        isExpanded ? "rotate-90" : ""
+                      }`} 
+                    />
+                  </button>
+                  
+                  {isExpanded && (
+                    <div className="ml-14 mt-2 space-y-1 animate-accordion-down">
+                      {section.children.map((child, childIdx) => (
                         <button
                           key={child.id}
                           onClick={() => scrollToSection(child.id)}
-                          className={`
-                            w-full text-left px-3 py-2.5 rounded-lg text-sm
-                            transition-all duration-300 relative group
-                            ${isChildActive
-                              ? 'text-primary font-semibold bg-gradient-to-r from-primary/10 to-transparent border-l-2 border-primary pl-2 shadow-sm'
-                              : 'text-muted-foreground hover:text-foreground hover:bg-primary/5 hover:pl-2'
-                            }
-                          `}
+                          className={`w-full text-left px-4 py-2.5 rounded-lg text-sm transition-all animate-cascade relative group ${
+                            activeSection === child.id
+                              ? "text-accent font-semibold bg-accent/5"
+                              : "text-muted-foreground hover:text-foreground hover:bg-muted/30"
+                          }`}
+                          style={{ animationDelay: `${childIdx * 50}ms` }}
                         >
-                          <span className="flex items-center gap-2">
-                            {isChildActive && <ArrowRight className="w-3 h-3 animate-pulse" />}
-                            {child.title}
-                          </span>
+                          {activeSection === child.id && (
+                            <div className="absolute left-0 top-1/2 -translate-y-1/2 w-1 h-8 bg-accent rounded-r-full" />
+                          )}
+                          {child.title}
                         </button>
-                      );
-                    })}
-                  </div>
-                )}
-              </div>
-            );
-          })}
-        </nav>
+                      ))}
+                    </div>
+                  )}
+                </div>
+              );
+            })}
+          </nav>
+        </div>
       </aside>
 
       {/* Main Content */}
-      <main className="flex-1 lg:ml-0">
-        <div className={`max-w-5xl mx-auto px-6 lg:px-12 py-8 lg:py-12 transition-all duration-700 ${
-          isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'
-        }`}>
-          {/* Hero Section */}
-          <div className="mb-16 text-center">
-            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-gradient-to-r from-primary/10 to-accent/10 border border-primary/20 mb-6 animate-fade-in">
-              <Sparkles className="w-4 h-4 text-primary" />
-              <span className="text-sm font-medium text-primary">Comprehensive Documentation</span>
-            </div>
-            <h1 className="text-4xl lg:text-6xl font-bold mb-4 bg-gradient-to-r from-primary via-accent to-primary bg-clip-text text-transparent animate-fade-in">
-              Power Maker AI Docs
-            </h1>
-            <p className="text-lg text-muted-foreground max-w-2xl mx-auto animate-fade-in">
-              Everything you need to master Power Maker AI and build amazing solutions
-            </p>
+      <main className="lg:ml-80 pt-16">
+        {/* Hero Section */}
+        <section className="relative overflow-hidden bg-gradient-to-br from-primary via-primary/90 to-accent/20 text-primary-foreground">
+          <div className="absolute inset-0 opacity-10">
+            <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,rgba(16,185,129,0.3),transparent_50%)]" />
           </div>
+          
+          <div className="relative max-w-6xl mx-auto px-6 py-24 lg:py-32">
+            <div className="max-w-3xl animate-fade-in-up">
+              <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-accent/20 backdrop-blur-sm border border-accent/30 mb-6 animate-float">
+                <Sparkles className="w-4 h-4 text-accent" />
+                <span className="text-sm font-medium">AI-Powered CRM Assistant</span>
+              </div>
+              
+              <h1 className="text-5xl lg:text-6xl font-bold mb-6 leading-tight bg-gradient-to-r from-white via-white to-accent bg-clip-text text-transparent">
+                Power Maker AI Documentation
+              </h1>
+              
+              <p className="text-xl text-primary-foreground/80 mb-8 leading-relaxed">
+                Master AI-accelerated CRM development with comprehensive guides, tutorials, and best practices for Microsoft Dynamics 365.
+              </p>
+              
+              <div className="flex flex-wrap gap-4">
+                <Button 
+                  size="lg"
+                  onClick={() => scrollToSection("quickstart")}
+                  className="bg-accent hover:bg-accent/90 text-accent-foreground shadow-xl shadow-accent/30 group"
+                >
+                  <Play className="w-5 h-5 mr-2 group-hover:scale-110 transition-transform" />
+                  Quickstart Guide
+                  <ArrowRight className="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform" />
+                </Button>
+                
+                <Button 
+                  size="lg"
+                  variant="outline"
+                  className="bg-white/10 border-white/20 text-white hover:bg-white/20 backdrop-blur-sm"
+                >
+                  <ExternalLink className="w-5 h-5 mr-2" />
+                  View API Reference
+                </Button>
+              </div>
+            </div>
 
-          {Object.entries(docData).map(([sectionId, section], index) => (
-            <section
-              key={sectionId}
-              id={sectionId}
-              className="mb-16 scroll-mt-20"
-            >
-              {/* Section Title */}
-              <Card className="mb-8 p-8 bg-gradient-to-br from-card to-card/50 border-primary/20 shadow-lg hover:shadow-xl transition-all duration-300 animate-fade-in">
-                <div className="flex items-start gap-4">
-                  <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-primary to-accent flex items-center justify-center flex-shrink-0 shadow-lg">
-                    <BookOpen className="w-6 h-6 text-white" />
-                  </div>
-                  <div className="flex-1">
-                    <h2 className="text-3xl lg:text-4xl font-bold bg-gradient-to-r from-foreground to-foreground/70 bg-clip-text text-transparent mb-3">
-                      {section.title}
-                    </h2>
-                    {section.description && (
-                      <p className="text-base lg:text-lg text-muted-foreground leading-relaxed">
-                        {section.description}
+            {/* Feature Grid */}
+            <div className="grid md:grid-cols-3 gap-6 mt-16 animate-fade-in-up" style={{ animationDelay: "200ms" }}>
+              {[
+                { icon: Settings, title: "Design Entities", desc: "Prototype CRM schemas with AI" },
+                { icon: Code2, title: "Trace Plugins", desc: "Debug with natural language" },
+                { icon: Database, title: "Expert Queries", desc: "Conversational data operations" }
+              ].map((feature, i) => (
+                <Card 
+                  key={i} 
+                  className="p-6 bg-white/10 backdrop-blur-sm border-white/20 hover:bg-white/15 transition-all group"
+                  style={{ animationDelay: `${(i + 2) * 100}ms` }}
+                >
+                  <feature.icon className="w-8 h-8 mb-3 text-accent group-hover:scale-110 transition-transform" />
+                  <h3 className="font-semibold text-lg mb-2">{feature.title}</h3>
+                  <p className="text-sm text-primary-foreground/70">{feature.desc}</p>
+                </Card>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        {/* Documentation Content */}
+        <div className="max-w-5xl mx-auto px-6 py-16 space-y-24">
+          {sidebarStructure.map((section) => (
+            <div key={section.id}>
+              {/* Parent Section */}
+              <section 
+                id={section.id}
+                data-section-id={section.id}
+                className="scroll-mt-24 animate-fade-in-up"
+              >
+                <Card className="p-10 border-2 shadow-xl hover:shadow-2xl transition-shadow bg-gradient-to-br from-card via-card to-accent/5">
+                  <div className="flex items-start gap-6 mb-8">
+                    <div className="p-4 rounded-2xl bg-gradient-to-br from-accent to-accent/60 shadow-lg">
+                      <section.icon className="w-8 h-8 text-accent-foreground" />
+                    </div>
+                    <div className="flex-1">
+                      <div className="flex items-center gap-3 mb-2">
+                        <h2 className="text-4xl font-bold bg-gradient-to-r from-foreground to-foreground/60 bg-clip-text text-transparent">
+                          {docData[section.id]?.title}
+                        </h2>
+                        {docData[section.id]?.readTime && (
+                          <span className="text-sm text-muted-foreground px-3 py-1 rounded-full bg-muted/50">
+                            {docData[section.id].readTime} read
+                          </span>
+                        )}
+                      </div>
+                      <p className="text-lg text-muted-foreground leading-relaxed">
+                        {docData[section.id]?.description}
                       </p>
-                    )}
-                    {section.subtitle && (
-                      <h3 className="text-xl font-semibold text-primary mt-4 flex items-center gap-2">
-                        <ArrowRight className="w-5 h-5" />
-                        {section.subtitle}
+                    </div>
+                  </div>
+
+                  <div className="space-y-6">
+                    {docData[section.id]?.subtitle && (
+                      <h3 className="text-2xl font-semibold text-foreground mt-8 mb-4">
+                        {docData[section.id].subtitle}
                       </h3>
                     )}
-                  </div>
-                </div>
-              </Card>
-
-              {/* Section Content */}
-              <div className="space-y-6">
-                {section.content && section.content.map((contentItem: any, i: number) => (
-                  <div key={i} className="animate-fade-in" style={{ animationDelay: `${i * 50}ms` }}>
-                    <ContentBlock item={contentItem} />
-                  </div>
-                ))}
-
-                {section.sections && section.sections.map((subsection: any, i: number) => (
-                  <div key={i} className="space-y-4 mt-10 animate-fade-in" style={{ animationDelay: `${i * 100}ms` }}>
-                    {subsection.subtitle && (
-                      <Card className="p-6 bg-gradient-to-r from-primary/5 to-accent/5 border-primary/20">
-                        <h4 className="text-xl font-semibold text-foreground flex items-center gap-3">
-                          <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-primary to-accent flex items-center justify-center">
-                            <ArrowRight className="w-4 h-4 text-white" />
-                          </div>
-                          {subsection.subtitle}
-                        </h4>
-                      </Card>
+                    
+                    {docData[section.id]?.content?.map((item: any, idx: number) =>
+                      renderContent(item, idx)
                     )}
-                    {subsection.content && subsection.content.map((contentItem: any, j: number) => (
-                      <div key={j} className="animate-fade-in" style={{ animationDelay: `${j * 50}ms` }}>
-                        <ContentBlock item={contentItem} />
+                    
+                    {docData[section.id]?.sections?.map((subsection: any, idx: number) => (
+                      <div key={idx} className="mt-10">
+                        <h3 className="text-2xl font-semibold text-foreground mb-4 flex items-center gap-2">
+                          <div className="w-1.5 h-6 bg-gradient-to-b from-accent to-accent/50 rounded-full" />
+                          {subsection.subtitle}
+                        </h3>
+                        <div className="space-y-4">
+                          {subsection.content.map((item: any, i: number) =>
+                            renderContent(item, i)
+                          )}
+                        </div>
                       </div>
                     ))}
                   </div>
-                ))}
-              </div>
-            </section>
-          ))}
+                </Card>
+              </section>
 
-          {/* Footer CTA */}
-          <Card className="p-8 text-center bg-gradient-to-br from-primary/10 via-accent/10 to-primary/10 border-primary/20 shadow-xl animate-fade-in">
-            <Sparkles className="w-12 h-12 text-primary mx-auto mb-4" />
-            <h3 className="text-2xl font-bold text-foreground mb-2">Need More Help?</h3>
-            <p className="text-muted-foreground mb-6">
-              Reach out to our support team or join our community
+              {/* Child Sections */}
+              {section.children.map((child) => {
+                const childData = docData[child.id];
+                if (!childData) return null;
+
+                return (
+                  <section
+                    key={child.id}
+                    id={child.id}
+                    data-section-id={child.id}
+                    className="scroll-mt-24 mt-12 animate-fade-in-up"
+                  >
+                    <Card className="p-8 border-2 hover:border-accent/30 transition-all hover:shadow-lg">
+                      <div className="mb-6">
+                        <div className="flex items-center justify-between mb-3">
+                          <h3 className="text-3xl font-bold text-foreground">
+                            {childData.title}
+                          </h3>
+                          <div className="flex items-center gap-2">
+                            {childData.readTime && (
+                              <span className="text-xs text-muted-foreground px-3 py-1 rounded-full bg-muted/50">
+                                {childData.readTime}
+                              </span>
+                            )}
+                            <Button variant="ghost" size="icon" className="hover:bg-accent/10">
+                              <Copy className="w-4 h-4" />
+                            </Button>
+                          </div>
+                        </div>
+                        {childData.description && (
+                          <p className="text-muted-foreground leading-relaxed">
+                            {childData.description}
+                          </p>
+                        )}
+                      </div>
+
+                      <div className="space-y-6">
+                        {childData.subtitle && (
+                          <h4 className="text-xl font-semibold text-foreground">
+                            {childData.subtitle}
+                          </h4>
+                        )}
+                        
+                        {childData.content?.map((item: any, idx: number) =>
+                          renderContent(item, idx)
+                        )}
+                        
+                        {childData.sections?.map((subsection: any, idx: number) => (
+                          <div key={idx} className="mt-8">
+                            <h4 className="text-xl font-semibold text-foreground mb-4">
+                              {subsection.subtitle}
+                            </h4>
+                            <div className="space-y-4">
+                              {subsection.content.map((item: any, i: number) =>
+                                renderContent(item, i)
+                              )}
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                    </Card>
+                  </section>
+                );
+              })}
+            </div>
+          ))}
+        </div>
+
+        {/* Footer CTA */}
+        <section className="relative overflow-hidden bg-gradient-to-br from-primary via-primary/95 to-accent/20 text-primary-foreground mt-24">
+          <div className="absolute inset-0">
+            <svg className="absolute bottom-0 w-full h-24" viewBox="0 0 1200 120" preserveAspectRatio="none">
+              <path d="M0,0 C300,80 600,80 900,40 L1200,0 L1200,120 L0,120 Z" fill="url(#wave-gradient)" />
+              <defs>
+                <linearGradient id="wave-gradient" x1="0%" y1="0%" x2="100%" y2="0%">
+                  <stop offset="0%" stopColor="rgba(16,185,129,0.2)" />
+                  <stop offset="100%" stopColor="rgba(245,158,11,0.2)" />
+                </linearGradient>
+              </defs>
+            </svg>
+          </div>
+
+          <div className="relative max-w-4xl mx-auto px-6 py-20 text-center">
+            <div className="mb-6 flex justify-center">
+              <div className="w-16 h-16 rounded-2xl bg-accent/20 backdrop-blur-sm flex items-center justify-center animate-float">
+                <Sparkles className="w-8 h-8 text-accent animate-glow-pulse" />
+              </div>
+            </div>
+            
+            <h3 className="text-4xl font-bold mb-4">Unlock CRM Superpowers</h3>
+            <p className="text-xl text-primary-foreground/80 mb-8 max-w-2xl mx-auto">
+              Ready to accelerate your Dynamics 365 development? Get started with Power Maker AI today.
             </p>
+            
             <div className="flex flex-wrap gap-4 justify-center">
-              <Button className="bg-gradient-to-r from-primary to-accent hover:shadow-lg transition-all duration-300">
+              <Button 
+                size="lg"
+                className="bg-accent hover:bg-accent/90 text-accent-foreground shadow-2xl shadow-accent/30"
+              >
+                <Network className="w-5 h-5 mr-2" />
                 Contact Support
               </Button>
-              <Button variant="outline" className="border-primary/20 hover:bg-primary/5">
-                Join Community
+              <Button 
+                size="lg"
+                variant="outline"
+                className="bg-white/10 border-white/20 text-white hover:bg-white/20 backdrop-blur-sm"
+              >
+                Join Beta Waitlist
               </Button>
             </div>
-          </Card>
-        </div>
+          </div>
+        </section>
       </main>
     </div>
   );
-};
-
-export default Documentation;
+}
