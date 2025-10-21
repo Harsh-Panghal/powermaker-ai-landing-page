@@ -8,56 +8,46 @@ All colors MUST be HSL.
 
 @layer base {
   :root {
-    /* PowerMaker AI - Premium B2B Design System */
+    /* PowerMaker AI Design System - Professional B2B Theme */
     
-    /* Core Brand Colors - Calm Tech Palette */
-    --primary: 222 47% 11%;           /* Deep Indigo #0F172A */
+    /* Core Brand Colors */
+    --primary: 216 72% 23%;           /* Primary Blue #123466 */
     --primary-foreground: 0 0% 100%;  /* White */
     
-    --accent: 160 84% 39%;            /* Emerald Green #10B981 for AI insight */
+    --accent: 197 89% 58%;            /* Light Blue #37ACF3 */
     --accent-foreground: 0 0% 100%;   /* White */
     
-    --secondary: 43 96% 56%;          /* Amber #F59E0B for innovation */
-    --secondary-foreground: 222 47% 11%; /* Deep Indigo Text */
+    --secondary: 357 43% 72%;         /* Medium Accent #E48D8F */
+    --secondary-foreground: 216 72% 15%; /* Deep Navy Text */
     
-    /* Backgrounds - Subtle Off-White Gradients */
+    /* Backgrounds */
     --background: 0 0% 100%;          /* Pure White */
-    --background-subtle: 210 40% 98%; /* #F9FAFB */
-    --background-muted: 214 32% 97%;  /* #F0F9FF */
-    --foreground: 222 47% 11%;        /* Deep Indigo #0F172A */
+    --foreground: 215 83% 15%;        /* Deep Navy #0A2342 */
     
     --card: 0 0% 100%;                /* White Cards */
-    --card-foreground: 215 25% 27%;   /* Slate #334155 */
+    --card-foreground: 214 11% 35%;
     
-    --muted: 210 40% 96%;             /* #F1F5F9 */
-    --muted-foreground: 215 16% 47%;  /* Slate #64748B */
+    --muted: 210 17% 96%;
+    --muted-foreground: 215 15% 40%;
     
     /* UI Elements */
-    --border: 214 32% 91%;            /* #E2E8F0 */
-    --input: 214 32% 91%;
-    --ring: 160 84% 39%;              /* Emerald ring */
+    --border: 214 20% 88%;
+    --input: 214 20% 88%;
+    --ring: 207 76% 59%;              /* Soft Blue focus ring */
     
     --popover: 0 0% 100%;
-    --popover-foreground: 215 25% 27%;
+    --popover-foreground: 214 11% 35%;
     
     --destructive: 0 84% 60%;
     --destructive-foreground: 0 0% 100%;
     
-    --radius: 1rem;
+    --radius: 0.75rem;
     
-    /* Premium Design Tokens */
-    --gradient-hero: linear-gradient(135deg, hsl(222, 47%, 11%) 0%, hsl(217, 33%, 17%) 40%, hsl(160, 84%, 39%) 100%);
-    --gradient-subtle: linear-gradient(180deg, hsl(0, 0%, 100%) 0%, hsl(210, 40%, 98%) 100%);
-    --gradient-card: linear-gradient(135deg, rgba(16, 185, 129, 0.05) 0%, rgba(255, 255, 255, 0) 100%);
-    --gradient-ai: linear-gradient(90deg, hsl(160, 84%, 39%) 0%, hsl(43, 96%, 56%) 100%);
-    
-    --shadow-card: 0 1px 3px rgba(0, 0, 0, 0.1);
-    --shadow-elevated: 0 4px 16px rgba(0, 0, 0, 0.08);
-    --shadow-glow: 0 0 40px rgba(16, 185, 129, 0.15);
-    --shadow-neural: 0 0 20px rgba(16, 185, 129, 0.3);
-    
-    --transition-smooth: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-    --transition-spring: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+    /* Custom Design Tokens */
+    --gradient-hero: linear-gradient(135deg, hsl(211, 55%, 23%) 0%, hsl(207, 76%, 45%) 100%);
+    --shadow-card: 0 4px 12px rgba(26, 54, 93, 0.08);
+    --shadow-elevated: 0 8px 24px rgba(26, 54, 93, 0.12);
+    --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   }
 
   .dark {
