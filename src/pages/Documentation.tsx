@@ -80,7 +80,6 @@ const docData: Record<string, any> = {
   "get-started": {
     title: "Get Started",
     description: "Welcome to Power Maker AI, your AI assistant for Dynamics 365 CRM. This documentation will guide you through everything you need to know—from getting started to using our AI-powered models to accelerate CRM development, analysis, and automation.",
-    readTime: "2 min",
     content: [
       { type: "text", value: "Whether you're a CRM developer, consultant, tester, or business manager, this guide is designed to help you get the most out of Power Maker AI." },
       { type: "alert", severity: "info", value: "<strong>Note:</strong> Official language support is currently available in English only." }
@@ -90,12 +89,11 @@ const docData: Record<string, any> = {
     title: "Overview",
     description: "Power Maker AI is a web-based AI assistant designed specifically for users working with Microsoft Dynamics 365 CRM.",
     subtitle: "What Power Maker AI Helps You Do",
-    readTime: "3 min",
     content: [
-      { type: "features", items: [
-        { icon: "Settings", title: "Design Custom Entities", desc: "Design custom entities and fields tailored to new or ongoing CRM projects, allowing seamless prototyping of CRM customizations." },
-        { icon: "Code2", title: "Analyze Plugin Logs", desc: "Analyze plugin trace logs in a human-readable format with AI-powered diagnostics." },
-        { icon: "Database", title: "Conversational AI", desc: "Interact with CRM through a conversational AI assistant for data operations and diagnostics." }
+      { type: "list", items: [
+        "Design custom entities and fields tailored to new or ongoing CRM projects, allowing seamless prototyping of CRM customizations.",
+        "Analyze plugin trace logs in a human-readable format.",
+        "Interact with CRM through a conversational AI assistant for data operations and diagnostics."
       ]},
       { type: "text", value: "Power Maker AI leverages cutting-edge language models and CRM-specific logic to interpret your natural language inputs and turn them into meaningful CRM actions." },
       { type: "alert", severity: "warning", value: "⚠️ Note: Power Maker AI does not directly connect to your CRM environment unless explicitly configured. All data operations and configurations are currently simulated or require manual export/import." }
@@ -104,7 +102,6 @@ const docData: Record<string, any> = {
   "crm-connection-setup": {
     title: "CRM Connection Setup",
     description: "To configure your CRM connection in PowerMakerAI, follow these steps:",
-    readTime: "5 min",
     sections: [
       {
         subtitle: "Step 1: Navigate to CRM Connection Settings",
@@ -128,7 +125,6 @@ const docData: Record<string, any> = {
   "quickstart": {
     title: "Quickstart",
     description: "Get up and running with Power Maker AI in minutes.",
-    readTime: "4 min",
     sections: [
       {
         subtitle: "1. Sign In / Access the App",
@@ -172,7 +168,6 @@ const docData: Record<string, any> = {
   },
   "available-models": {
     title: "Available Models",
-    readTime: "6 min",
     sections: [
       {
         subtitle: "1. CRM Customizations",
@@ -223,7 +218,6 @@ const docData: Record<string, any> = {
   },
   "whats-next": {
     title: "What's Next?",
-    readTime: "1 min",
     content: [
       { type: "text", value: "Once you're familiar with the models, you can explore each in detail. Use the navigation menu to dive deeper into individual features, input formats, and best practices." },
       { type: "text", value: "💬 Need help? Reach out at support@powermaker.ai or via the in-app chat." }
@@ -232,134 +226,409 @@ const docData: Record<string, any> = {
   "crm-customizations": {
     title: "CRM Customizations 0.1",
     description: "The CRM Customizations model allows you to define new entities and fields for Microsoft Dynamics 365 CRM using natural language or a visual interface. It simplifies the schema design process—whether you're prototyping or working on live project specifications.",
-    readTime: "2 min",
     content: [
-      { type: "text", value: "This model is ideal for CRM developers, functional consultants, and solution designers who want to quickly design or generate entity definitions." }
+      { type: "text", value: "This model is ideal for CRM developers, functional consultants, and solution designers who want to quickly design or generate entity definitions without diving into complex forms or technical configurations." }
     ]
   },
   "capabilities-customizations": {
     title: "Key Capabilities",
-    readTime: "3 min",
     content: [
       { type: "list", items: [
         "✅ Create custom entities from scratch.",
-        "✅ Add multiple fields using natural phrases.",
-        "✅ Choose from various field types.",
-        "✅ Set field requirements.",
-        "✅ Visualize schema before exporting."
+        "✅ Add multiple fields (columns) using natural phrases.",
+        "✅ Choose from various field types: Text, Date, Number, Option Set, etc.",
+        "✅ Set field requirements (e.g., required, optional).",
+        "✅ Visualize schema before exporting.",
+        "🟡 Upcoming: Support for editing existing entities.",
+        "🟡 Upcoming: Support for relationships (lookups, N:N, 1:N)."
       ]}
     ]
   },
   "how-it-works-customizations": {
     title: "How It Works",
     description: "You can interact with the model in two main ways:",
-    readTime: "4 min",
     sections: [
       {
         subtitle: "1. Natural Language Input",
         content: [
-          { type: "text", value: "Just describe what you want to build." }
+          { type: "text", value: "Just describe what you want to build." },
+          { type: "list", label: "Example prompts:", items: [
+            "'Create an entity called Project with fields: Project Name (text), Start Date (date), Status (option set).'",
+            "'I need an entity for Event Registration with attendee name, event date, and participation status.'"
+          ]},
+          { type: "list", label: "The model will:", items: [
+            "Parse your intent.",
+            "Create a structured representation of the entity.",
+            "Suggest field types and requirement levels.",
+            "Let you fine-tune the result before generating output."
+          ]}
         ]
       },
       {
-        subtitle: "2. Visual Field Designer",
+        subtitle: "2. Visual Field Designer (UI Controls)",
         content: [
-          { type: "text", value: "Use UI controls to add and configure fields manually." }
+          { type: "list", label: "For users who prefer structured input:", items: [
+            "Add or remove fields manually.",
+            "Select data types from a dropdown.",
+            "Set required/optional toggle.",
+            "Rename or reorder fields.",
+            "See a live preview of the entity schema."
+          ]}
         ]
       }
     ]
   },
   "output-customizations": {
     title: "Output",
-    readTime: "2 min",
     content: [
-      { type: "list", items: [
+      { type: "list", label: "Once your entity is designed, you can:", items: [
         "View a clean schema summary.",
         "See suggested logical names for fields.",
-        "Copy the configuration for CRM deployment."
+        "Copy the configuration for CRM deployment (XML/JSON – coming soon).",
+        "Use the structure for documentation or mockups."
       ]}
     ]
   },
   "limitations-customizations": {
     title: "Limitations",
-    readTime: "2 min",
     content: [
       { type: "list", items: [
-        "❌ Does not support editing existing entities yet.",
-        "❌ No direct CRM deployment.",
-        "❌ Does not include relationships or business rules."
+        "❌ Currently does not support editing existing entities (coming soon).",
+        "❌ Does not yet include: Entity icons or color customization, Relationship definitions (N:1, 1:N, N:N), Business Rules, Views, or Forms",
+        "❌ No direct CRM deployment (manual export only).",
+        "❌ For Lookup customizations, use the exact entity name for accurate results."
       ]}
     ]
   },
   "examples-customizations": {
     title: "Example Use Cases",
-    readTime: "3 min",
     content: [
-      { type: "table", headers: ["Scenario", "How It Helps"], rows: [
-        ["New solution", "Draft entity structures quickly"],
-        ["Documentation", "Export configurations for specs"]
+      { type: "table", headers: ["Scenario", "How CRM Customizations Helps"], rows: [
+        ["Starting a new solution", "Quickly draft entity structures with minimal clicks"],
+        ["Business discussions", "Use schema preview to align requirements visually"],
+        ["Functional documentation", "Export configurations to include in requirement specs"],
+        ["Pre-dev planning", "Save time by designing entities before going to PowerApps"]
       ]}
     ]
   },
   "best-practices-customizations": {
     title: "Best Practices",
-    readTime: "2 min",
     content: [
       { type: "list", items: [
-        "Start with natural language for quick prototyping.",
-        "Use the visual designer to fine-tune.",
-        "Always review field names before exporting."
+        "Start with natural language if you're unsure what fields you need—Power Maker AI will assist with intelligent defaults.",
+        "Use the visual designer to fine-tune and validate your schema.",
+        "Always review field names and types before exporting or using in a live CRM system.",
+        "Add entity descriptions for better context (future support coming)."
       ]}
     ]
   },
   "sample-customizations": {
     title: "Sample Prompt & Output",
-    readTime: "2 min",
     sections: [
       {
         subtitle: "Prompt:",
         content: [
-          { type: "text", value: "'Create an entity called Onboarding Task'" }
+          { type: "text", value: "'Create an entity called 'Onboarding Task' with fields: Task Name (text), Due Date (date), Assigned To (lookup to user), Completed (boolean)'" }
+        ]
+      },
+      {
+        subtitle: "Output Preview:",
+        content: [
+          { type: "text", value: "<strong>Entity:</strong> Onboarding Task" },
+          { type: "list", label: "<strong>Fields:</strong>", items: [
+            "Task Name (Text, Required)",
+            "Due Date (Date, Optional)",
+            "Assigned To (Lookup to User, Required)",
+            "Completed (Boolean, Optional)"
+          ]}
         ]
       }
     ]
   },
   "whats-next-customizations": {
     title: "What's Next?",
-    readTime: "1 min",
     content: [
-      { type: "list", items: [
-        "✨ Update existing entities.",
-        "✨ Relationship support.",
-        "✨ Direct CRM deployment."
+      { type: "list", label: "We're working on additional features such as:", items: [
+        "✨ Update existing entity metadata.",
+        "✨ Relationships (Lookups, N:N, 1:N).",
+        "✨ Direct deployment into CRM.",
+        "✨ Downloadable export formats for solution packaging."
       ]}
     ]
   },
   "plugin-tracing": {
     title: "Plugin Tracing 0.2",
-    description: "The Plugin Tracing model in Power Maker AI helps you analyze Microsoft Dynamics 365 CRM plugin trace logs using natural language queries.",
-    readTime: "2 min",
+    description: "The Plugin Tracing model in Power Maker AI helps you analyze Microsoft Dynamics 365 CRM plugin trace logs using natural language queries. Instead of manually inspecting complex trace logs, this model simplifies diagnostics by extracting meaningful summaries and exception insights from raw plugin data.",
     content: [
-      { type: "text", value: "Designed for developers and testers to accelerate debugging." }
+      { type: "text", value: "It is designed for developers, testers, admins, and support teams to accelerate debugging, reduce analysis effort, and communicate issues more clearly." }
     ]
   },
   "capabilities-plugin": {
     title: "Key Capabilities",
-    readTime: "3 min",
     content: [
       { type: "list", items: [
-        "✅ Query logs using plain language",
-        "✅ Filter by entity and status",
-        "✅ View logs in clean tables"
+        "✅ Query plugin logs using plain language",
+        "✅ Filter logs by entity, plugin name, execution status, and time frame",
+        "✅ View logs in a clean, searchable table",
+        "✅ Automatically extract and summarize: Main exception messages, Stack trace highlights, Error location context",
+        "✅ Copy raw trace or summarized output",
+        "🟡 Upcoming: Integration with CRM trace logs (live pull)",
+        "🟡 Upcoming: Export of trace summaries for tickets or documentation"
       ]}
+    ]
+  },
+  "how-it-works-plugin": {
+    title: "How It Works",
+    sections: [
+      {
+        subtitle: "1. Natural Language Query",
+        content: [
+          { type: "text", value: "Type what you're looking for. The model will interpret the request and return relevant logs." },
+          { type: "list", label: "Examples:", items: [
+            "'Show plugin errors for the Opportunity entity from last 7 days'",
+            "'Get failed plugin traces for PostAccountUpdate plugin'",
+            "'List all successful plugin runs for the Contact entity yesterday'"
+          ]},
+          { type: "list", label: "The model will:", items: [
+            "Identify your filter criteria",
+            "Match logs based on your input",
+            "Return them in a structured table"
+          ]}
+        ]
+      },
+      {
+        subtitle: "2. Result Table & Actions",
+        content: [
+          { type: "list", label: "For each result, you get:", items: [
+            "Timestamp",
+            "Plugin Name",
+            "Entity / Message",
+            "Execution Status",
+            "Interactive link to view trace details"
+          ]},
+          { type: "list", label: "Each detail view includes:", items: [
+            "Complete stack trace",
+            "Exception message",
+            "Error location and line number (if available)"
+          ]}
+        ]
+      }
+    ]
+  },
+  "output-plugin": {
+    title: "Output",
+    content: [
+      { type: "list", label: "The Plugin Tracing model provides:", items: [
+        "A summary table of plugin trace logs matching your query.",
+        "Detailed views for each log with exception details and stack traces.",
+        "Copy-to-clipboard functionality for sharing with your team."
+      ]}
+    ]
+  },
+  "limitations-plugin": {
+    title: "Limitations",
+    content: [
+      { type: "list", items: [
+        "❌ Currently requires manual upload of plugin trace logs (coming soon: live CRM integration).",
+        "❌ Works best with standard plugin trace format from Dynamics 365.",
+        "❌ Does not support custom trace log formats at this time.",
+        "❌ Large trace logs may require pagination or filtering."
+      ]}
+    ]
+  },
+  "examples-plugin": {
+    title: "Example Use Cases",
+    content: [
+      { type: "table", headers: ["Scenario", "How Plugin Tracing Helps"], rows: [
+        ["Debugging plugin errors", "Quickly identify exception messages and error locations"],
+        ["Performance analysis", "View execution times and identify slow plugins"],
+        ["Support tickets", "Export trace summaries to share with support teams"],
+        ["Post-deployment testing", "Verify plugin behavior after CRM updates"]
+      ]}
+    ]
+  },
+  "best-practices-plugin": {
+    title: "Best Practices",
+    content: [
+      { type: "list", items: [
+        "Start with broad queries and refine based on results.",
+        "Use entity names and date ranges to narrow down results.",
+        "Always review the full stack trace for context before applying fixes.",
+        "Export trace summaries for documentation or support tickets."
+      ]}
+    ]
+  },
+  "sample-plugin": {
+    title: "Sample Prompt & Output",
+    sections: [
+      {
+        subtitle: "Prompt:",
+        content: [
+          { type: "text", value: "'Show all plugin errors for the Account entity from the last 24 hours'" }
+        ]
+      },
+      {
+        subtitle: "Output Preview:",
+        content: [
+          { type: "text", value: "<strong>Results:</strong> 3 plugin errors found for Account entity" },
+          { type: "list", items: [
+            "PostAccountUpdate - Error: Object reference not set to an instance of an object",
+            "PreAccountCreate - Error: Timeout expired. The timeout period elapsed",
+            "PostAccountUpdate - Error: Invalid plugin execution context"
+          ]}
+        ]
+      }
+    ]
+  },
+  "coming-soon-plugin": {
+    title: "Coming Soon",
+    content: [
+      { type: "list", label: "We're enhancing Plugin Tracing with:", items: [
+        "🔗 Direct integration with CRM plugin trace logs (no manual upload)",
+        "📊 Visual charts for plugin performance and error trends",
+        "🤖 AI-powered root cause analysis and fix suggestions",
+        "📄 Export to PDF or Excel for reporting"
+      ]},
+      { type: "text", value: "💡 Plugin Tracing turns complex logs into actionable insights — debug faster, ship better." }
     ]
   },
   "crm-expert": {
     title: "CRM Expert 0.3",
-    description: "The CRM Expert model acts as your AI-powered Dynamics 365 consultant.",
-    readTime: "2 min",
+    description: "CRM Expert is your conversational AI assistant for all things Dynamics 365 CRM. It allows you to perform data operations, troubleshoot issues, and explore CRM configurations using natural language—no complex queries or technical knowledge required.",
     content: [
-      { type: "text", value: "Ask questions, run queries, and perform CRM operations through natural conversation." }
+      { type: "text", value: "Whether you need to query records, update data, or get guidance on CRM best practices, CRM Expert is here to help." }
+    ]
+  },
+  "capabilities-expert": {
+    title: "Key Capabilities",
+    content: [
+      { type: "list", items: [
+        "✅ Query CRM data using natural language (e.g., 'Show all active contacts in New York').",
+        "✅ Perform data operations (Create, Read, Update, Delete) through conversation.",
+        "✅ Get configuration guidance and best practices.",
+        "✅ Troubleshoot errors and provide diagnostic insights.",
+        "✅ Explain CRM concepts and relationships.",
+        "🟡 Upcoming: Direct CRM integration for live data operations.",
+        "🟡 Upcoming: Advanced analytics and reporting."
+      ]}
+    ]
+  },
+  "how-it-works-expert": {
+    title: "How It Works",
+    sections: [
+      {
+        subtitle: "1. Conversational Queries",
+        content: [
+          { type: "text", value: "Simply type what you want to do or know in plain English." },
+          { type: "list", label: "Examples:", items: [
+            "'List all opportunities created this month'",
+            "'How do I create a custom entity?'",
+            "'Update all inactive accounts to status Archived'"
+          ]},
+          { type: "list", label: "CRM Expert will:", items: [
+            "Understand your intent",
+            "Generate appropriate FetchXML or actions",
+            "Return results in a readable format",
+            "Provide context and explanations"
+          ]}
+        ]
+      },
+      {
+        subtitle: "2. Data Operations",
+        content: [
+          { type: "list", label: "Supported operations:", items: [
+            "Retrieve records with filters",
+            "Create new records",
+            "Update existing records",
+            "Delete records (with confirmation)",
+            "Bulk operations (coming soon)"
+          ]}
+        ]
+      }
+    ]
+  },
+  "behavior-expert": {
+    title: "Input/Output Behavior",
+    content: [
+      { type: "list", label: "Input:", items: [
+        "Natural language queries or commands",
+        "Follow-up questions to refine results",
+        "Context from previous interactions"
+      ]},
+      { type: "list", label: "Output:", items: [
+        "Data tables with results",
+        "Confirmation messages for operations",
+        "Guidance and explanations",
+        "Error messages with troubleshooting tips"
+      ]}
+    ]
+  },
+  "limitations-expert": {
+    title: "Limitations",
+    content: [
+      { type: "list", items: [
+        "❌ Currently operates in simulation mode (no live CRM connection by default).",
+        "❌ Requires clear context for complex operations.",
+        "❌ Best for exploratory queries, not high-volume automation.",
+        "❌ May require follow-up clarification for ambiguous requests."
+      ]}
+    ]
+  },
+  "examples-expert": {
+    title: "Example Use Cases",
+    content: [
+      { type: "table", headers: ["Scenario", "How CRM Expert Helps"], rows: [
+        ["Data exploration", "Query records without writing FetchXML"],
+        ["Quick updates", "Update records through conversation"],
+        ["Learning CRM", "Get explanations and guidance on CRM concepts"],
+        ["Troubleshooting", "Diagnose errors and get fix suggestions"]
+      ]}
+    ]
+  },
+  "best-practices-expert": {
+    title: "Best Practices",
+    content: [
+      { type: "list", items: [
+        "Be specific with your queries to get accurate results.",
+        "Provide context when asking follow-up questions.",
+        "Review results before confirming bulk operations.",
+        "Use CRM Expert for learning and exploration, not production automation."
+      ]}
+    ]
+  },
+  "sample-expert": {
+    title: "Sample Prompt & Output",
+    sections: [
+      {
+        subtitle: "Prompt:",
+        content: [
+          { type: "text", value: "'Show all contacts in California with email addresses'" }
+        ]
+      },
+      {
+        subtitle: "Output Preview:",
+        content: [
+          { type: "text", value: "<strong>Results:</strong> Found 42 contacts in California" },
+          { type: "list", items: [
+            "John Doe - john.doe@example.com",
+            "Jane Smith - jane.smith@example.com",
+            "Bob Johnson - bob.johnson@example.com"
+          ]},
+          { type: "text", value: "Would you like to export these results or refine the query?" }
+        ]
+      }
+    ]
+  },
+  "coming-soon-expert": {
+    title: "Coming Soon",
+    content: [
+      { type: "list", label: "We're enhancing CRM Expert with:", items: [
+        "🧠 Context retention across longer conversations",
+        "📄 FetchXML preview and editing before execution",
+        "🔗 Integration with Power Automate and Azure Logic Apps",
+        "🧩 Plugin registration and deployment from chat"
+      ]},
+      { type: "text", value: "💡 CRM Expert is your natural language gateway to Dynamics CRM. No buttons, no code — just ask." }
     ]
   }
 };
