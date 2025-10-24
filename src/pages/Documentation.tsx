@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import {
   Cpu,
   Menu,
@@ -25,7 +25,6 @@ import {
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
-import { Link } from "react-router-dom";
 
 const sidebarStructure = [
   {
@@ -95,7 +94,7 @@ const sidebarStructure = [
   },
 ];
 
-const docData: Record<string, any> = {
+const docData = {
   "get-started": {
     title: "Get Started",
     description:
@@ -705,7 +704,7 @@ const docData: Record<string, any> = {
         type: "list",
         items: [
           "Keep plugin tracing enabled only for the relevant period to avoid data overload. ",
-          "Use concise natural queries (e.g., “failures for Lead plugin last 3 days”) for accurate filtering. ",
+          `Use concise natural queries (e.g., "failures for Lead plugin last 3 days") for accurate filtering. `,
           "Double-check trace depth settings in CRM to ensure logs capture full context. ",
           "Export key logs for your support documentation (feature in development). ",
         ],
@@ -772,7 +771,7 @@ const docData: Record<string, any> = {
       {
         type: "text",
         value:
-          "It’s ideal for developers, analysts, managers, testers, and anyone seeking a conversational way to work with CRM.",
+          "It's ideal for developers, analysts, managers, testers, and anyone seeking a conversational way to work with CRM.",
       },
     ],
   },
@@ -783,7 +782,7 @@ const docData: Record<string, any> = {
         type: "list",
         items: [
           "✅ Perform CRUD operations (Create, Read, Update, Delete) on records using plain English",
-          "✅ Ask questions like “Get all open leads created last week” or “Update the contact record for John Doe”",
+          `✅ Ask questions like "Get all open leads created last week" or "Update the contact record for John Doe"`,
           "✅ Create new entities and fields through guided natural commands",
           "✅ Search and analyze plugin trace logs like the Plugin Tracing model",
           '✅ Combine multiple operations in one query (e.g., "Create an entity and add two fields")',
@@ -800,16 +799,16 @@ const docData: Record<string, any> = {
           {
             type: "text",
             value:
-              "You interact with CRM Expert like you would with ChatGPT or Gemini. It’s available in a chat-style UI and is context-aware — meaning you can have follow-up conversations without repeating everything.",
+              "You interact with CRM Expert like you would with ChatGPT or Gemini. It's available in a chat-style UI and is context-aware — meaning you can have follow-up conversations without repeating everything.",
           },
           {
             type: "list",
             label: "Examples:",
             items: [
-              "“Show me all opportunities in the pipeline stage”",
-              "“Add a new field called ProjectCode (Text) to the Project entity”",
-              "“Update all leads with source = 'Event' to source = 'Webinar'”",
-              "“What plugins failed yesterday?”",
+              "Show me all opportunities in the pipeline stage",
+              "Add a new field called ProjectCode (Text) to the Project entity",
+              "Update all leads with source = 'Event' to source = 'Webinar'",
+              "What plugins failed yesterday?",
             ],
           },
         ],
@@ -883,23 +882,23 @@ const docData: Record<string, any> = {
         rows: [
           [
             "Quickly pull a CRM report",
-            "“Get all accounts created last 30 days”",
+            "Get all accounts created last 30 days",
           ],
           [
             "Modify a record without UI",
-            "“Update phone number for contact John Smith to 9876543210”",
+            "Update phone number for contact John Smith to 9876543210",
           ],
           [
             "Add a new custom field",
-            "“Add a currency field Budget to Opportunity entity”",
+            "Add a currency field Budget to Opportunity entity",
           ],
           [
             "Debug plugin issue",
-            "“Show failed plugin logs for Account updates yesterday”",
+            "Show failed plugin logs for Account updates yesterday",
           ],
           [
             "Test logic in UAT",
-            "“Create a dummy lead with source as Test Campaign”",
+            "Create a dummy lead with source as Test Campaign",
           ],
         ],
       },
@@ -911,7 +910,7 @@ const docData: Record<string, any> = {
       {
         type: "list",
         items: [
-          "Use clear and specific language: “Update lead named John” works better than “fix the lead”",
+          "Use clear and specific language: Update lead named John works better than fix the lead",
           "For updates or deletes, always confirm record identifiers like names or GUIDs",
           "Group related requests in the same session for smoother conversation",
           "Use Plugin Tracing or CRM Customization models directly if your task is complex or bulk-oriented",
@@ -927,7 +926,7 @@ const docData: Record<string, any> = {
         content: [
           {
             type: "text",
-            value: "“Update the phone number for contact ‘Priya Sharma’ to 9876543210”",
+            value: "Update the phone number for contact 'Priya Sharma' to 9876543210",
           },
         ],
       },
@@ -935,17 +934,9 @@ const docData: Record<string, any> = {
         subtitle: "Output Preview:",
         content: [
           {
-              "type": "text",
-              "value": "java"
-            },
-            {
-              "type": "text",
-              "value": "CopyEdit"
-            },
-            {
-              "type": "text",
-              "value": "✅ Successfully updated phone number for Priya Sharma (Contact ID: 5a3b...)."
-            }
+            type: "text",
+            value: "✅ Successfully updated phone number for Priya Sharma (Contact ID: 5a3b...).",
+          },
         ],
       },
     ],
@@ -975,10 +966,97 @@ const docData: Record<string, any> = {
 export default function Documentation() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [activeSection, setActiveSection] = useState("get-started");
-  const [expandedSections, setExpandedSections] = useState<string[]>([
-    "get-started",
-  ]);
-  const [breadcrumb, setBreadcrumb] = useState<string[]>(["Get Started"]);
+  const [expandedSections, setExpandedSections] = useState(["get-started"]);
+  const [breadcrumb, setBreadcrumb] = useState(["Get Started"]);
+  const [searchQuery, setSearchQuery] = useState("");
+  const [searchResults, setSearchResults] = useState([]);
+  const [showSearchResults, setShowSearchResults] = useState(false);
+  const searchInputRef = useRef(null);
+  const searchResultsRef = useRef(null);
+
+  // Search functionality
+  useEffect(() => {
+    if (searchQuery.trim().length < 2) {
+      setSearchResults([]);
+      setShowSearchResults(false);
+      return;
+    }
+
+    const query = searchQuery.toLowerCase();
+    const results = [];
+
+    sidebarStructure.forEach((section) => {
+      // Search in parent sections
+      if (
+        section.title.toLowerCase().includes(query) ||
+        docData[section.id]?.title?.toLowerCase().includes(query) ||
+        docData[section.id]?.description?.toLowerCase().includes(query)
+      ) {
+        results.push({
+          id: section.id,
+          title: section.title,
+          type: "section",
+          parent: null,
+          description: docData[section.id]?.description || "",
+        });
+      }
+
+      // Search in child sections
+      section.children.forEach((child) => {
+        const childData = docData[child.id];
+        if (
+          child.title.toLowerCase().includes(query) ||
+          childData?.title?.toLowerCase().includes(query) ||
+          childData?.description?.toLowerCase().includes(query)
+        ) {
+          results.push({
+            id: child.id,
+            title: child.title,
+            type: "subsection",
+            parent: section.title,
+            description: childData?.description || "",
+          });
+        }
+      });
+    });
+
+    setSearchResults(results);
+    setShowSearchResults(true);
+  }, [searchQuery]);
+
+  // Close search results when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (e) => {
+      if (
+        searchResultsRef.current &&
+        !searchResultsRef.current.contains(e.target) &&
+        searchInputRef.current &&
+        !searchInputRef.current.contains(e.target)
+      ) {
+        setShowSearchResults(false);
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
+
+  // Keyboard shortcut for search (Cmd+K / Ctrl+K)
+  useEffect(() => {
+    const handleKeyDown = (e) => {
+      if ((e.metaKey || e.ctrlKey) && e.key === "k") {
+        e.preventDefault();
+        searchInputRef.current?.focus();
+      }
+      if (e.key === "Escape") {
+        setShowSearchResults(false);
+        searchInputRef.current?.blur();
+      }
+    };
+
+    document.addEventListener("keydown", handleKeyDown);
+    return () => document.removeEventListener("keydown", handleKeyDown);
+  }, []);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -1002,7 +1080,7 @@ export default function Documentation() {
     return () => window.removeEventListener("scroll", handleScroll);
   }, [activeSection]);
 
-  const updateBreadcrumb = (sectionId: string) => {
+  const updateBreadcrumb = (sectionId) => {
     const parent = sidebarStructure.find(
       (s) => s.id === sectionId || s.children.some((c) => c.id === sectionId)
     );
@@ -1017,7 +1095,7 @@ export default function Documentation() {
     }
   };
 
-  const scrollToSection = (id: string) => {
+  const scrollToSection = (id) => {
     const element = document.getElementById(id);
     if (element) {
       const offset = 100;
@@ -1026,16 +1104,24 @@ export default function Documentation() {
       window.scrollTo({ top: elementPosition - offset, behavior: "smooth" });
       setMobileMenuOpen(false);
       setActiveSection(id);
+      setShowSearchResults(false);
+      setSearchQuery("");
     }
   };
 
-  const toggleSection = (id: string) => {
+  const toggleSection = (id) => {
     setExpandedSections((prev) =>
       prev.includes(id) ? prev.filter((s) => s !== id) : [...prev, id]
     );
   };
 
-  const renderContent = (content: any, index: number) => {
+  const highlightMatch = (text, query) => {
+    if (!query) return text;
+    const regex = new RegExp(`(${query})`, "gi");
+    return text.replace(regex, "<mark class='bg-accent/30 text-accent'>$1</mark>");
+  };
+
+  const renderContent = (content, index) => {
     switch (content.type) {
       case "text":
         return (
@@ -1044,39 +1130,6 @@ export default function Documentation() {
             className="text-base leading-relaxed text-muted-foreground"
             dangerouslySetInnerHTML={{ __html: content.value }}
           />
-        );
-
-      case "features":
-        return (
-          <div key={index} className="grid md:grid-cols-3 gap-6 my-8">
-            {content.items.map((item: any, i: number) => {
-              const Icon =
-                item.icon === "Settings"
-                  ? Settings
-                  : item.icon === "Code2"
-                  ? Code2
-                  : Database;
-              return (
-                <Card
-                  key={i}
-                  className="group p-6 border-2 bg-gradient-to-br from-accent/5 to-transparent hover:shadow-lg hover:shadow-accent/10 transition-all duration-300 hover:-translate-y-1"
-                  style={{ animationDelay: `${i * 100}ms` }}
-                >
-                  <div className="flex flex-col gap-3">
-                    <div className="w-12 h-12 rounded-lg bg-accent/10 flex items-center justify-center group-hover:bg-accent group-hover:scale-110 transition-all duration-300">
-                      <Icon className="w-6 h-6 text-accent group-hover:text-accent-foreground" />
-                    </div>
-                    <h4 className="font-semibold text-lg text-foreground">
-                      {item.title}
-                    </h4>
-                    <p className="text-sm text-muted-foreground leading-relaxed">
-                      {item.desc}
-                    </p>
-                  </div>
-                </Card>
-              );
-            })}
-          </div>
         );
 
       case "list":
@@ -1089,7 +1142,7 @@ export default function Documentation() {
               />
             )}
             <ul className="space-y-3">
-              {content.items.map((item: string, i: number) => (
+              {content.items.map((item, i) => (
                 <li key={i} className="flex gap-3 items-start group">
                   <CheckCircle2 className="w-5 h-5 text-accent flex-shrink-0 mt-0.5 group-hover:scale-110 transition-transform" />
                   <span
@@ -1111,7 +1164,7 @@ export default function Documentation() {
               isWarning
                 ? "bg-secondary/10 border-secondary/30"
                 : "bg-accent/10 border-accent/30"
-            } animate-fade-in`}
+            }`}
           >
             <div className="flex gap-4">
               {isWarning ? (
@@ -1136,7 +1189,7 @@ export default function Documentation() {
             <table className="w-full">
               <thead className="bg-muted/50">
                 <tr>
-                  {content.headers.map((header: string, i: number) => (
+                  {content.headers.map((header, i) => (
                     <th
                       key={i}
                       className="px-6 py-4 text-left text-sm font-semibold text-foreground"
@@ -1147,12 +1200,12 @@ export default function Documentation() {
                 </tr>
               </thead>
               <tbody>
-                {content.rows.map((row: string[], i: number) => (
+                {content.rows.map((row, i) => (
                   <tr
                     key={i}
                     className="border-t border-border hover:bg-muted/30 transition-colors group"
                   >
-                    {row.map((cell: string, j: number) => (
+                    {row.map((cell, j) => (
                       <td
                         key={j}
                         className="px-6 py-4 text-sm text-muted-foreground group-hover:text-foreground transition-colors"
@@ -1220,12 +1273,12 @@ export default function Documentation() {
         <div className="h-full px-6 flex items-center justify-between max-w-screen-2xl mx-auto">
           {/* Left: Logo + Breadcrumb */}
           <div className="flex items-center gap-4">
-            <Link to="/" className="flex items-center gap-2 group">
-              <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-accent to-accent/60 flex items-center justify-center shadow-lg shadow-accent/20 group-hover:shadow-accent/40 transition-all group-hover:scale-105">
-                <Brain className="w-6 h-6 text-white" />
+            <div className="flex items-center gap-2 group cursor-pointer">
+              <div className="w-10 h-10 rounded-lg flex items-center justify-center shadow-lg shadow-accent/20 group-hover:shadow-accent/40 transition-all group-hover:scale-105">
+                <img src="logo.svg" alt="PowerMaker AI Logo" className="w-8 h-8" />
               </div>
               <span className="font-bold text-lg hidden sm:block">PMAI</span>
-            </Link>
+            </div>
 
             <div className="hidden md:flex items-center gap-2 text-sm text-muted-foreground">
               <Home className="w-4 h-4" />
@@ -1246,17 +1299,93 @@ export default function Documentation() {
             </div>
           </div>
 
-          {/* Center: Search */}
-          <div className="hidden lg:flex items-center gap-2 px-4 py-2 bg-muted/50 rounded-lg border border-border hover:border-accent/50 transition-colors flex-1 max-w-md mx-8 group">
-            <Search className="w-4 h-4 text-muted-foreground group-hover:text-accent transition-colors" />
-            <input
-              type="text"
-              placeholder="Search documentation..."
-              className="bg-transparent outline-none text-sm flex-1"
-            />
-            <kbd className="px-2 py-1 text-xs bg-background rounded border border-border">
-              ⌘K
-            </kbd>
+          {/* Center: Search with Results Dropdown */}
+          <div className="hidden lg:block relative flex-1 max-w-md mx-8">
+            <div
+              ref={searchInputRef}
+              className="flex items-center gap-2 px-4 py-2 bg-muted/50 rounded-lg border border-border hover:border-accent/50 transition-colors group"
+            >
+              <Search className="w-4 h-4 text-muted-foreground group-hover:text-accent transition-colors" />
+              <input
+                type="text"
+                placeholder="Search documentation..."
+                className="bg-transparent outline-none text-sm flex-1"
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                onFocus={() => searchQuery.length >= 2 && setShowSearchResults(true)}
+              />
+              <kbd className="px-2 py-1 text-xs bg-background rounded border border-border">
+                ⌘K
+              </kbd>
+            </div>
+
+            {/* Search Results Dropdown */}
+            {showSearchResults && searchResults.length > 0 && (
+              <div
+                ref={searchResultsRef}
+                className="absolute top-full mt-2 w-full bg-background border-2 border-border rounded-xl shadow-2xl max-h-96 overflow-y-auto z-50"
+              >
+                <div className="p-2">
+                  <div className="px-3 py-2 text-xs text-muted-foreground font-medium">
+                    Found {searchResults.length} result{searchResults.length !== 1 ? 's' : ''}
+                  </div>
+                  {searchResults.map((result) => (
+                    <button
+                      key={result.id}
+                      onClick={() => scrollToSection(result.id)}
+                      className="w-full text-left px-3 py-3 rounded-lg hover:bg-accent/10 transition-colors group"
+                    >
+                      <div className="flex items-start gap-3">
+                        <div className="mt-1">
+                          {result.type === "section" ? (
+                            <BookOpen className="w-4 h-4 text-accent" />
+                          ) : (
+                            <ChevronRight className="w-4 h-4 text-muted-foreground" />
+                          )}
+                        </div>
+                        <div className="flex-1 min-w-0">
+                          <div
+                            className="font-medium text-sm group-hover:text-accent transition-colors"
+                            dangerouslySetInnerHTML={{
+                              __html: highlightMatch(result.title, searchQuery),
+                            }}
+                          />
+                          {result.parent && (
+                            <div className="text-xs text-muted-foreground mt-0.5">
+                              in {result.parent}
+                            </div>
+                          )}
+                          {result.description && (
+                            <div
+                              className="text-xs text-muted-foreground mt-1 line-clamp-2"
+                              dangerouslySetInnerHTML={{
+                                __html: highlightMatch(result.description, searchQuery),
+                              }}
+                            />
+                          )}
+                        </div>
+                      </div>
+                    </button>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            {/* No Results */}
+            {showSearchResults && searchQuery.length >= 2 && searchResults.length === 0 && (
+              <div
+                ref={searchResultsRef}
+                className="absolute top-full mt-2 w-full bg-background border-2 border-border rounded-xl shadow-2xl p-8 text-center z-50"
+              >
+                <Search className="w-12 h-12 text-muted-foreground/30 mx-auto mb-3" />
+                <p className="text-sm text-muted-foreground">
+                  No results found for "<span className="font-medium">{searchQuery}</span>"
+                </p>
+                <p className="text-xs text-muted-foreground mt-1">
+                  Try different keywords or browse the sidebar
+                </p>
+              </div>
+            )}
           </div>
 
           {/* Right: CTA */}
@@ -1264,6 +1393,7 @@ export default function Documentation() {
             <Button
               variant="default"
               className="hidden sm:flex items-center gap-2 bg-gradient-to-r from-accent to-accent/80 hover:from-accent/90 hover:to-accent/70 shadow-lg shadow-accent/20"
+              onClick={() => window.open("https://chat.powermakerai.com/", "_blank")}
             >
               <Zap className="w-4 h-4" />
               Get Started
@@ -1292,7 +1422,7 @@ export default function Documentation() {
           onClick={() => setMobileMenuOpen(false)}
         >
           <div
-            className="w-80 h-full bg-background border-r border-border shadow-2xl animate-slide-in-left overflow-y-auto"
+            className="w-80 h-full bg-background border-r border-border shadow-2xl overflow-y-auto"
             onClick={(e) => e.stopPropagation()}
           >
             <div className="p-6">
@@ -1309,7 +1439,7 @@ export default function Documentation() {
 
               {/* Mobile Sidebar Content */}
               <nav className="space-y-2">
-                {sidebarStructure.map((section, idx) => {
+                {sidebarStructure.map((section) => {
                   const Icon = section.icon;
                   const isExpanded = expandedSections.includes(section.id);
 
@@ -1340,8 +1470,8 @@ export default function Documentation() {
                       </button>
 
                       {isExpanded && (
-                        <div className="ml-8 mt-1 space-y-1 animate-accordion-down">
-                          {section.children.map((child, childIdx) => (
+                        <div className="ml-8 mt-1 space-y-1">
+                          {section.children.map((child) => (
                             <button
                               key={child.id}
                               onClick={() => scrollToSection(child.id)}
@@ -1350,7 +1480,6 @@ export default function Documentation() {
                                   ? "text-accent font-medium"
                                   : "text-muted-foreground hover:text-foreground"
                               }`}
-                              style={{ animationDelay: `${childIdx * 50}ms` }}
                             >
                               {child.title}
                             </button>
@@ -1373,7 +1502,7 @@ export default function Documentation() {
           <div className="absolute left-6 top-24 bottom-6 w-0.5 bg-gradient-to-b from-accent/30 via-accent/10 to-transparent" />
 
           <nav className="space-y-2 relative">
-            {sidebarStructure.map((section, idx) => {
+            {sidebarStructure.map((section) => {
               const Icon = section.icon;
               const isExpanded = expandedSections.includes(section.id);
               const isActive =
@@ -1386,7 +1515,7 @@ export default function Documentation() {
                   <div
                     className={`absolute -left-[19px] top-5 w-3 h-3 rounded-full border-2 border-background transition-all duration-300 ${
                       isActive
-                        ? "bg-accent shadow-[0_0_12px_rgba(16,185,129,0.6)] scale-125 animate-glow-pulse"
+                        ? "bg-accent shadow-[0_0_12px_rgba(16,185,129,0.6)] scale-125"
                         : "bg-muted"
                     }`}
                   />
@@ -1437,17 +1566,16 @@ export default function Documentation() {
                   </button>
 
                   {isExpanded && (
-                    <div className="ml-14 mt-2 space-y-1 animate-accordion-down">
-                      {section.children.map((child, childIdx) => (
+                    <div className="ml-14 mt-2 space-y-1">
+                      {section.children.map((child) => (
                         <button
                           key={child.id}
                           onClick={() => scrollToSection(child.id)}
-                          className={`w-full text-left px-4 py-2.5 rounded-lg text-sm transition-all animate-cascade relative group ${
+                          className={`w-full text-left px-4 py-2.5 rounded-lg text-sm transition-all relative group ${
                             activeSection === child.id
                               ? "text-accent font-semibold bg-accent/5"
                               : "text-muted-foreground hover:text-foreground hover:bg-muted/30"
                           }`}
-                          style={{ animationDelay: `${childIdx * 50}ms` }}
                         >
                           {activeSection === child.id && (
                             <div className="absolute left-0 top-1/2 -translate-y-1/2 w-1 h-8 bg-accent rounded-r-full" />
@@ -1473,8 +1601,8 @@ export default function Documentation() {
           </div>
 
           <div className="relative max-w-6xl mx-auto px-6 py-24 lg:py-32">
-            <div className="max-w-3xl animate-fade-in-up">
-              <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-accent/20 backdrop-blur-sm border border-accent/30 mb-6 animate-float">
+            <div className="max-w-3xl">
+              <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-accent/20 backdrop-blur-sm border border-accent/30 mb-6">
                 <Sparkles className="w-4 h-4 text-accent" />
                 <span className="text-sm font-medium">
                   AI-Powered CRM Assistant
@@ -1513,10 +1641,7 @@ export default function Documentation() {
             </div>
 
             {/* Feature Grid */}
-            <div
-              className="grid md:grid-cols-3 gap-6 mt-16 animate-fade-in-up"
-              style={{ animationDelay: "200ms" }}
-            >
+            <div className="grid md:grid-cols-3 gap-6 mt-16">
               {[
                 {
                   icon: Settings,
@@ -1537,10 +1662,9 @@ export default function Documentation() {
                 <Card
                   key={i}
                   className="p-6 bg-white/10 backdrop-blur-sm border-white/20 hover:bg-white/15 transition-all group"
-                  style={{ animationDelay: `${(i + 2) * 100}ms` }}
                 >
                   <feature.icon className="w-8 h-8 mb-3 text-accent group-hover:scale-110 transition-transform" />
-                  <h3 className="font-semibold text-lg mb-2">
+                  <h3 className="font-semibold text-primary text-lg mb-2">
                     {feature.title}
                   </h3>
                   <p className="text-sm text-primary-foreground/70">
@@ -1560,7 +1684,7 @@ export default function Documentation() {
               <section
                 id={section.id}
                 data-section-id={section.id}
-                className="scroll-mt-24 animate-fade-in-up"
+                className="scroll-mt-24"
               >
                 <Card className="p-10 border-2 shadow-xl hover:shadow-2xl transition-shadow bg-gradient-to-br from-card via-card to-accent/5">
                   <div className="flex items-start gap-6 mb-8">
@@ -1572,11 +1696,6 @@ export default function Documentation() {
                         <h2 className="text-4xl font-bold bg-gradient-to-r from-foreground to-foreground/60 bg-clip-text text-transparent">
                           {docData[section.id]?.title}
                         </h2>
-                        {docData[section.id]?.readTime && (
-                          <span className="text-sm text-muted-foreground px-3 py-1 rounded-full bg-muted/50">
-                            {docData[section.id].readTime} read
-                          </span>
-                        )}
                       </div>
                       <p className="text-lg text-muted-foreground leading-relaxed">
                         {docData[section.id]?.description}
@@ -1591,25 +1710,23 @@ export default function Documentation() {
                       </h3>
                     )}
 
-                    {docData[section.id]?.content?.map(
-                      (item: any, idx: number) => renderContent(item, idx)
+                    {docData[section.id]?.content?.map((item, idx) =>
+                      renderContent(item, idx)
                     )}
 
-                    {docData[section.id]?.sections?.map(
-                      (subsection: any, idx: number) => (
-                        <div key={idx} className="mt-10">
-                          <h3 className="text-2xl font-semibold text-foreground mb-4 flex items-center gap-2">
-                            <div className="w-1.5 h-6 bg-gradient-to-b from-accent to-accent/50 rounded-full" />
-                            {subsection.subtitle}
-                          </h3>
-                          <div className="space-y-4">
-                            {subsection.content.map((item: any, i: number) =>
-                              renderContent(item, i)
-                            )}
-                          </div>
+                    {docData[section.id]?.sections?.map((subsection, idx) => (
+                      <div key={idx} className="mt-10">
+                        <h3 className="text-2xl font-semibold text-foreground mb-4 flex items-center gap-2">
+                          <div className="w-1.5 h-6 bg-gradient-to-b from-accent to-accent/50 rounded-full" />
+                          {subsection.subtitle}
+                        </h3>
+                        <div className="space-y-4">
+                          {subsection.content.map((item, i) =>
+                            renderContent(item, i)
+                          )}
                         </div>
-                      )
-                    )}
+                      </div>
+                    ))}
                   </div>
                 </Card>
               </section>
@@ -1624,7 +1741,7 @@ export default function Documentation() {
                     key={child.id}
                     id={child.id}
                     data-section-id={child.id}
-                    className="scroll-mt-24 mt-12 animate-fade-in-up"
+                    className="scroll-mt-24 mt-12"
                   >
                     <Card className="p-8 border-2 hover:border-accent/30 transition-all hover:shadow-lg">
                       <div className="mb-6">
@@ -1633,11 +1750,6 @@ export default function Documentation() {
                             {childData.title}
                           </h3>
                           <div className="flex items-center gap-2">
-                            {childData.readTime && (
-                              <span className="text-xs text-muted-foreground px-3 py-1 rounded-full bg-muted/50">
-                                {childData.readTime}
-                              </span>
-                            )}
                             <Button
                               variant="ghost"
                               size="icon"
@@ -1661,25 +1773,22 @@ export default function Documentation() {
                           </h4>
                         )}
 
-                        {childData.content?.map((item: any, idx: number) =>
+                        {childData.content?.map((item, idx) =>
                           renderContent(item, idx)
                         )}
 
-                        {childData.sections?.map(
-                          (subsection: any, idx: number) => (
-                            <div key={idx} className="mt-8">
-                              <h4 className="text-xl font-semibold text-foreground mb-4">
-                                {subsection.subtitle}
-                              </h4>
-                              <div className="space-y-4">
-                                {subsection.content.map(
-                                  (item: any, i: number) =>
-                                    renderContent(item, i)
-                                )}
-                              </div>
+                        {childData.sections?.map((subsection, idx) => (
+                          <div key={idx} className="mt-8">
+                            <h4 className="text-xl font-semibold text-foreground mb-4">
+                              {subsection.subtitle}
+                            </h4>
+                            <div className="space-y-4">
+                              {subsection.content.map((item, i) =>
+                                renderContent(item, i)
+                              )}
                             </div>
-                          )
-                        )}
+                          </div>
+                        ))}
                       </div>
                     </Card>
                   </section>
@@ -1718,8 +1827,8 @@ export default function Documentation() {
 
           <div className="relative max-w-4xl mx-auto px-6 py-20 text-center">
             <div className="mb-6 flex justify-center">
-              <div className="w-16 h-16 rounded-2xl bg-accent/20 backdrop-blur-sm flex items-center justify-center animate-float">
-                <Sparkles className="w-8 h-8 text-accent animate-glow-pulse" />
+              <div className="w-16 h-16 rounded-2xl bg-accent/20 backdrop-blur-sm flex items-center justify-center">
+                <Sparkles className="w-8 h-8 text-accent" />
               </div>
             </div>
 
