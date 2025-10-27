@@ -2,7 +2,7 @@ import {
   Sparkles,
   Instagram,
   Facebook,
-  Twitter,
+  X,
   Mail,
   ArrowRight,
 } from "lucide-react";
@@ -86,7 +86,7 @@ const Footer = () => {
                 rel="noopener noreferrer"
                 className="p-3 bg-primary-foreground/10 rounded-full hover:bg-primary-foreground/20 transition-all hover:scale-110"
               >
-                <Twitter className="w-5 h-5" />
+                <X className="w-5 h-5" />
               </a>
             </div>
           </div>
