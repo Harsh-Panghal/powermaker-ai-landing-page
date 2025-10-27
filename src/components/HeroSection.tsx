@@ -112,8 +112,8 @@ const HeroSection = () => {
           </p>
         </div>
 
-        {/* Dashboard Screenshot - Hidden on mobile, shown on tablet+ */}
-        <div className="hidden lg:block max-w-6xl mx-auto animate-slide-up" style={{ animationDelay: "0.2s" }}>
+        {/* Dashboard Screenshot - Responsive for all devices */}
+        <div className="max-w-6xl mx-auto animate-slide-up px-4 sm:px-0" style={{ animationDelay: "0.2s" }}>
           <div className="bg-card border-2 border-accent rounded-xl shadow-2xl overflow-hidden">
             <img 
               src="/dashboard.png" 
