@@ -27,7 +27,7 @@ const Footer = () => {
 
       <div className="relative container mx-auto px-4 sm:px-6 py-12 sm:py-16">
         {/* Newsletter Section */}
-        <div className="mb-12 sm:mb-16 max-w-2xl mx-auto text-center">
+        {/* <div className="mb-12 sm:mb-16 max-w-2xl mx-auto text-center">
           <h3 className="text-2xl sm:text-3xl font-bold mb-3 sm:mb-4">
             Stay Updated
           </h3>
@@ -45,7 +45,7 @@ const Footer = () => {
               Subscribe <ArrowRight className="w-4 h-4" />
             </Button>
           </div>
-        </div>
+        </div> */}
 
         {/* Main Footer Content */}
         <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-8 sm:gap-12 mb-12">
@@ -177,10 +177,10 @@ const Footer = () => {
           <div className="flex items-center gap-2 text-sm text-primary-foreground/70">
             <Mail className="w-4 h-4" />
             <a
-              href="mailto:contact@powermaker.ai"
+              href="mailto:support@powermaker.ai"
               className="hover:text-primary-foreground transition-colors"
             >
-              contact@powermaker.ai
+              support@powermaker.ai
             </a>
           </div>
         </div>

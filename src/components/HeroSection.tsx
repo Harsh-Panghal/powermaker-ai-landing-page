@@ -112,126 +112,14 @@ const HeroSection = () => {
           </p>
         </div>
 
-        {/* Dashboard Video Preview - Hidden on mobile, shown on tablet+ */}
+        {/* Dashboard Screenshot - Hidden on mobile, shown on tablet+ */}
         <div className="hidden lg:block max-w-6xl mx-auto animate-slide-up" style={{ animationDelay: "0.2s" }}>
-          <div className="bg-card border-2 border-accent rounded-xl shadow-2xl p-4 relative">
-            {/* Play Button Overlay */}
-            <div className="absolute inset-0 flex items-center justify-center z-10">
-              <button className="w-20 h-20 bg-accent rounded-full flex items-center justify-center hover:scale-110 transition-transform shadow-xl">
-                <Play className="w-10 h-10 text-accent-foreground ml-1" fill="currentColor" />
-              </button>
-            </div>
-
-            {/* Dashboard Mockup */}
-            <div className="bg-background rounded-lg overflow-hidden">
-              {/* Top Bar */}
-              <div className="bg-card border-b border-border px-6 py-3 flex items-center justify-between">
-                <div className="flex items-center gap-2">
-                  <div className="w-8 h-8 bg-accent rounded-full flex items-center justify-center">
-                    <span className="text-accent-foreground font-bold text-sm">PM</span>
-                  </div>
-                  <span className="font-semibold text-primary">PowerMaker AI</span>
-                </div>
-                <div className="flex items-center gap-6">
-                  <span className="text-sm text-accent">Hello, Adam Siegel!</span>
-                  <div className="flex items-center gap-2">
-                    <div className="w-2 h-2 bg-green-500 rounded-full"></div>
-                    <span className="text-sm text-muted-foreground">Connected to Dataverse</span>
-                  </div>
-                  <div className="w-8 h-8 bg-primary rounded-full flex items-center justify-center">
-                    <span className="text-primary-foreground font-semibold text-sm">AS</span>
-                  </div>
-                </div>
-              </div>
-
-              {/* Main Content Area */}
-              <div className="flex h-[600px]">
-                {/* Sidebar */}
-                <div className="w-64 bg-secondary border-r border-border p-4 space-y-4">
-                  <Button variant="accent" className="w-full justify-start">
-                    + New Chat
-                  </Button>
-
-                  <div className="space-y-2">
-                    <p className="text-xs text-muted-foreground font-medium px-2">RECENT</p>
-                    <div className="space-y-1">
-                      {[
-                        "Watch Purchase Comparison...",
-                        "URL Fetching...",
-                        "SOAP for Job...",
-                        "Browse Location Sharing...",
-                        "Web Structure Health...",
-                      ].map((item, i) => (
-                        <button
-                          key={i}
-                          className="w-full text-left text-sm text-foreground hover:bg-muted px-3 py-2 rounded-md transition-colors truncate"
-                        >
-                          {item}
-                        </button>
-                      ))}
-                    </div>
-                  </div>
-                </div>
-
-                {/* Chat Area */}
-                <div className="flex-1 flex flex-col p-8">
-                  <div className="flex-1 flex items-center justify-center">
-                    <div className="text-center space-y-4">
-                      <h2 className="text-2xl font-semibold text-primary">
-                        Hello, Adam Siegel!
-                      </h2>
-                      <p className="text-lg text-muted-foreground">
-                        What would you like to make?
-                      </p>
-                    </div>
-                  </div>
-
-                  <div className="space-y-3">
-                    <div className="flex items-center gap-2 p-4 border border-border rounded-lg">
-                      <input
-                        type="text"
-                        placeholder="Enter Prompt"
-                        className="flex-1 bg-transparent outline-none text-foreground"
-                        disabled
-                      />
-                      <Button variant="outline" size="sm">
-                        Attach Files
-                      </Button>
-                    </div>
-                    <div className="flex items-center justify-between text-sm text-muted-foreground">
-                      <div className="flex items-center gap-2">
-                        <span>Model:</span>
-                        <select className="bg-transparent border border-border rounded px-2 py-1">
-                          <option>GPT-4</option>
-                        </select>
-                      </div>
-                      <span>5000 tokens</span>
-                    </div>
-                  </div>
-                </div>
-
-                {/* Right Panel - Templates */}
-                <div className="w-80 bg-secondary border-l border-border p-4 space-y-3">
-                  <div className="bg-card p-4 rounded-lg border border-border hover:shadow-md transition-shadow">
-                    <p className="text-sm text-foreground mb-2">
-                      Use one of our prompt templates for the account entity
-                    </p>
-                    <Play className="w-4 h-4 text-accent" />
-                  </div>
-                  <div className="bg-card p-4 rounded-lg border border-border hover:shadow-md transition-shadow">
-                    <p className="text-sm text-muted-foreground mb-2 font-mono">
-                      {"<"}Find logs that contain a NullReferenceException{">"}
-                    </p>
-                  </div>
-                  <div className="bg-card p-4 rounded-lg border border-border hover:shadow-md transition-shadow">
-                    <p className="text-sm text-foreground mb-2">
-                      Let these logs where execution exceeded
-                    </p>
-                    <span className="text-xs text-muted-foreground">60ms</span>
-                  </div>
-                </div>
-              </div>
-            </div>
+          <div className="bg-card border-2 border-accent rounded-xl shadow-2xl overflow-hidden">
+            <img 
+              src="/dashboard.png" 
+              alt="PowerMaker AI Dashboard Interface" 
+              className="w-full h-auto"
+            />
           </div>
         </div>
       </div>
