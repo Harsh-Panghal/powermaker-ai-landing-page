@@ -1277,7 +1277,7 @@ export default function Documentation() {
               <div className="w-10 h-10 rounded-lg flex items-center justify-center shadow-lg shadow-accent/20 group-hover:shadow-accent/40 transition-all group-hover:scale-105">
                 <img src="logo.svg" alt="PowerMaker AI Logo" className="w-8 h-8" />
               </div>
-              <span className="font-bold text-lg hidden sm:block">PMAI</span>
+              {/* <span className="font-bold text-lg hidden sm:block">PMAI</span> */}
             </div>
 
             <div className="hidden md:flex items-center gap-2 text-sm text-muted-foreground">
