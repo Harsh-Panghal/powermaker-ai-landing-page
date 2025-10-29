@@ -83,7 +83,7 @@ const Navigation = () => {
                   Home
                 </button>
                 <button
-                  onClick={() => scrollToSection("blog")}
+                  onClick={() => {window.open("/docs", "_blank")}}
                   className="text-left text-lg text-primary hover:text-accent transition-colors"
                 >
                   Documentation
@@ -94,7 +94,7 @@ const Navigation = () => {
                 >
                   Contact Us
                 </button>
-                <Button variant="accent" size="lg" className="w-full mt-4">
+                <Button variant="accent" size="lg" className="w-full mt-4" onClick={() => window.open('https://chat.powermakerai.com/', '_blank')}>
                   Request Demo
                 </Button>
               </div>
