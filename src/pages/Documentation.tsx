@@ -662,10 +662,8 @@ const docData = {
       {
         type: "list",
         items: [
-          "❌ Does not currently connect live to CRM to pull plugin logs (requires import or preloaded logs)",
           "❌ Cannot show logs that are not recorded in plugin trace settings",
           "❌ May not parse highly custom or encrypted logs correctly",
-          "❌ Does not yet support advanced filtering by GUIDs, depth, or correlation IDs (coming soon)",
         ],
       },
     ],
