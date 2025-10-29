@@ -13,13 +13,46 @@ const ContactSection = () => {
     message: "",
   });
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    toast({
-      title: "Message Sent!",
-      description: "We'll get back to you as soon as possible.",
-    });
-    setFormData({ name: "", email: "", subject: "", message: "" });
+
+    // Prepare the payload for Web3Forms
+    const data = {
+      access_key: "c3d48ec4-ae2d-40cf-a46c-4200c837dcd0",
+      name: formData.name,
+      email: formData.email,
+      subject: formData.subject,
+      message: formData.message,
+    };
+
+    try {
+      const response = await fetch("https://api.web3forms.com/submit", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(data),
+      });
+
+      const result = await response.json();
+
+      if (result.success) {
+        toast({
+          title: "Message Sent! ✅",
+          description: "We'll get back to you as soon as possible.",
+        });
+        setFormData({ name: "", email: "", subject: "", message: "" });
+      } else {
+        toast({
+          title: "Failed to send message ❌",
+          description: result.message || "Please try again later.",
+        });
+      }
+    } catch (error) {
+      toast({
+        title: "Error sending message ❌",
+        description: "Network issue. Please try again later.",
+      });
+      console.error("Web3Forms Error:", error);
+    }
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
@@ -33,7 +66,7 @@ const ContactSection = () => {
       <div className="absolute top-20 right-20 w-32 h-32 border-2 border-primary/20 rounded-3xl rotate-12 hidden md:block"></div>
       <div className="absolute bottom-20 left-20 w-28 h-28 border-2 border-accent/20 rounded-2xl -rotate-6 hidden sm:block"></div>
       <div className="absolute bottom-10 right-10 w-48 h-48 bg-primary/10 rounded-full blur-3xl hidden md:block"></div>
-      
+
       <div className="container mx-auto px-4 sm:px-6 relative z-10">
         <div className="max-w-6xl mx-auto">
           {/* Header */}
@@ -64,7 +97,7 @@ const ContactSection = () => {
                       <p className="text-muted-foreground">See PowerMaker AI in action with a personalized walkthrough</p>
                     </div>
                   </div>
-                  
+
                   <div className="flex items-start gap-4">
                     <div className="w-12 h-12 bg-primary/10 rounded-xl flex items-center justify-center flex-shrink-0">
                       <svg className="w-6 h-6 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -76,7 +109,7 @@ const ContactSection = () => {
                       <p className="text-muted-foreground">Discuss tailored features for your specific needs</p>
                     </div>
                   </div>
-                  
+
                   <div className="flex items-start gap-4">
                     <div className="w-12 h-12 bg-accent/10 rounded-xl flex items-center justify-center flex-shrink-0">
                       <svg className="w-6 h-6 text-accent" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -166,9 +199,9 @@ const ContactSection = () => {
                     />
                   </div>
 
-                  <Button 
-                    type="submit" 
-                    size="lg" 
+                  <Button
+                    type="submit"
+                    size="lg"
                     className="w-full h-12 bg-gradient-to-r from-primary to-accent hover:opacity-90 transition-all duration-300 text-white font-semibold shadow-lg"
                   >
                     Send Message
