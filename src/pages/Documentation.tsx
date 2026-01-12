@@ -22,6 +22,7 @@ import {
   Play,
   Copy,
   ExternalLink,
+  ChevronDown,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
@@ -969,6 +970,7 @@ export default function Documentation() {
   const [searchQuery, setSearchQuery] = useState("");
   const [searchResults, setSearchResults] = useState([]);
   const [showSearchResults, setShowSearchResults] = useState(false);
+  const [mobileSearchOpen, setMobileSearchOpen] = useState(false);
   const searchInputRef = useRef(null);
   const searchResultsRef = useRef(null);
 
@@ -984,7 +986,6 @@ export default function Documentation() {
     const results = [];
 
     sidebarStructure.forEach((section) => {
-      // Search in parent sections
       if (
         section.title.toLowerCase().includes(query) ||
         docData[section.id]?.title?.toLowerCase().includes(query) ||
@@ -999,7 +1000,6 @@ export default function Documentation() {
         });
       }
 
-      // Search in child sections
       section.children.forEach((child) => {
         const childData = docData[child.id];
         if (
@@ -1044,10 +1044,15 @@ export default function Documentation() {
     const handleKeyDown = (e) => {
       if ((e.metaKey || e.ctrlKey) && e.key === "k") {
         e.preventDefault();
-        searchInputRef.current?.focus();
+        if (window.innerWidth < 1024) {
+          setMobileSearchOpen(true);
+        } else {
+          searchInputRef.current?.focus();
+        }
       }
       if (e.key === "Escape") {
         setShowSearchResults(false);
+        setMobileSearchOpen(false);
         searchInputRef.current?.blur();
       }
     };
@@ -1101,6 +1106,7 @@ export default function Documentation() {
         element.getBoundingClientRect().top + window.pageYOffset;
       window.scrollTo({ top: elementPosition - offset, behavior: "smooth" });
       setMobileMenuOpen(false);
+      setMobileSearchOpen(false);
       setActiveSection(id);
       setShowSearchResults(false);
       setSearchQuery("");
@@ -1125,26 +1131,26 @@ export default function Documentation() {
         return (
           <p
             key={index}
-            className="text-base leading-relaxed text-muted-foreground"
+            className="text-sm sm:text-base leading-relaxed text-muted-foreground break-words"
             dangerouslySetInnerHTML={{ __html: content.value }}
           />
         );
 
       case "list":
         return (
-          <div key={index} className="my-6">
+          <div key={index} className="my-4 sm:my-6">
             {content.label && (
               <p
-                className="font-medium text-foreground mb-3"
+                className="font-medium text-foreground mb-3 text-sm sm:text-base"
                 dangerouslySetInnerHTML={{ __html: content.label }}
               />
             )}
-            <ul className="space-y-3">
+            <ul className="space-y-2 sm:space-y-3">
               {content.items.map((item, i) => (
-                <li key={i} className="flex gap-3 items-start group">
-                  <CheckCircle2 className="w-5 h-5 text-accent flex-shrink-0 mt-0.5 group-hover:scale-110 transition-transform" />
+                <li key={i} className="flex gap-2 sm:gap-3 items-start group">
+                  <CheckCircle2 className="w-4 h-4 sm:w-5 sm:h-5 text-accent flex-shrink-0 mt-0.5 group-hover:scale-110 transition-transform" />
                   <span
-                    className="text-muted-foreground leading-relaxed"
+                    className="text-muted-foreground leading-relaxed text-sm sm:text-base break-words"
                     dangerouslySetInnerHTML={{ __html: item }}
                   />
                 </li>
@@ -1158,20 +1164,20 @@ export default function Documentation() {
         return (
           <div
             key={index}
-            className={`my-6 p-6 rounded-xl border-2 ${
+            className={`my-4 sm:my-6 p-4 sm:p-6 rounded-xl border-2 ${
               isWarning
                 ? "bg-secondary/10 border-secondary/30"
                 : "bg-accent/10 border-accent/30"
             }`}
           >
-            <div className="flex gap-4">
+            <div className="flex gap-3 sm:gap-4">
               {isWarning ? (
-                <AlertTriangle className="w-6 h-6 text-secondary flex-shrink-0" />
+                <AlertTriangle className="w-5 h-5 sm:w-6 sm:h-6 text-secondary flex-shrink-0" />
               ) : (
-                <Info className="w-6 h-6 text-accent flex-shrink-0" />
+                <Info className="w-5 h-5 sm:w-6 sm:h-6 text-accent flex-shrink-0" />
               )}
               <p
-                className="text-sm leading-relaxed text-foreground"
+                className="text-xs sm:text-sm leading-relaxed text-foreground break-words"
                 dangerouslySetInnerHTML={{ __html: content.value }}
               />
             </div>
@@ -1180,41 +1186,60 @@ export default function Documentation() {
 
       case "table":
         return (
-          <div
-            key={index}
-            className="my-8 overflow-hidden rounded-xl border-2 border-border"
-          >
-            <table className="w-full">
-              <thead className="bg-muted/50">
-                <tr>
-                  {content.headers.map((header, i) => (
-                    <th
-                      key={i}
-                      className="px-6 py-4 text-left text-sm font-semibold text-foreground"
-                    >
-                      {header}
-                    </th>
+          <div key={index} className="my-6 sm:my-8">
+            {/* Mobile: Card View */}
+            <div className="sm:hidden space-y-3">
+              {content.rows.map((row, i) => (
+                <div
+                  key={i}
+                  className="bg-muted/30 rounded-lg p-4 border border-border"
+                >
+                  {row.map((cell, j) => (
+                    <div key={j} className="mb-2 last:mb-0">
+                      <div className="text-xs font-semibold text-muted-foreground mb-1">
+                        {content.headers[j]}
+                      </div>
+                      <div className="text-sm text-foreground break-words">{cell}</div>
+                    </div>
                   ))}
-                </tr>
-              </thead>
-              <tbody>
-                {content.rows.map((row, i) => (
-                  <tr
-                    key={i}
-                    className="border-t border-border hover:bg-muted/30 transition-colors group"
-                  >
-                    {row.map((cell, j) => (
-                      <td
-                        key={j}
-                        className="px-6 py-4 text-sm text-muted-foreground group-hover:text-foreground transition-colors"
+                </div>
+              ))}
+            </div>
+
+            {/* Desktop: Table View with horizontal scroll */}
+            <div className="hidden sm:block overflow-x-auto rounded-xl border-2 border-border">
+              <table className="w-full min-w-full">
+                <thead className="bg-muted/50">
+                  <tr>
+                    {content.headers.map((header, i) => (
+                      <th
+                        key={i}
+                        className="px-4 sm:px-6 py-3 sm:py-4 text-left text-xs sm:text-sm font-semibold text-foreground whitespace-nowrap"
                       >
-                        {cell}
-                      </td>
+                        {header}
+                      </th>
                     ))}
                   </tr>
-                ))}
-              </tbody>
-            </table>
+                </thead>
+                <tbody>
+                  {content.rows.map((row, i) => (
+                    <tr
+                      key={i}
+                      className="border-t border-border hover:bg-muted/30 transition-colors group"
+                    >
+                      {row.map((cell, j) => (
+                        <td
+                          key={j}
+                          className="px-4 sm:px-6 py-3 sm:py-4 text-xs sm:text-sm text-muted-foreground group-hover:text-foreground transition-colors"
+                        >
+                          {cell}
+                        </td>
+                      ))}
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
           </div>
         );
 
@@ -1226,7 +1251,7 @@ export default function Documentation() {
   return (
     <div className="min-h-screen bg-gradient-to-b from-background via-background to-muted/20">
       {/* Neural Network Background Pattern */}
-      <div className="fixed inset-0 opacity-[0.02] pointer-events-none">
+      <div className="fixed inset-0 opacity-[0.03] pointer-events-none">
         <svg className="w-full h-full">
           <defs>
             <pattern
@@ -1267,28 +1292,27 @@ export default function Documentation() {
       </div>
 
       {/* Top Navigation Bar */}
-      <nav className="fixed top-0 left-0 right-0 h-16 bg-background/80 backdrop-blur-xl border-b border-border z-50 shadow-sm">
-        <div className="h-full px-6 flex items-center justify-between max-w-screen-2xl mx-auto">
+      <nav className="fixed top-0 left-0 right-0 h-14 sm:h-16 bg-background/80 backdrop-blur-xl border-b border-border z-50 shadow-sm">
+        <div className="h-full px-4 sm:px-6 flex items-center justify-between max-w-screen-2xl mx-auto">
           {/* Left: Logo + Breadcrumb */}
-          <div className="flex items-center gap-4">
-            <div className="flex items-center gap-2 group cursor-pointer">
-              <div className="w-10 h-10 rounded-lg flex items-center justify-center shadow-lg shadow-accent/20 group-hover:shadow-accent/40 transition-all group-hover:scale-105">
-                <img src="logo.svg" alt="PowerMaker AI Logo" className="w-8 h-8" />
+          <div className="flex items-center gap-3 sm:gap-4 min-w-0 flex-1">
+            <div className="flex items-center gap-2 group cursor-pointer flex-shrink-0">
+              <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-lg flex items-center justify-center shadow-lg shadow-accent/20 group-hover:shadow-accent/40 transition-all group-hover:scale-105">
+                <img src="logo.svg" alt="PowerMaker AI Logo" className="w-6 h-6 sm:w-8 sm:h-8" />
               </div>
-              {/* <span className="font-bold text-lg hidden sm:block">PMAI</span> */}
             </div>
 
-            <div className="hidden md:flex items-center gap-2 text-sm text-muted-foreground">
-              <Home className="w-4 h-4" />
+            <div className="hidden md:flex items-center gap-2 text-xs sm:text-sm text-muted-foreground min-w-0">
+              <Home className="w-3 h-3 sm:w-4 sm:h-4 flex-shrink-0" />
               {breadcrumb.map((crumb, i) => (
-                <div key={i} className="flex items-center gap-2">
-                  <ChevronRight className="w-4 h-4" />
+                <div key={i} className="flex items-center gap-2 min-w-0">
+                  <ChevronRight className="w-3 h-3 sm:w-4 sm:h-4 flex-shrink-0" />
                   <span
-                    className={
+                    className={`truncate ${
                       i === breadcrumb.length - 1
                         ? "text-foreground font-medium"
                         : ""
-                    }
+                    }`}
                   >
                     {crumb}
                   </span>
@@ -1297,22 +1321,22 @@ export default function Documentation() {
             </div>
           </div>
 
-          {/* Center: Search with Results Dropdown */}
-          <div className="hidden lg:block relative flex-1 max-w-md mx-8">
+          {/* Center: Desktop Search */}
+          <div className="hidden lg:block relative flex-1 max-w-md mx-4 xl:mx-8">
             <div
               ref={searchInputRef}
               className="flex items-center gap-2 px-4 py-2 bg-muted/50 rounded-lg border border-border hover:border-accent/50 transition-colors group"
             >
-              <Search className="w-4 h-4 text-muted-foreground group-hover:text-accent transition-colors" />
+              <Search className="w-4 h-4 text-muted-foreground group-hover:text-accent transition-colors flex-shrink-0" />
               <input
                 type="text"
                 placeholder="Search documentation..."
-                className="bg-transparent outline-none text-sm flex-1"
+                className="bg-transparent outline-none text-sm flex-1 min-w-0"
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 onFocus={() => searchQuery.length >= 2 && setShowSearchResults(true)}
               />
-              <kbd className="px-2 py-1 text-xs bg-background rounded border border-border">
+              <kbd className="px-2 py-1 text-xs bg-background rounded border border-border flex-shrink-0">
                 ⌘K
               </kbd>
             </div>
@@ -1334,7 +1358,7 @@ export default function Documentation() {
                       className="w-full text-left px-3 py-3 rounded-lg hover:bg-accent/10 transition-colors group"
                     >
                       <div className="flex items-start gap-3">
-                        <div className="mt-1">
+                        <div className="mt-1 flex-shrink-0">
                           {result.type === "section" ? (
                             <BookOpen className="w-4 h-4 text-accent" />
                           ) : (
@@ -1343,23 +1367,15 @@ export default function Documentation() {
                         </div>
                         <div className="flex-1 min-w-0">
                           <div
-                            className="font-medium text-sm group-hover:text-accent transition-colors"
+                            className="font-medium text-sm group-hover:text-accent transition-colors break-words"
                             dangerouslySetInnerHTML={{
                               __html: highlightMatch(result.title, searchQuery),
                             }}
                           />
                           {result.parent && (
-                            <div className="text-xs text-muted-foreground mt-0.5">
+                            <div className="text-xs text-muted-foreground mt-0.5 truncate">
                               in {result.parent}
                             </div>
-                          )}
-                          {result.description && (
-                            <div
-                              className="text-xs text-muted-foreground mt-1 line-clamp-2"
-                              dangerouslySetInnerHTML={{
-                                __html: highlightMatch(result.description, searchQuery),
-                              }}
-                            />
                           )}
                         </div>
                       </div>
@@ -1376,7 +1392,7 @@ export default function Documentation() {
                 className="absolute top-full mt-2 w-full bg-background border-2 border-border rounded-xl shadow-2xl p-8 text-center z-50"
               >
                 <Search className="w-12 h-12 text-muted-foreground/30 mx-auto mb-3" />
-                <p className="text-sm text-muted-foreground">
+                <p className="text-sm text-muted-foreground break-words">
                   No results found for "<span className="font-medium">{searchQuery}</span>"
                 </p>
                 <p className="text-xs text-muted-foreground mt-1">
@@ -1386,15 +1402,25 @@ export default function Documentation() {
             )}
           </div>
 
-          {/* Right: CTA */}
-          <div className="flex items-center gap-4">
+          {/* Right: CTA + Mobile Buttons */}
+          <div className="flex items-center gap-2 sm:gap-4 flex-shrink-0">
+            {/* Mobile Search Button */}
+            <Button
+              variant="ghost"
+              size="icon"
+              className="lg:hidden"
+              onClick={() => setMobileSearchOpen(true)}
+            >
+              <Search className="w-4 h-4 sm:w-5 sm:h-5" />
+            </Button>
+
             <Button
               variant="default"
-              className="hidden sm:flex items-center gap-2 bg-gradient-to-r from-accent to-accent/80 hover:from-accent/90 hover:to-accent/70 shadow-lg shadow-accent/20"
+              className="hidden sm:flex items-center gap-2 bg-gradient-to-r from-accent to-accent/80 hover:from-accent/90 hover:to-accent/70 shadow-lg shadow-accent/20 text-sm"
               onClick={() => window.open("https://chat.powermakerai.com/", "_blank")}
             >
               <Zap className="w-4 h-4" />
-              Get Started
+              <span className="hidden md:inline">Get Started</span>
             </Button>
 
             <Button
@@ -1413,6 +1439,75 @@ export default function Documentation() {
         </div>
       </nav>
 
+      {/* Mobile Search Overlay */}
+      {mobileSearchOpen && (
+        <div className="fixed inset-0 bg-background/80 backdrop-blur-sm z-50 lg:hidden">
+          <div className="bg-background h-full overflow-y-auto">
+            <div className="p-4">
+              <div className="flex items-center gap-2 mb-4">
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  onClick={() => {
+                    setMobileSearchOpen(false);
+                    setSearchQuery("");
+                    setShowSearchResults(false);
+                  }}
+                >
+                  <X className="w-5 h-5" />
+                </Button>
+                <div className="flex-1 flex items-center gap-2 px-4 py-2 bg-muted/50 rounded-lg border border-border">
+                  <Search className="w-4 h-4 text-muted-foreground flex-shrink-0" />
+                  <input
+                    type="text"
+                    placeholder="Search documentation..."
+                    className="bg-transparent outline-none text-sm flex-1 min-w-0"
+                    value={searchQuery}
+                    onChange={(e) => setSearchQuery(e.target.value)}
+                    autoFocus
+                  />
+                </div>
+              </div>
+
+              {searchResults.length > 0 && (
+                <div className="space-y-2">
+                  {searchResults.map((result) => (
+                    <button
+                      key={result.id}
+                      onClick={() => scrollToSection(result.id)}
+                      className="w-full text-left p-3 rounded-lg hover:bg-accent/10 border border-border"
+                    >
+                      <div className="flex items-start gap-3">
+                        <div className="mt-1 flex-shrink-0">
+                          {result.type === "section" ? (
+                            <BookOpen className="w-4 h-4 text-accent" />
+                          ) : (
+                            <ChevronRight className="w-4 h-4 text-muted-foreground" />
+                          )}
+                        </div>
+                        <div className="flex-1 min-w-0">
+                          <div
+                            className="font-medium text-sm break-words"
+                            dangerouslySetInnerHTML={{
+                              __html: highlightMatch(result.title, searchQuery),
+                            }}
+                          />
+                          {result.parent && (
+                            <div className="text-xs text-muted-foreground mt-1">
+                              in {result.parent}
+                            </div>
+                          )}
+                        </div>
+                      </div>
+                    </button>
+                  ))}
+                </div>
+              )}
+            </div>
+          </div>
+        </div>
+      )}
+
       {/* Mobile Sidebar Overlay */}
       {mobileMenuOpen && (
         <div
@@ -1420,10 +1515,10 @@ export default function Documentation() {
           onClick={() => setMobileMenuOpen(false)}
         >
           <div
-            className="w-80 h-full bg-background border-r border-border shadow-2xl overflow-y-auto"
+            className="w-80 max-w-[85vw] h-full bg-background border-r border-border shadow-2xl overflow-y-auto"
             onClick={(e) => e.stopPropagation()}
           >
-            <div className="p-6">
+            <div className="p-4 sm:p-6">
               <div className="mb-6 flex items-center justify-between">
                 <h3 className="font-bold text-lg">Documentation</h3>
                 <Button
@@ -1454,14 +1549,14 @@ export default function Documentation() {
                             : "hover:bg-muted/50"
                         }`}
                       >
-                        <div className="flex items-center gap-3">
-                          <Icon className="w-5 h-5" />
-                          <span className="font-medium text-sm">
+                        <div className="flex items-center gap-3 min-w-0 flex-1">
+                          <Icon className="w-5 h-5 flex-shrink-0" />
+                          <span className="font-medium text-sm truncate">
                             {section.title}
                           </span>
                         </div>
                         <ChevronRight
-                          className={`w-4 h-4 transition-transform ${
+                          className={`w-4 h-4 transition-transform flex-shrink-0 ${
                             isExpanded ? "rotate-90" : ""
                           }`}
                         />
@@ -1473,7 +1568,7 @@ export default function Documentation() {
                             <button
                               key={child.id}
                               onClick={() => scrollToSection(child.id)}
-                              className={`w-full text-left p-2 rounded text-sm transition-colors ${
+                              className={`w-full text-left p-2 rounded text-sm transition-colors truncate ${
                                 activeSection === child.id
                                   ? "text-accent font-medium"
                                   : "text-muted-foreground hover:text-foreground"
@@ -1494,10 +1589,10 @@ export default function Documentation() {
       )}
 
       {/* Desktop Sidebar */}
-      <aside className="hidden lg:block fixed left-0 top-16 w-80 h-[calc(100vh-4rem)] bg-background/50 backdrop-blur-sm border-r border-border overflow-y-auto z-30">
-        <div className="p-6">
+      <aside className="hidden lg:block fixed left-0 top-14 sm:top-16 w-64 xl:w-80 h-[calc(100vh-3.5rem)] sm:h-[calc(100vh-4rem)] bg-background/50 backdrop-blur-sm border-r border-border overflow-y-auto z-30">
+        <div className="p-4 xl:p-6">
           {/* Progress Rail */}
-          <div className="absolute left-6 top-24 bottom-6 w-0.5 bg-gradient-to-b from-accent/30 via-accent/10 to-transparent" />
+          <div className="absolute left-4 xl:left-6 top-24 bottom-6 w-0.5 bg-gradient-to-b from-accent/30 via-accent/10 to-transparent" />
 
           <nav className="space-y-2 relative">
             {sidebarStructure.map((section) => {
@@ -1511,7 +1606,7 @@ export default function Documentation() {
                 <div key={section.id} className="relative">
                   {/* Progress Dot */}
                   <div
-                    className={`absolute -left-[19px] top-5 w-3 h-3 rounded-full border-2 border-background transition-all duration-300 ${
+                    className={`absolute -left-[19px] xl:-left-[19px] top-5 w-3 h-3 rounded-full border-2 border-background transition-all duration-300 ${
                       isActive
                         ? "bg-accent shadow-[0_0_12px_rgba(16,185,129,0.6)] scale-125"
                         : "bg-muted"
@@ -1523,24 +1618,24 @@ export default function Documentation() {
                       toggleSection(section.id);
                       scrollToSection(section.id);
                     }}
-                    className={`w-full flex items-center justify-between p-4 rounded-xl transition-all group ${
+                    className={`w-full flex items-center justify-between p-3 xl:p-4 rounded-xl transition-all group ${
                       isActive
                         ? "bg-gradient-to-r from-accent/10 to-transparent border border-accent/20 shadow-lg"
                         : "hover:bg-muted/50"
                     }`}
                   >
-                    <div className="flex items-center gap-3">
+                    <div className="flex items-center gap-3 min-w-0 flex-1">
                       <div
-                        className={`p-2 rounded-lg transition-all ${
+                        className={`p-2 rounded-lg transition-all flex-shrink-0 ${
                           isActive
                             ? "bg-accent text-accent-foreground"
                             : "bg-muted/50 group-hover:bg-accent/20"
                         }`}
                       >
-                        <Icon className="w-5 h-5" />
+                        <Icon className="w-4 h-4 xl:w-5 xl:h-5" />
                       </div>
-                      <div className="text-left">
-                        <div className="font-semibold text-sm">
+                      <div className="text-left min-w-0 flex-1">
+                        <div className="font-semibold text-sm truncate">
                           {section.title}
                         </div>
                         <div
@@ -1557,19 +1652,19 @@ export default function Documentation() {
                       </div>
                     </div>
                     <ChevronRight
-                      className={`w-4 h-4 transition-transform duration-300 ${
+                      className={`w-4 h-4 transition-transform duration-300 flex-shrink-0 ${
                         isExpanded ? "rotate-90" : ""
                       }`}
                     />
                   </button>
 
                   {isExpanded && (
-                    <div className="ml-14 mt-2 space-y-1">
+                    <div className="ml-12 xl:ml-14 mt-2 space-y-1">
                       {section.children.map((child) => (
                         <button
                           key={child.id}
                           onClick={() => scrollToSection(child.id)}
-                          className={`w-full text-left px-4 py-2.5 rounded-lg text-sm transition-all relative group ${
+                          className={`w-full text-left px-3 xl:px-4 py-2.5 rounded-lg text-sm transition-all relative group ${
                             activeSection === child.id
                               ? "text-accent font-semibold bg-accent/5"
                               : "text-muted-foreground hover:text-foreground hover:bg-muted/30"
@@ -1578,7 +1673,7 @@ export default function Documentation() {
                           {activeSection === child.id && (
                             <div className="absolute left-0 top-1/2 -translate-y-1/2 w-1 h-8 bg-accent rounded-r-full" />
                           )}
-                          {child.title}
+                          <span className="truncate block">{child.title}</span>
                         </button>
                       ))}
                     </div>
@@ -1591,55 +1686,46 @@ export default function Documentation() {
       </aside>
 
       {/* Main Content */}
-      <main className="lg:ml-80 pt-16">
+      <main className="lg:ml-64 xl:ml-80 pt-14 sm:pt-16">
         {/* Hero Section */}
         <section className="relative overflow-hidden bg-gradient-to-br from-primary via-primary/90 to-accent/20 text-primary-foreground">
           <div className="absolute inset-0 opacity-10">
             <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,rgba(16,185,129,0.3),transparent_50%)]" />
           </div>
 
-          <div className="relative max-w-6xl mx-auto px-6 py-24 lg:py-32">
+          <div className="relative max-w-6xl mx-auto px-4 sm:px-6 py-12 sm:py-16 lg:py-24 xl:py-32">
             <div className="max-w-3xl">
-              <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-accent/20 backdrop-blur-sm border border-accent/30 mb-6">
-                <Sparkles className="w-4 h-4 text-accent" />
-                <span className="text-sm font-medium">
+              <div className="inline-flex items-center gap-2 px-3 py-1.5 sm:px-4 sm:py-2 rounded-full bg-accent/20 backdrop-blur-sm border border-accent/30 mb-4 sm:mb-6">
+                <Sparkles className="w-3 h-3 sm:w-4 sm:h-4 text-accent flex-shrink-0" />
+                <span className="text-xs sm:text-sm font-medium">
                   AI-Powered CRM Assistant
                 </span>
               </div>
 
-              <h1 className="text-5xl lg:text-6xl font-bold mb-6 leading-tight bg-gradient-to-r from-white via-white to-accent bg-clip-text text-transparent">
+              <h1 className="text-3xl sm:text-4xl lg:text-5xl xl:text-6xl font-bold mb-4 sm:mb-6 leading-tight bg-gradient-to-r from-white via-white to-accent bg-clip-text text-transparent">
                 Power Maker AI Documentation
               </h1>
 
-              <p className="text-xl text-primary-foreground/80 mb-8 leading-relaxed">
+              <p className="text-base sm:text-lg lg:text-xl text-primary-foreground/80 mb-6 sm:mb-8 leading-relaxed">
                 Master AI-accelerated CRM development with comprehensive guides,
                 tutorials, and best practices for Microsoft Dynamics 365.
               </p>
 
-              <div className="flex flex-wrap gap-4">
+              <div className="flex flex-col sm:flex-row flex-wrap gap-3 sm:gap-4">
                 <Button
                   size="lg"
                   onClick={() => scrollToSection("quickstart")}
-                  className="bg-accent hover:bg-accent/90 text-accent-foreground shadow-xl shadow-accent/30 group"
+                  className="bg-accent hover:bg-accent/90 text-accent-foreground shadow-xl shadow-accent/30 group w-full sm:w-auto"
                 >
-                  <Play className="w-5 h-5 mr-2 group-hover:scale-110 transition-transform" />
-                  Quickstart Guide
-                  <ArrowRight className="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform" />
+                  <Play className="w-4 h-4 sm:w-5 sm:h-5 mr-2 group-hover:scale-110 transition-transform flex-shrink-0" />
+                  <span>Quickstart Guide</span>
+                  <ArrowRight className="w-4 h-4 sm:w-5 sm:h-5 ml-2 group-hover:translate-x-1 transition-transform flex-shrink-0" />
                 </Button>
-
-                {/* <Button
-                  size="lg"
-                  variant="outline"
-                  className="bg-white/10 border-white/20 text-white hover:bg-white/20 backdrop-blur-sm"
-                >
-                  <ExternalLink className="w-5 h-5 mr-2" />
-                  View API Reference
-                </Button> */}
               </div>
             </div>
 
             {/* Feature Grid */}
-            <div className="grid md:grid-cols-3 gap-6 mt-16">
+            <div className="grid sm:grid-cols-2 md:grid-cols-3 gap-4 sm:gap-6 mt-10 sm:mt-16">
               {[
                 {
                   icon: Settings,
@@ -1659,13 +1745,13 @@ export default function Documentation() {
               ].map((feature, i) => (
                 <Card
                   key={i}
-                  className="p-6 bg-white/10 backdrop-blur-sm border-white/20 hover:bg-white/15 transition-all group"
+                  className="p-4 sm:p-6 bg-white/10 backdrop-blur-sm border-white/20 hover:bg-white/15 transition-all group"
                 >
-                  <feature.icon className="w-8 h-8 mb-3 text-accent group-hover:scale-110 transition-transform" />
-                  <h3 className="font-semibold text-primary text-lg mb-2">
+                  <feature.icon className="w-6 h-6 sm:w-8 sm:h-8 mb-3 text-accent group-hover:scale-110 transition-transform" />
+                  <h3 className="font-semibold text-primary text-base sm:text-lg mb-2">
                     {feature.title}
                   </h3>
-                  <p className="text-sm text-primary-foreground/70">
+                  <p className="text-xs sm:text-sm text-primary-foreground/70">
                     {feature.desc}
                   </p>
                 </Card>
@@ -1675,35 +1761,35 @@ export default function Documentation() {
         </section>
 
         {/* Documentation Content */}
-        <div className="max-w-5xl mx-auto px-6 py-16 space-y-24">
+        <div className="max-w-5xl mx-auto px-4 sm:px-6 py-8 sm:py-12 lg:py-16 space-y-12 sm:space-y-16 lg:space-y-24">
           {sidebarStructure.map((section) => (
             <div key={section.id}>
               {/* Parent Section */}
               <section
                 id={section.id}
                 data-section-id={section.id}
-                className="scroll-mt-24"
+                className="scroll-mt-20 sm:scroll-mt-24"
               >
-                <Card className="p-10 border-2 shadow-xl hover:shadow-2xl transition-shadow bg-gradient-to-br from-card via-card to-accent/5">
-                  <div className="flex items-start gap-6 mb-8">
-                    <div className="p-4 rounded-2xl bg-gradient-to-br from-accent to-accent/60 shadow-lg">
-                      <section.icon className="w-8 h-8 text-accent-foreground" />
+                <Card className="p-6 sm:p-8 lg:p-10 border-2 shadow-xl hover:shadow-2xl transition-shadow bg-gradient-to-br from-card via-card to-accent/5">
+                  <div className="flex flex-col sm:flex-row items-start gap-4 sm:gap-6 mb-6 sm:mb-8">
+                    <div className="p-3 sm:p-4 rounded-2xl bg-gradient-to-br from-accent to-accent/60 shadow-lg flex-shrink-0">
+                      <section.icon className="w-6 h-6 sm:w-8 sm:h-8 text-accent-foreground" />
                     </div>
-                    <div className="flex-1">
-                      <div className="flex items-center gap-3 mb-2">
-                        <h2 className="text-4xl font-bold bg-gradient-to-r from-foreground to-foreground/60 bg-clip-text text-transparent">
+                    <div className="flex-1 min-w-0">
+                      <div className="flex items-center gap-3 mb-2 flex-wrap">
+                        <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold bg-gradient-to-r from-foreground to-foreground/60 bg-clip-text text-transparent break-words">
                           {docData[section.id]?.title}
                         </h2>
                       </div>
-                      <p className="text-lg text-muted-foreground leading-relaxed">
+                      <p className="text-sm sm:text-base lg:text-lg text-muted-foreground leading-relaxed break-words">
                         {docData[section.id]?.description}
                       </p>
                     </div>
                   </div>
 
-                  <div className="space-y-6">
+                  <div className="space-y-4 sm:space-y-6">
                     {docData[section.id]?.subtitle && (
-                      <h3 className="text-2xl font-semibold text-foreground mt-8 mb-4">
+                      <h3 className="text-xl sm:text-2xl font-semibold text-foreground mt-6 sm:mt-8 mb-3 sm:mb-4 break-words">
                         {docData[section.id].subtitle}
                       </h3>
                     )}
@@ -1713,12 +1799,12 @@ export default function Documentation() {
                     )}
 
                     {docData[section.id]?.sections?.map((subsection, idx) => (
-                      <div key={idx} className="mt-10">
-                        <h3 className="text-2xl font-semibold text-foreground mb-4 flex items-center gap-2">
-                          <div className="w-1.5 h-6 bg-gradient-to-b from-accent to-accent/50 rounded-full" />
-                          {subsection.subtitle}
+                      <div key={idx} className="mt-6 sm:mt-8 lg:mt-10">
+                        <h3 className="text-lg sm:text-xl lg:text-2xl font-semibold text-foreground mb-3 sm:mb-4 flex items-center gap-2 break-words">
+                          <div className="w-1.5 h-6 bg-gradient-to-b from-accent to-accent/50 rounded-full flex-shrink-0" />
+                          <span>{subsection.subtitle}</span>
                         </h3>
-                        <div className="space-y-4">
+                        <div className="space-y-3 sm:space-y-4">
                           {subsection.content.map((item, i) =>
                             renderContent(item, i)
                           )}
@@ -1739,15 +1825,15 @@ export default function Documentation() {
                     key={child.id}
                     id={child.id}
                     data-section-id={child.id}
-                    className="scroll-mt-24 mt-12"
+                    className="scroll-mt-20 sm:scroll-mt-24 mt-8 sm:mt-10 lg:mt-12"
                   >
-                    <Card className="p-8 border-2 hover:border-accent/30 transition-all hover:shadow-lg">
-                      <div className="mb-6">
-                        <div className="flex items-center justify-between mb-3">
-                          <h3 className="text-3xl font-bold text-foreground">
+                    <Card className="p-6 sm:p-8 border-2 hover:border-accent/30 transition-all hover:shadow-lg">
+                      <div className="mb-4 sm:mb-6">
+                        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between mb-3 gap-3">
+                          <h3 className="text-xl sm:text-2xl lg:text-3xl font-bold text-foreground break-words flex-1 min-w-0">
                             {childData.title}
                           </h3>
-                          <div className="flex items-center gap-2">
+                          <div className="flex items-center gap-2 flex-shrink-0">
                             <Button
                               variant="ghost"
                               size="icon"
@@ -1758,15 +1844,15 @@ export default function Documentation() {
                           </div>
                         </div>
                         {childData.description && (
-                          <p className="text-muted-foreground leading-relaxed">
+                          <p className="text-sm sm:text-base text-muted-foreground leading-relaxed break-words">
                             {childData.description}
                           </p>
                         )}
                       </div>
 
-                      <div className="space-y-6">
+                      <div className="space-y-4 sm:space-y-6">
                         {childData.subtitle && (
-                          <h4 className="text-xl font-semibold text-foreground">
+                          <h4 className="text-lg sm:text-xl font-semibold text-foreground break-words">
                             {childData.subtitle}
                           </h4>
                         )}
@@ -1776,11 +1862,11 @@ export default function Documentation() {
                         )}
 
                         {childData.sections?.map((subsection, idx) => (
-                          <div key={idx} className="mt-8">
-                            <h4 className="text-xl font-semibold text-foreground mb-4">
+                          <div key={idx} className="mt-6 sm:mt-8">
+                            <h4 className="text-base sm:text-lg lg:text-xl font-semibold text-foreground mb-3 sm:mb-4 break-words">
                               {subsection.subtitle}
                             </h4>
-                            <div className="space-y-4">
+                            <div className="space-y-3 sm:space-y-4">
                               {subsection.content.map((item, i) =>
                                 renderContent(item, i)
                               )}
@@ -1797,10 +1883,10 @@ export default function Documentation() {
         </div>
 
         {/* Footer CTA */}
-        <section className="relative overflow-hidden bg-gradient-to-br from-primary via-primary/95 to-accent/20 text-primary-foreground mt-24">
+        <section className="relative overflow-hidden bg-gradient-to-br from-primary via-primary/95 to-accent/20 text-primary-foreground mt-12 sm:mt-16 lg:mt-24">
           <div className="absolute inset-0">
             <svg
-              className="absolute bottom-0 w-full h-24"
+              className="absolute bottom-0 w-full h-16 sm:h-24"
               viewBox="0 0 1200 120"
               preserveAspectRatio="none"
             >
@@ -1823,34 +1909,29 @@ export default function Documentation() {
             </svg>
           </div>
 
-          <div className="relative max-w-4xl mx-auto px-6 py-20 text-center">
-            <div className="mb-6 flex justify-center">
-              <div className="w-16 h-16 rounded-2xl bg-accent/20 backdrop-blur-sm flex items-center justify-center">
-                <Sparkles className="w-8 h-8 text-accent" />
+          <div className="relative max-w-4xl mx-auto px-4 sm:px-6 py-12 sm:py-16 lg:py-20 text-center">
+            <div className="mb-4 sm:mb-6 flex justify-center">
+              <div className="w-12 h-12 sm:w-16 sm:h-16 rounded-2xl bg-accent/20 backdrop-blur-sm flex items-center justify-center">
+                <Sparkles className="w-6 h-6 sm:w-8 sm:h-8 text-accent" />
               </div>
             </div>
 
-            <h3 className="text-4xl font-bold mb-4">Unlock CRM Superpowers</h3>
-            <p className="text-xl text-primary-foreground/80 mb-8 max-w-2xl mx-auto">
+            <h3 className="text-2xl sm:text-3xl lg:text-4xl font-bold mb-3 sm:mb-4 break-words">
+              Unlock CRM Superpowers
+            </h3>
+            <p className="text-base sm:text-lg lg:text-xl text-primary-foreground/80 mb-6 sm:mb-8 max-w-2xl mx-auto break-words">
               Ready to accelerate your Dynamics 365 development? Get started
               with Power Maker AI today.
             </p>
 
-            <div className="flex flex-wrap gap-4 justify-center">
+            <div className="flex flex-col sm:flex-row flex-wrap gap-3 sm:gap-4 justify-center">
               <Button
                 size="lg"
-                className="bg-accent hover:bg-accent/90 text-accent-foreground shadow-2xl shadow-accent/30"
+                className="bg-accent hover:bg-accent/90 text-accent-foreground shadow-2xl shadow-accent/30 w-full sm:w-auto"
               >
-                <Network className="w-5 h-5 mr-2" />
-                Contact Support
+                <Network className="w-4 h-4 sm:w-5 sm:h-5 mr-2 flex-shrink-0" />
+                <span>Contact Support</span>
               </Button>
-              {/* <Button
-                size="lg"
-                variant="outline"
-                className="bg-white/10 border-white/20 text-white hover:bg-white/20 backdrop-blur-sm"
-              >
-                Join Beta Waitlist
-              </Button> */}
             </div>
           </div>
         </section>
