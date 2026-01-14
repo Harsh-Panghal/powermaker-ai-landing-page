@@ -1935,9 +1935,19 @@ export default function Documentation() {
               <Button
                 size="lg"
                 className="bg-accent hover:bg-accent/90 text-accent-foreground shadow-2xl shadow-accent/30 w-full sm:w-auto"
+                onClick={() => window.location.href = "mailto:support@powermaker.ai"}
               >
                 <Network className="w-4 h-4 sm:w-5 sm:h-5 mr-2 flex-shrink-0" />
                 <span>Contact Support</span>
+              </Button>
+              <Button
+                size="lg"
+                variant="outline"
+                className="border-white/30 text-white hover:bg-white/10 w-full sm:w-auto"
+                onClick={() => window.location.href = "/"}
+              >
+                <Home className="w-4 h-4 sm:w-5 sm:h-5 mr-2 flex-shrink-0" />
+                <span>Back to Home</span>
               </Button>
             </div>
           </div>

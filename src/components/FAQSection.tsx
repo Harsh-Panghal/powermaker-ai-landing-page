@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import {
   Accordion,
   AccordionContent,
@@ -29,7 +30,7 @@ const faqs = [
   {
     question: "Is my data safe with PowerMakerAI?",
     answer:
-      "Absolutely. We don’t store or access your Dynamics CRM data without your permission. All processing is handled securely, and you maintain full control of your environment.",
+      "Absolutely. We don't store or access your Dynamics CRM data without your permission. All processing is handled securely, and you maintain full control of your environment.",
   },
   {
     question: "Can PowerMakerAI help debug plugin errors?",
@@ -50,12 +51,12 @@ const faqs = [
   {
     question: "How do I request support or report a bug?",
     answer:
-      "You can use the “Contact Us” section or email us directly at [support@powermaker.ai].",
+      "You can use the Contact Us section or email us directly at support@powermaker.ai.",
   },
   {
     question: "Will PowerMakerAI get more features in the future?",
     answer:
-      "Definitely! We’re actively working on integrations, form scripting support, and full PowerApps integration. Stay tuned.",
+      "Definitely! We're actively working on integrations, form scripting support, and full PowerApps integration. Stay tuned.",
   },
 ];
 
@@ -63,9 +64,15 @@ const FAQSection = () => {
   return (
     <section id="faq" className="py-16 sm:py-20 md:py-24 bg-background">
       <div className="container mx-auto px-4 sm:px-6">
-        <h2 className="text-3xl sm:text-4xl font-bold text-primary text-center mb-12 sm:mb-16 px-4">
+        <h2 className="text-3xl sm:text-4xl font-bold text-primary text-center mb-4 px-4">
           Frequently Asked Questions
         </h2>
+        <p className="text-center text-muted-foreground mb-12 sm:mb-16 max-w-2xl mx-auto">
+          Find answers to common questions about PowerMaker AI. For more detailed information, visit our{" "}
+          <Link to="/docs" className="text-accent hover:underline font-medium">
+            documentation
+          </Link>.
+        </p>
 
         <Accordion
           type="single"

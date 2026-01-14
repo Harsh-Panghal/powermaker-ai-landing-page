@@ -82,7 +82,7 @@ const PrivacyPolicy = () => {
         <div className="container mx-auto px-4 sm:px-6 py-4">
           <div className="flex items-center justify-between">
             <Link to="/" className="flex items-center gap-2 group">
-              <img src="/logo.svg" alt="PowerMaker AI" className="w-10 h-10 transition-transform group-hover:scale-110" />
+              <img src="/logo.svg" alt="PowerMaker AI - AI pair programmer for Dynamics 365" className="w-10 h-10 transition-transform group-hover:scale-110" width="40" height="40" loading="lazy" />
               <span className="text-xl font-bold bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
                 PowerMaker AI
               </span>
