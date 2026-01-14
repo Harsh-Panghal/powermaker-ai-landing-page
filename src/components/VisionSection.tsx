@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import teamImage from "@/assets/team-collaboration.jpg";
 
@@ -25,7 +26,10 @@ const VisionSection = () => {
             <p className="text-base sm:text-lg text-foreground leading-relaxed">
               PowerMaker AI is built with the vision of simplifying Dynamics 365 customizations
               using AI. The MVP is already live and evolving rapidly based on developer and
-              consultant feedback.
+              consultant feedback. Learn more in our{" "}
+              <Link to="/docs" className="text-accent hover:underline font-medium">
+                documentation
+              </Link>.
             </p>
 
             <Button variant="accent" size="lg" className="mt-4 w-full sm:w-auto" onClick={() => scrollToSection("contact")}>
@@ -36,8 +40,11 @@ const VisionSection = () => {
           <div className="animate-slide-up order-first md:order-last" style={{ animationDelay: "0.2s" }}>
             <img
               src={teamImage}
-              alt="PowerMaker AI team collaborating on Dynamics 365 projects"
+              alt="PowerMaker AI team collaborating on Dynamics 365 CRM customization and Power Platform automation projects"
               className="rounded-xl shadow-lg w-full"
+              loading="lazy"
+              width="600"
+              height="400"
             />
           </div>
         </div>

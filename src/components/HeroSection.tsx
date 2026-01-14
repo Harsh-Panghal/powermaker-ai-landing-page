@@ -117,8 +117,11 @@ const HeroSection = () => {
           <div className="bg-card border-2 border-accent rounded-xl shadow-2xl overflow-hidden">
             <img 
               src="/dashboard.png" 
-              alt="PowerMaker AI Dashboard Interface" 
+              alt="PowerMaker AI Dashboard - AI pair programmer interface for Dynamics 365 CRM customization and Power Platform automation" 
               className="w-full h-auto"
+              loading="lazy"
+              width="1200"
+              height="675"
             />
           </div>
         </div>
