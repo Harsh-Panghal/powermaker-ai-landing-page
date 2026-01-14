@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef } from "react";
+import { Helmet } from "react-helmet-async";
 import {
   Cpu,
   Menu,
@@ -1249,6 +1250,12 @@ export default function Documentation() {
   };
 
   return (
+    <>
+      <Helmet>
+        <title>Documentation - PowerMaker AI | Complete Guide</title>
+        <meta name="description" content="Comprehensive documentation for PowerMaker AI. Learn how to use AI-powered tools for Dynamics 365 development, plugin creation, and entity design." />
+        <link rel="canonical" href="https://powermakerai.com/docs" />
+      </Helmet>
     <div className="min-h-screen bg-gradient-to-b from-background via-background to-muted/20">
       {/* Neural Network Background Pattern */}
       <div className="fixed inset-0 opacity-[0.03] pointer-events-none">
@@ -1937,5 +1944,6 @@ export default function Documentation() {
         </section>
       </main>
     </div>
+    </>
   );
 }

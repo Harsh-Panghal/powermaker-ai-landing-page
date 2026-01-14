@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
+import { Helmet } from "react-helmet-async";
 import {
   ChevronDown,
   ChevronRight,
@@ -72,6 +73,12 @@ const TermOfUse = () => {
   };
 
   return (
+    <>
+      <Helmet>
+        <title>Terms of Use - PowerMaker AI</title>
+        <meta name="description" content="Read the terms and conditions for using PowerMaker AI services. Understand your rights and responsibilities when using our AI-powered Dynamics 365 tools." />
+        <link rel="canonical" href="https://powermakerai.com/term-of-use" />
+      </Helmet>
     <div className="min-h-screen bg-gradient-to-br from-background via-background to-primary/5 relative overflow-hidden">
       {/* Decorative Background Elements */}
       <div className="absolute inset-0 -z-10 overflow-hidden">
@@ -557,6 +564,7 @@ const TermOfUse = () => {
 
       <Footer />
     </div>
+    </>
   );
 };
 
