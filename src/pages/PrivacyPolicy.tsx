@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
+import { Helmet } from "react-helmet-async";
 import { ChevronDown, ChevronRight, Shield, Lock, Eye, FileText, Globe, Users, Clock, AlertCircle, Cookie, RefreshCw } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
@@ -54,6 +55,12 @@ const PrivacyPolicy = () => {
   };
 
   return (
+    <>
+      <Helmet>
+        <title>Privacy Policy - PowerMaker AI</title>
+        <meta name="description" content="Learn how PowerMaker AI collects, uses, and protects your personal information. Read our privacy policy for details on data handling practices." />
+        <link rel="canonical" href="https://powermakerai.com/privacy-policy" />
+      </Helmet>
     <div className="min-h-screen bg-gradient-to-br from-background via-background to-primary/5 relative overflow-hidden">
       {/* Decorative Background Elements */}
       <div className="absolute inset-0 -z-10 overflow-hidden">
@@ -689,6 +696,7 @@ const PrivacyPolicy = () => {
 
       <Footer />
     </div>
+    </>
   );
 };
 
