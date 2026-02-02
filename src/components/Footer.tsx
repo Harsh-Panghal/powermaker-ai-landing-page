@@ -1,20 +1,21 @@
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import {
-  Sparkles,
   Instagram,
   Facebook,
-  X,
   Mail,
-  ArrowRight,
 } from "lucide-react";
-import { Button } from "./ui/button";
-import { Input } from "./ui/input";
 
 const Footer = () => {
-  const scrollToSection = (id: string) => {
-    const element = document.getElementById(id);
-    if (element) {
-      element.scrollIntoView({ behavior: "smooth" });
+  const location = useLocation();
+  const isHomePage = location.pathname === "/";
+
+  const handleSectionClick = (e: React.MouseEvent<HTMLAnchorElement>, id: string) => {
+    if (isHomePage) {
+      e.preventDefault();
+      const element = document.getElementById(id);
+      if (element) {
+        element.scrollIntoView({ behavior: "smooth" });
+      }
     }
   };
 
@@ -27,38 +28,23 @@ const Footer = () => {
       </div>
 
       <div className="relative container mx-auto px-4 sm:px-6 py-12 sm:py-16">
-        {/* Newsletter Section */}
-        {/* <div className="mb-12 sm:mb-16 max-w-2xl mx-auto text-center">
-          <h3 className="text-2xl sm:text-3xl font-bold mb-3 sm:mb-4">
-            Stay Updated
-          </h3>
-          <p className="text-primary-foreground/80 mb-4 sm:mb-6 text-sm sm:text-base px-4">
-            Get the latest updates on PowerMaker AI features and Dynamics 365
-            tips
-          </p>
-          <div className="flex flex-col sm:flex-row gap-2 max-w-md mx-auto px-4">
-            <Input
-              type="email"
-              placeholder="Enter your email"
-              className="bg-primary-foreground/10 border-primary-foreground/20 text-primary-foreground placeholder:text-primary-foreground/60"
-            />
-            <Button variant="secondary" className="gap-2">
-              Subscribe <ArrowRight className="w-4 h-4" />
-            </Button>
-          </div>
-        </div> */}
-
         {/* Main Footer Content */}
         <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-8 sm:gap-12 mb-12">
           {/* Brand Column */}
           <div className="lg:col-span-2">
-            <div className="flex items-center gap-2 mb-6">
+            <Link to="/" className="flex items-center gap-2 mb-6">
               <div className="p-2 bg-primary-foreground/10 rounded-lg backdrop-blur-sm">
-                {/* <Sparkles className="w-8 h-8" /> */}
-                <img src="logo.svg" alt="PowerMaker AI logo - Dynamics 365 AI automation tool" className="w-10 h-10" width="40" height="40" loading="lazy" />
+                <img 
+                  src="/logo.svg" 
+                  alt="PowerMaker AI logo - Dynamics 365 AI automation tool" 
+                  className="w-10 h-10" 
+                  width="40" 
+                  height="40" 
+                  loading="lazy" 
+                />
               </div>
               <span className="text-2xl font-bold">PowerMaker AI</span>
-            </div>
+            </Link>
             <p className="text-primary-foreground/90 mb-6 max-w-md leading-relaxed">
               Your AI pair programmer for Dynamics 365 customizations. Build
               smarter, faster, and more efficiently with AI-powered development
@@ -69,6 +55,7 @@ const Footer = () => {
                 href="https://instagram.com"
                 target="_blank"
                 rel="noopener noreferrer"
+                aria-label="Follow PowerMaker AI on Instagram"
                 className="p-3 bg-primary-foreground/10 rounded-full hover:bg-primary-foreground/20 transition-all hover:scale-110"
               >
                 <Instagram className="w-5 h-5" />
@@ -77,6 +64,7 @@ const Footer = () => {
                 href="https://facebook.com"
                 target="_blank"
                 rel="noopener noreferrer"
+                aria-label="Follow PowerMaker AI on Facebook"
                 className="p-3 bg-primary-foreground/10 rounded-full hover:bg-primary-foreground/20 transition-all hover:scale-110"
               >
                 <Facebook className="w-5 h-5" />
@@ -85,6 +73,7 @@ const Footer = () => {
                 href="https://twitter.com"
                 target="_blank"
                 rel="noopener noreferrer"
+                aria-label="Follow PowerMaker AI on X (Twitter)"
                 className="p-3 bg-primary-foreground/10 rounded-full hover:bg-primary-foreground/20 transition-all hover:scale-110"
               >
                 <svg className="w-5 h-5" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
@@ -102,20 +91,21 @@ const Footer = () => {
             </h3>
             <ul className="space-y-3">
               <li>
-                <button
-                  onClick={() => scrollToSection("hero")}
+                <Link
+                  to="/"
                   className="text-primary-foreground/80 hover:text-primary-foreground hover:translate-x-1 transition-all inline-block"
                 >
                   Home
-                </button>
+                </Link>
               </li>
               <li>
-                <button
-                  onClick={() => scrollToSection("current-features")}
+                <a
+                  href={isHomePage ? "#current-features" : "/#current-features"}
+                  onClick={(e) => handleSectionClick(e, "current-features")}
                   className="text-primary-foreground/80 hover:text-primary-foreground hover:translate-x-1 transition-all inline-block"
                 >
                   Features
-                </button>
+                </a>
               </li>
               <li>
                 <Link
@@ -126,20 +116,22 @@ const Footer = () => {
                 </Link>
               </li>
               <li>
-                <button
-                  onClick={() => scrollToSection("pricing")}
+                <a
+                  href={isHomePage ? "#pricing" : "/#pricing"}
+                  onClick={(e) => handleSectionClick(e, "pricing")}
                   className="text-primary-foreground/80 hover:text-primary-foreground hover:translate-x-1 transition-all inline-block"
                 >
                   Pricing
-                </button>
+                </a>
               </li>
               <li>
-                <button
-                  onClick={() => scrollToSection("contact")}
+                <a
+                  href={isHomePage ? "#contact" : "/#contact"}
+                  onClick={(e) => handleSectionClick(e, "contact")}
                   className="text-primary-foreground/80 hover:text-primary-foreground hover:translate-x-1 transition-all inline-block"
                 >
                   Contact
-                </button>
+                </a>
               </li>
             </ul>
           </div>
@@ -152,30 +144,21 @@ const Footer = () => {
             </h3>
             <ul className="space-y-3">
               <li>
-                <a
-                  href="/privacy-policy"
+                <Link
+                  to="/privacy-policy"
                   className="text-primary-foreground/80 hover:text-primary-foreground hover:translate-x-1 transition-all inline-block"
                 >
                   Privacy Policy
-                </a>
+                </Link>
               </li>
               <li>
-                <a
-                  href="/term-of-use"
+                <Link
+                  to="/term-of-use"
                   className="text-primary-foreground/80 hover:text-primary-foreground hover:translate-x-1 transition-all inline-block"
-                  
                 >
                   Terms of Service
-                </a>
+                </Link>
               </li>
-              {/* <li>
-                <a
-                  href="#"
-                  className="text-primary-foreground/80 hover:text-primary-foreground hover:translate-x-1 transition-all inline-block"
-                >
-                  Cookie Policy
-                </a>
-              </li> */}
             </ul>
           </div>
         </div>

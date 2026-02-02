@@ -1,7 +1,8 @@
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { Helmet } from "react-helmet-async";
-import { ChevronDown, ChevronRight, Shield, Lock, Eye, FileText, Globe, Users, Clock, AlertCircle, Cookie, RefreshCw } from "lucide-react";
+import { ChevronDown, ChevronRight, Shield, Lock, Eye, FileText, Globe, Users, Clock, AlertCircle, Cookie, RefreshCw, BookOpen, Scale, DollarSign } from "lucide-react";
+import PageBreadcrumb from "@/components/PageBreadcrumb";
 import { Button } from "@/components/ui/button";
 import {
   Accordion,
@@ -148,6 +149,9 @@ const PrivacyPolicy = () => {
 
           {/* Main Content */}
           <main className="flex-1 max-w-4xl">
+            {/* Breadcrumb */}
+            <PageBreadcrumb items={[]} currentPage="Privacy Policy" />
+            
             {/* Hero Intro */}
             <div className="relative mb-12 bg-gradient-to-br from-card via-card/80 to-primary/5 backdrop-blur-sm border border-border/50 rounded-3xl p-8 md:p-12 shadow-2xl overflow-hidden">
               {/* Decorative corner accents */}
@@ -688,6 +692,39 @@ const PrivacyPolicy = () => {
                     </Button>
                   </div>
                 </div>
+              </div>
+            </div>
+
+            {/* Related Links Section */}
+            <div className="mt-12 bg-gradient-to-br from-card via-card/80 to-primary/5 backdrop-blur-sm border border-border/50 rounded-2xl p-6 md:p-8 shadow-xl">
+              <h3 className="text-xl font-bold text-foreground mb-6 flex items-center gap-2">
+                <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-primary/10 to-accent/10 flex items-center justify-center">
+                  <BookOpen className="w-4 h-4 text-primary" />
+                </div>
+                Related Pages
+              </h3>
+              <div className="grid sm:grid-cols-3 gap-4">
+                <Link 
+                  to="/term-of-use" 
+                  className="flex items-center gap-3 p-4 rounded-xl bg-muted/30 hover:bg-muted/50 border border-border/30 transition-all hover:translate-x-1 group"
+                >
+                  <Scale className="w-5 h-5 text-primary group-hover:scale-110 transition-transform" />
+                  <span className="font-medium text-foreground">Terms of Use</span>
+                </Link>
+                <Link 
+                  to="/docs" 
+                  className="flex items-center gap-3 p-4 rounded-xl bg-muted/30 hover:bg-muted/50 border border-border/30 transition-all hover:translate-x-1 group"
+                >
+                  <BookOpen className="w-5 h-5 text-primary group-hover:scale-110 transition-transform" />
+                  <span className="font-medium text-foreground">Documentation</span>
+                </Link>
+                <Link 
+                  to="/#pricing" 
+                  className="flex items-center gap-3 p-4 rounded-xl bg-muted/30 hover:bg-muted/50 border border-border/30 transition-all hover:translate-x-1 group"
+                >
+                  <DollarSign className="w-5 h-5 text-primary group-hover:scale-110 transition-transform" />
+                  <span className="font-medium text-foreground">Pricing</span>
+                </Link>
               </div>
             </div>
           </main>
