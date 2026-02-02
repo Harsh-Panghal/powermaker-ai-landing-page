@@ -1,12 +1,15 @@
 import { useState, useEffect } from "react";
+import { Link, useLocation } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import { Sparkles, Menu, X } from "lucide-react";
+import { Menu } from "lucide-react";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import ThemeToggle from "@/components/ThemeToggle";
 
 const Navigation = () => {
   const [scrolled, setScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const location = useLocation();
+  const isHomePage = location.pathname === "/";
 
   useEffect(() => {
     const handleScroll = () => {
@@ -17,12 +20,17 @@ const Navigation = () => {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  const scrollToSection = (id: string) => {
-    const element = document.getElementById(id);
-    if (element) {
-      element.scrollIntoView({ behavior: "smooth" });
-      setMobileMenuOpen(false);
+  const handleSectionClick = (e: React.MouseEvent<HTMLAnchorElement>, id: string) => {
+    // Only prevent default and scroll if we're on the homepage
+    if (isHomePage) {
+      e.preventDefault();
+      const element = document.getElementById(id);
+      if (element) {
+        element.scrollIntoView({ behavior: "smooth" });
+        setMobileMenuOpen(false);
+      }
     }
+    // If not on homepage, let the link navigate normally (href will handle it)
   };
 
   return (
@@ -33,35 +41,55 @@ const Navigation = () => {
       style={{ height: "60px" }}
     >
       <div className="container mx-auto px-4 sm:px-6 h-full flex items-center justify-between">
-        <div className="flex items-center gap-2">
-          {/* <Sparkles className="w-5 h-5 sm:w-6 sm:h-6 text-accent" /> */}
-          <img src="logo.svg" alt="PowerMaker AI - AI pair programmer for Dynamics 365 CRM" className="w-10 h-10" width="40" height="40" />
+        <Link to="/" className="flex items-center gap-2">
+          <img 
+            src="/logo.svg" 
+            alt="PowerMaker AI - AI pair programmer for Dynamics 365 CRM" 
+            className="w-10 h-10" 
+            width="40" 
+            height="40" 
+          />
           <span className="text-lg sm:text-xl font-bold text-primary">PowerMaker AI</span>
-        </div>
+        </Link>
 
         {/* Desktop Navigation */}
         <div className="hidden md:flex items-center gap-8">
-          <button
-            onClick={() => scrollToSection("hero")}
+          <Link
+            to="/"
             className="text-sm text-primary hover:text-accent transition-colors"
           >
             Home
-          </button>
-          <button
-            onClick={() => {window.open("/docs", "_blank")}}
+          </Link>
+          <Link
+            to="/docs"
             className="text-sm text-primary hover:text-accent transition-colors"
           >
             Documentation
-          </button>
-          <button
-            onClick={() => scrollToSection("contact")}
+          </Link>
+          <a
+            href={isHomePage ? "#pricing" : "/#pricing"}
+            onClick={(e) => handleSectionClick(e, "pricing")}
+            className="text-sm text-primary hover:text-accent transition-colors"
+          >
+            Pricing
+          </a>
+          <a
+            href={isHomePage ? "#contact" : "/#contact"}
+            onClick={(e) => handleSectionClick(e, "contact")}
             className="text-sm text-primary hover:text-accent transition-colors"
           >
             Contact Us
-          </button>
+          </a>
           <ThemeToggle />
-          <Button variant="accent" size="sm" onClick={() => window.open('https://chat.powermakerai.com/', '_blank')}>
-            Request Demo
+          <Button 
+            variant="accent" 
+            size="sm" 
+            onClick={() => window.open('https://chat.powermakerai.com/', '_blank')}
+            asChild
+          >
+            <a href="https://chat.powermakerai.com/" target="_blank" rel="noopener noreferrer">
+              Request Demo
+            </a>
           </Button>
         </div>
 
@@ -70,32 +98,55 @@ const Navigation = () => {
           <ThemeToggle />
           <Sheet open={mobileMenuOpen} onOpenChange={setMobileMenuOpen}>
             <SheetTrigger asChild>
-              <Button variant="ghost" size="icon">
+              <Button variant="ghost" size="icon" aria-label="Open menu">
                 <Menu className="w-6 h-6 text-primary" />
               </Button>
             </SheetTrigger>
             <SheetContent side="right" className="w-[280px]">
               <div className="flex flex-col gap-6 mt-8">
-                <button
-                  onClick={() => scrollToSection("hero")}
+                <Link
+                  to="/"
+                  onClick={() => setMobileMenuOpen(false)}
                   className="text-left text-lg text-primary hover:text-accent transition-colors"
                 >
                   Home
-                </button>
-                <button
-                  onClick={() => {window.open("/docs", "_blank")}}
+                </Link>
+                <Link
+                  to="/docs"
+                  onClick={() => setMobileMenuOpen(false)}
                   className="text-left text-lg text-primary hover:text-accent transition-colors"
                 >
                   Documentation
-                </button>
-                <button
-                  onClick={() => scrollToSection("contact")}
+                </Link>
+                <a
+                  href={isHomePage ? "#pricing" : "/#pricing"}
+                  onClick={(e) => {
+                    handleSectionClick(e, "pricing");
+                    if (!isHomePage) setMobileMenuOpen(false);
+                  }}
+                  className="text-left text-lg text-primary hover:text-accent transition-colors"
+                >
+                  Pricing
+                </a>
+                <a
+                  href={isHomePage ? "#contact" : "/#contact"}
+                  onClick={(e) => {
+                    handleSectionClick(e, "contact");
+                    if (!isHomePage) setMobileMenuOpen(false);
+                  }}
                   className="text-left text-lg text-primary hover:text-accent transition-colors"
                 >
                   Contact Us
-                </button>
-                <Button variant="accent" size="lg" className="w-full mt-4" onClick={() => window.open('https://chat.powermakerai.com/', '_blank')}>
-                  Request Demo
+                </a>
+                <Button 
+                  variant="accent" 
+                  size="lg" 
+                  className="w-full mt-4"
+                  asChild
+                >
+                  <a href="https://chat.powermakerai.com/" target="_blank" rel="noopener noreferrer">
+                    Request Demo
+                  </a>
                 </Button>
               </div>
             </SheetContent>

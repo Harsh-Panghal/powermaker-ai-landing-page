@@ -1,5 +1,7 @@
 import { useState, useEffect, useRef } from "react";
 import { Helmet } from "react-helmet-async";
+import { Link } from "react-router-dom";
+import PageBreadcrumb from "@/components/PageBreadcrumb";
 import {
   Cpu,
   Menu,
@@ -1701,6 +1703,11 @@ export default function Documentation() {
           </div>
 
           <div className="relative max-w-6xl mx-auto px-4 sm:px-6 py-12 sm:py-16 lg:py-24 xl:py-32">
+            {/* Breadcrumb */}
+            <div className="mb-6">
+              <PageBreadcrumb items={[]} currentPage="Documentation" />
+            </div>
+            
             <div className="max-w-3xl">
               <div className="inline-flex items-center gap-2 px-3 py-1.5 sm:px-4 sm:py-2 rounded-full bg-accent/20 backdrop-blur-sm border border-accent/30 mb-4 sm:mb-6">
                 <Sparkles className="w-3 h-3 sm:w-4 sm:h-4 text-accent flex-shrink-0" />
@@ -1944,10 +1951,22 @@ export default function Documentation() {
                 size="lg"
                 variant="outline"
                 className="border-white/30 text-white hover:bg-white/10 w-full sm:w-auto"
-                onClick={() => window.location.href = "/"}
+                asChild
               >
-                <Home className="w-4 h-4 sm:w-5 sm:h-5 mr-2 flex-shrink-0" />
-                <span>Back to Home</span>
+                <Link to="/">
+                  <Home className="w-4 h-4 sm:w-5 sm:h-5 mr-2 flex-shrink-0" />
+                  <span>Back to Home</span>
+                </Link>
+              </Button>
+              <Button
+                size="lg"
+                variant="outline"
+                className="border-white/30 text-white hover:bg-white/10 w-full sm:w-auto"
+                asChild
+              >
+                <Link to="/#pricing">
+                  <span>View Pricing</span>
+                </Link>
               </Button>
             </div>
           </div>
