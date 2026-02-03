@@ -10,6 +10,7 @@ import Documentation from "./pages/Documentation";
 import PrivacyPolicy from "./pages/PrivacyPolicy";
 import TermOfUse from "./pages/TermOfUse";
 import NotFound from "./pages/NotFound";
+import ScrollToTop from './components/ScrollToTop';
 import Snowfall from "react-snowfall";
 
 const queryClient = new QueryClient();
@@ -40,6 +41,7 @@ const App = () => (
             }}
           /> */}
           <BrowserRouter>
+            <ScrollToTop />
             <Routes>
               <Route path="/" element={<Index />} />
               <Route path="/docs" element={<Documentation />} />

@@ -1305,11 +1305,11 @@ export default function Documentation() {
         <div className="h-full px-4 sm:px-6 flex items-center justify-between max-w-screen-2xl mx-auto">
           {/* Left: Logo + Breadcrumb */}
           <div className="flex items-center gap-3 sm:gap-4 min-w-0 flex-1">
-            <div className="flex items-center gap-2 group cursor-pointer flex-shrink-0">
+            <Link to="/" className="flex items-center gap-2 group cursor-pointer flex-shrink-0">
               <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-lg flex items-center justify-center shadow-lg shadow-accent/20 group-hover:shadow-accent/40 transition-all group-hover:scale-105">
                 <img src="logo.svg" alt="PowerMaker AI Logo" className="w-6 h-6 sm:w-8 sm:h-8" />
               </div>
-            </div>
+            </Link>
 
             <div className="hidden md:flex items-center gap-2 text-xs sm:text-sm text-muted-foreground min-w-0">
               <Home className="w-3 h-3 sm:w-4 sm:h-4 flex-shrink-0" />
@@ -1941,7 +1941,7 @@ export default function Documentation() {
             <div className="flex flex-col sm:flex-row flex-wrap gap-3 sm:gap-4 justify-center">
               <Button
                 size="lg"
-                className="bg-accent hover:bg-accent/90 text-accent-foreground shadow-2xl shadow-accent/30 w-full sm:w-auto"
+                className="bg-white/10 text-accent-foreground shadow-2xl shadow-accent/30 w-full sm:w-auto"
                 onClick={() => window.location.href = "mailto:support@powermaker.ai"}
               >
                 <Network className="w-4 h-4 sm:w-5 sm:h-5 mr-2 flex-shrink-0" />
@@ -1950,7 +1950,7 @@ export default function Documentation() {
               <Button
                 size="lg"
                 variant="outline"
-                className="border-white/30 text-white hover:bg-white/10 w-full sm:w-auto"
+                className="border-white/30 text-white bg-white/10 w-full sm:w-auto"
                 asChild
               >
                 <Link to="/">
@@ -1961,7 +1961,7 @@ export default function Documentation() {
               <Button
                 size="lg"
                 variant="outline"
-                className="border-white/30 text-white hover:bg-white/10 w-full sm:w-auto"
+                className="border-white/30 text-white bg-white/10 w-full sm:w-auto"
                 asChild
               >
                 <Link to="/#pricing">
